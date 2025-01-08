@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <form class="login-form">
+    <form class="login-form" @submit.prevent="">
         <h1>SIGN IN</h1>
         <div class="cont">
             <span>
@@ -20,13 +20,14 @@
             <router-link to="/">Don't have an account? <span>Sign In</span></router-link>
         </div>
         <button type="submit">Login</button>
-        <!-- <button><font-awesome-icon icon="google" /> Google</button> -->
+        <button class="google-btn"><img :src="images.googleLogo" alt=""/> <span>Google</span> </button>
     </form>
   </div>
 </template>
 
 <script>
 import {ref} from 'vue';
+import { images } from '../assets/assets';
 
 export default {
     name: 'login',
@@ -34,6 +35,12 @@ export default {
         const username = ref('')
         const password = ref('')
 
+
+        return{
+            username,
+            password,
+            images
+        }
 
     }
 }
@@ -99,6 +106,7 @@ export default {
         color: var(--white);
         border-radius: 8px;
         padding: 10px 0;
+        font-weight: 600;
     }
 
     .login-form a{
@@ -107,6 +115,40 @@ export default {
 
     .login-form a span{
         color: var(--light-blue);
+    }
+
+    .login-form button.google-btn{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        justify-content: center;
+        background-color: rgba(235, 233, 233, 0.5); /* Darker background with opacity */
+        color: var(--black); /* White text */
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 8px;
+        outline: none;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(8px);
+    }
+
+    .login-form button.google-btn span{
+        font-weight: 700;
+    }
+
+    .login-form button img{
+        width: 20px;
+        height: 20px;
+        
+    }
+
+    @media (max-width: 425px) {
+        .login-form{
+            width: 90%;
+        }
     }
 
 </style>
