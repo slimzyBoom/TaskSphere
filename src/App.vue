@@ -23,6 +23,7 @@
     --black : #141522;
     --white : #fff;
     --light-blue : #546FFF;
+    --light-gray-bg: #fafafa;
 }
 
 *{
@@ -31,9 +32,14 @@
     box-sizing: border-box;
     text-decoration: none;
     outline: none;
+    list-style: none;
     font-family: var(--font-family);
 }
 
+nav{
+    position: fixed;
+    margin-left: 90%;
+}
 
 </style>
 
