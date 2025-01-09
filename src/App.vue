@@ -1,11 +1,38 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+
 </script>
 
 <template>
- <div class="bg-blue-500">
-  <h1>Hello World</h1>
- </div>
+    <div>
+        <nav>
+             <router-link to="/">Home</router-link> |
+    
+         </nav>
+        <router-view/>
+    </div>
+ 
 </template>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+:root{
+    --font-family: "Plus Jakarta Sans", serif;
+    --black : #141522;
+    --white : #fff;
+    --light-blue : #546FFF;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none;
+    font-family: var(--font-family);
+}
+
+
+</style>
 
 
