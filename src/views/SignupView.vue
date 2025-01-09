@@ -1,7 +1,13 @@
 <template>
-  <div class="login-container">
-    <form class="login-form" @submit.prevent="">
-        <h1>SIGN IN</h1>
+   <div class="signup-container">
+    <form class="signup-form" @submit.prevent="">
+        <h1>SIGN UP</h1>
+        <div class="cont">
+            <span>
+                <font-awesome-icon icon="envelope" />
+            </span>
+           <input type="text" v-model="email" placeholder="Email"> 
+        </div>
         <div class="cont">
             <span>
                 <font-awesome-icon icon="user" />
@@ -14,12 +20,16 @@
             </span>
             <input type="password" v-model="password" placeholder="Password">
         </div>
-        <div class="text">
-            <router-link to="/">Forgot Password?</router-link>
-            <br>
-            <router-link to="/signup">Don't have an account? <span>Sign Up</span></router-link>
+        <div class="cont">
+            <span>
+                <font-awesome-icon icon="lock" />
+            </span>
+            <input type="password" v-model="cPassword" placeholder="Confirm Password">
         </div>
-        <button type="submit">Login</button>
+        <div class="text">
+            <router-link to="/login">Already have an account? <span>Sign In</span></router-link>
+        </div>
+        <button type="submit">Register</button>
         <button class="google-btn"><img :src="images.googleLogo" alt=""/> <span>Google</span> </button>
     </form>
   </div>
@@ -32,22 +42,26 @@ import { images } from '../assets/assets';
 export default {
     name: 'login',
     setup(){
+        const email = ref('')
         const username = ref('')
         const password = ref('')
+        const cPassword = ref('')
 
 
         return{
+            email,
             username,
             password,
-            images
+            cPassword,
+            images,
         }
 
     }
 }
 </script>
 
-<style scoped>
-    .login-container{
+<style>
+     .signup-container{
         display: flex;
         align-items: center;
         justify-content: center;
@@ -55,7 +69,7 @@ export default {
         height: 90vh;
     }
 
-    .login-form {
+    .signup-form {
         display: flex;
         flex-direction: column;
         gap: 20px;
@@ -68,21 +82,21 @@ export default {
         font-family: Arial, sans-serif;
     }
 
-    .login-form:hover {
+    .signup-form:hover {
         box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1), 
                     0 4px 6px rgba(0, 0, 0, 0.06);
     }
 
-    .login-form h1{
+    .signup-form h1{
         font-size: 20px;
         font-weight: 600;
         text-align: center;
         color: var(--black);
-        padding: 15px 0;
+        padding: 10px 0;
 
     }
 
-    .login-form .cont{
+    .signup-form .cont{
         display: flex;
         align-items: center;
         gap: 11px;
@@ -92,16 +106,16 @@ export default {
         padding: 10px;
     }
 
-    .login-form .cont svg{
+    .signup-form .cont svg{
         font-size: 15px;
     }
 
-    .login-form input{
+    .signup-form input{
          width: 100%;
          font-size: 14px;
     }
 
-    .login-form button{
+    .signup-form button{
         background-color: var(--light-blue);
         color: var(--white);
         border-radius: 8px;
@@ -109,15 +123,15 @@ export default {
         font-weight: 600;
     }
 
-    .login-form a{
+    .signup-form a{
         font-size: 15px;
     }
 
-    .login-form a span{
+    .signup-form a span{
         color: var(--light-blue);
     }
 
-    .login-form button.google-btn{
+    .signup-form button.google-btn{
         display: flex;
         align-items: center;
         gap: 5px;
@@ -134,20 +148,21 @@ export default {
         overflow: hidden;
         backdrop-filter: blur(8px);
         margin-top: -8px;
+
     }
 
-    .login-form button.google-btn span{
+    .signup-form button.google-btn span{
         font-weight: 700;
     }
 
-    .login-form button img{
+    .signup-form button img{
         width: 20px;
         height: 20px;
         
     }
 
     @media (max-width: 425px) {
-        .login-form{
+        .signup-form{
             width: 90%;
         }
     }
