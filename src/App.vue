@@ -30,6 +30,7 @@
     outline: none;
     list-style: none;
     font-family: var(--font-family);
+    scroll-behavior: smooth;
 }
 
 </style>

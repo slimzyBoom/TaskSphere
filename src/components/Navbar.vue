@@ -5,16 +5,16 @@
         </div>
         <ul>
             <li>
-                <router-link to="/" class="active">Home</router-link>
+                <a href="#" class="active">Home</a>
             </li>
             <li>
-                <router-link to="/">Features</router-link>
+                <a href="#features">Features</a>
             </li>
             <li>
-                <router-link to="/">Testimonial</router-link>
+                <a href="#testimonial">Testimonial</a>
             </li>
             <li>
-                <router-link to="/">Contact</router-link>
+                <a href="#contact">Contact</a>
             </li>
             <li>
                 <router-link to="/login">Login</router-link>
@@ -64,8 +64,11 @@ export default {
        transition: .3s ease;
     }
 
-    nav ul li a:hover::before,
     nav ul li a.active::before{
+        width: 40%;
+    }
+
+    nav ul li a:hover::before{
         width: 100%;
     }
 
