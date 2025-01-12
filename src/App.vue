@@ -1,15 +1,11 @@
-<script setup>
-
+<script>
+   
+   
 </script>
 
 <template>
     <div>
-        <nav>
-             <router-link to="/">Home</router-link> |
-             <router-link to="/login">Login</router-link> |
-
-    
-         </nav>
+        
         <router-view/>
     </div>
  
@@ -34,13 +30,8 @@
     outline: none;
     list-style: none;
     font-family: var(--font-family);
+    scroll-behavior: smooth;
 }
-
-nav{
-    position: fixed;
-    margin-left: 90%;
-}
-
 
 </style>
 
