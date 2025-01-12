@@ -2,14 +2,17 @@
    import Navbar from '../components/Navbar.vue'
    import { images } from '../assets/assets';
     export default{
+      
         components:{
             Navbar
         },
 
         setup(){
           
+
           return {
-            images
+            images,
+            
           }
         }
     }
@@ -18,7 +21,8 @@
 <template>
   <div class="home-view">
     <header>
-      <Navbar/>
+      <Navbar />
+     
     </header>
     <main>
       <section class="hero">
@@ -28,7 +32,8 @@
             <h1>Organize, collaborate and achieve</h1>
             <p>
               Boost your team's productivity with tools designed to simplify task management. Plan projects, assign tasks, 
-              and track progress—all in one place. Stay organized, work smarter, and achieve your goals effortlessly.
+              and track progress—all in one place.
+              <span>Stay organized, work smarter, and achieve your goals effortlessly.</span>
             </p>
             <button>Get Started Now</button>
           </div>
@@ -157,7 +162,7 @@
         </div>
       </section>
 
-      <section class="contact">
+      <section id="contact" class="contact">
         <div class="text">
           <div class="title">
             <span>─ Contact</span>
@@ -178,21 +183,124 @@
               <p>+234-802-349-1336</p>
             </span>
             <span>
-              <font-awesome-icon icon=""/>
+              <font-awesome-icon :icon="['fab', 'linkedin']"/>
               <p>: </p>
               <p>gogetter@gmail.com</p>
             </span>
           </div>
         </div>
+        <form>
+                <h1>Leave A Message</h1>
+                <div class="cont">
+                    <font-awesome-icon icon="envelope"/>
+                    <input type="text" placeholder="Your Email">
+                </div>
+                <div class="cont">
+                    <font-awesome-icon icon="phone"/>
+                    <input type="text" placeholder="Your Phone">
+                </div>
+                <div class="cont">
+                    <font-awesome-icon icon="comment"/>
+                    <textarea placeholder="Your Message"> </textarea>
+                </div>
+                <div class="btn">
+                    <a href="#">
+                        <span>➞</span>
+                        <button>Send Message</button>
+                    </a>
+                </div>
+            </form>
        
       </section>
+
+      <footer>
+          
+              <p>© Copyright 2024 - GoGetters Team</p>
+              <div class="icons">
+                  <a href="#">
+                    <font-awesome-icon :icon="['fab','whatsapp']" />
+                  </a>
+                  <a href="#">
+                    <font-awesome-icon :icon="['fab','facebook']" />
+                  </a>
+                  <a href="#">
+                    <font-awesome-icon :icon="['fab','instagram']" />
+                  </a>
+                  <a href="#">
+                    <font-awesome-icon :icon="['fab','twitter']" />
+                  </a>
+                  <a href="#">
+                    <font-awesome-icon :icon="['fab','linkedin']" />
+                  </a>
+                  
+              </div>
+          
+            
+        </footer>
 
     </main>
   </div>
  
 </template>
 
-<style>
+<style scoped>
+  .drop-down-menu {
+      position: fixed;
+      top: -200%;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      padding: 120px 30px;
+      background-color: var(--light-gray-bg);
+      transition: .5s ease-in-out;
+      z-index: 5;
+  }
+
+  .drop-down-menu.active {
+    position: fixed;
+    top: 0%;
+  }
+
+  .drop-down-menu .cont {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .drop-down-menu a{
+    display: flex;
+    position: relative;
+    padding: 20px;
+    width: 95%;
+    background-color: #1e212b8c;
+    border-radius: 7px;
+  }
+
+  .drop-down-menu a::before {
+    position: absolute;
+    content: '';
+    width: 0%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 7px;
+    background-color: var(--light-blue);
+    transition: .2s ease-in-out;
+  }
+
+  .drop-down-menu a:hover::before {
+    width: 100%;
+  }
+
+  .drop-down-menu li {
+    position: relative;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    z-index: 5;
+  }
+
   .title{
     text-align: center;
     margin-bottom: 50px;
@@ -213,7 +321,7 @@
     /* justify-content: center; */
     height: 100vh;
     width: 100%;
-    padding: 0 50px;
+    padding: 50px 50px;
 
   }
 
@@ -403,12 +511,11 @@
   .contact{
     display: flex;
     justify-content: space-between;
-    padding: 50px;
-    padding-bottom: 80px;
+    padding: 80px 50px;
   }
 
   .contact .text{
-    width: 50%;
+    width: 45%;
   }
 
   .contact .title{
@@ -416,10 +523,15 @@
     margin: 0;
   }
 
+  .contact .description{
+    padding: 12px 0;
+  }
+
   .contact .info span{
     display: flex;
     align-items: center;
     gap: 5px;
+    padding: 2px 0;
   }
 
   .contact .info span svg{
@@ -427,5 +539,284 @@
     margin-top: 3px;
     
   }
+
+  .contact form{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 3px 5px 12px rgb(50, 50, 50 ,.25);
+    border-radius: 10px;
+    padding: 40px 40px;
+    padding-top: 30px;
+  }
+
+  .contact form h1{
+      font-size: 25px;
+      font-weight: 700;
+      color: var(--light-blue);
+  }
+
+  .contact form .cont{
+      display: flex;
+      align-items: center;
+      position: relative;
+  }
+
+  .contact form .cont svg {
+      position: absolute;
+      left: 10px;
+      color: #27262669;
+  }
+
+  .contact form .cont:nth-child(4) svg{
+    top: 15px;
+  }
+
+  .contact form input,
+  .contact form textarea{
+      width: 100%;
+      padding: 10px 35px;
+      border: 1px solid #34343482;
+      border-radius: 5px;
+      color: #000000aa;
+  }
+
+  .contact form textarea{
+      height: 110px;
+  }
+
+  .contact form .cont:nth-child(4) i{
+      top: 12px;
+  }
+
+  .contact form input::placeholder,
+  .contact form textarea::placeholder{
+      font-size: 16px;
+  }
+
+  .contact form .btn{
+    display: flex;
+    width: 185px;
+    height: 50px;
+    background-color: #546eff7c;
+    padding: 6px;
+    border-radius: 40px;
+  }
+
+  .contact form .btn a{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+  }
+
+  .contact form .btn span{
+      font-size: 20px;
+      background-color: #fff;
+      padding: 3px 8px;
+      border-radius: 50%;
+      color: #546eff7c;
+  }
+
+  .contact form .btn button{
+      background-color: var(--light-blue);
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: 'Montserrat', sans-serif;
+      padding: 10px 15px;
+      border-radius: 20px;
+  }
+
+  footer{
+    width: 100% ;
+    background-color: var(--light-blue);
+    display: flex;
+    padding: 23px 50px;
+    justify-content: space-between;
+    color: var(--white);
+  }
+
+  footer svg{
+    font-size: 20px;
+    padding: 0 6px;
+  }
+
+
+  @media (max-width: 1040px){
+    
+    .hero .image{
+      width: 80%;
+    }
+
+    .hero .text{
+      width: 100%;
+    }
+
+    .hero .hero-container{
+      flex-direction: column-reverse;
+    }
+
+    .features .card {
+       width: 31%;
+       padding: 20px;
+    }
+
+    .features .image img {
+      width: 100%;
+      height: 220px;
+    }
+
+    .contact{
+      padding: 80px 60px;
+    }
+
+    .contact form{
+      padding: 30px;
+    }
+
+  }
+
+  @media (max-width: 980px){
+     .features .image img {
+        height: 280px;
+    }
+
+    .features .features-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 60px;
+    }
+
+    .features .card {
+       width: 70%;
+       padding: 30px;
+    }
+
+    .testimonial-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .testimonial .card {
+      width: 80%;
+    }
+
+    .contact{
+      flex-direction: column;
+      /* align-items: center; */
+      gap: 50px;
+    }
+
+    .contact .text{
+      width: 100%;
+    }
+
+    .contact form{
+      width: 80%;
+    }
+
+  }
+
+  @media (max-width: 750px) {
+    .contact form{
+      width: 90%;
+    }
+  }
+
+  @media (max-width: 680px){
+    .features .card{
+      width: 90%;
+    }
+
+    .testimonial .card{
+      width: 90%;
+    }
+
+    footer{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+  }
+
+  @media (max-width:600px){
+    nav {
+      padding: 35px 40px;
+    }
+    .hero .image{
+      width: 90%;
+    }
+
+    .features .card{
+        width: 100%;
+    }
+
+    .testimonial .card{
+        width: 100%;
+    }
+
+    .contact{
+        padding: 80px 50px;
+    }
+
+    .contact form {
+        width: 100%;
+    }
+
+    
+  }
+
+  @media (max-width: 500px) {
+    .hero{
+      padding: 350px 35px;
+    }
+
+    .features{
+      padding: 80px 35px;
+    }
+
+    .testimonial{
+      padding: 80px 35px;
+    }
+
+    .hero .image {
+        width: 100%;
+    }
+
+    .contact{
+      padding: 80px 35px;
+    }
+  }
+
+  @media (max-width:450px) {
+    .hero .text h1{
+      font-size: 29px;
+    }
+
+    .features .card{
+        padding: 20px;
+    }
+
+    .features .image img{
+        height: 220px;
+    }
+  }
+
+  @media (max-width:400px) {
+    .hero .text p span{
+      display: none;
+    }
+  }
+ 
 
 </style>
