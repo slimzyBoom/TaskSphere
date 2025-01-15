@@ -86,12 +86,12 @@ export default {
     }
 
     .side-bar li a svg{
-        color: #8E92BC;
+        color: var(--gray-text-secondary);
         font-size: 22px;
     }
 
     .side-bar li a span{
-        color: #8E92BC;
+        color: var(--gray-text-secondary);
         font-size: 14px;
         font-weight: 500;
     }

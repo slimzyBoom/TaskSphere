@@ -1,22 +1,32 @@
  <template>
     <div class="dashboard">
-        
-        <Sidebar/>
+        <Header :headerProps = "headerProps"></Header>
+        <main>
+            
+        </main>
     </div>
   
 </template>
 
 <script>
-import Sidebar from '../layout/Sidebar.vue';
+import Header from '../components/Header.vue';
 export default {
     components:{
-        Sidebar,
+       Header,
     },
     setup(){
+        const userName = 'Freddie';
+        const headerProps = {
+            title :  `Hi ${userName}`,
+            titleText: "Let's finish your task today !",
+            search : true,
+            filter: true,
+            icons: true,
+        }
         
 
         return{
-            
+            headerProps,
         }
     }
 }
@@ -24,8 +34,14 @@ export default {
 
 <style scoped>
     .dashboard{
-        width: 100vw;
+        position: relative;
+        width: 100%;
         height: 100vh;
         background-color: var(--light-gray-bg) ;
+    }
+
+    .dashboard main{
+        padding: 35px 30px;
+
     }
 </style>

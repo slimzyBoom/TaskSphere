@@ -20,6 +20,8 @@
     --white : #fff;
     --light-blue : #546FFF;
     --light-gray-bg: #fafafa;
+    --gray-text-primary : #54577A;
+    --gray-text-secondary : #8E92BC;
 }
 
 *{

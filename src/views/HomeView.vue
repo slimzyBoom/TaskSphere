@@ -746,6 +746,7 @@
       flex-direction: column;
       align-items: center;
       gap: 20px;
+      text-align: center;
     }
   }
 
