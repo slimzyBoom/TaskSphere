@@ -51,6 +51,7 @@ export default {
     
 <style scoped>
     .side-bar{
+        position: fixed;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -59,6 +60,7 @@ export default {
         padding: 60px 20px;
         padding-bottom: 23px;
         background-color: var(--white);
+        z-index: 3;
     }
 
     .side-bar li{

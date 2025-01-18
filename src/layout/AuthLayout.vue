@@ -18,13 +18,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .auth-layout{
         position: relative;
         display: flex;
+       
     }
 
     .auth-layout .content{
-        width: 100%;        
+        width: 100%;
+        padding-left: 232px;        
     }
 </style>

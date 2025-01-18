@@ -1,11 +1,11 @@
-<template>
+ <template>
   <header class="header">
     <div class="cont">
         <div class="title">
             <h1 v-if="headerProps.title">{{headerProps.title}}</h1>
             <p v-if="headerProps.titleText">{{headerProps.titleText }}</p>
         </div>
-        <div class="icons">
+        <div class="icons" v-if="headerProps.icons">
             <div class="notification">
                 <router-link to="/">
                     <font-awesome-icon :icon="['far', 'bell']"></font-awesome-icon>
@@ -19,19 +19,22 @@
         </div>
     </div>
     <div class="cont">
-        <SearchBar></SearchBar>
+        <SearchBar v-if="headerProps.search"></SearchBar>
+        <FilterTab v-if="headerProps.filter"></FilterTab>
     </div>
   </header>
 </template>
 
 <script>
 import { images } from '../assets/assets';
+import FilterTab from './FilterTab.vue';
 import SearchBar from './SearchBar.vue';
 
 export default {
     props : ['headerProps'],
     components:{
         SearchBar,
+        FilterTab,
     },
     setup(props){
         return{

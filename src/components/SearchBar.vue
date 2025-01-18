@@ -11,7 +11,7 @@
   }
   </script>
   
-  <style>
+  <style scoped>
       .search-bar{
         position: relative;
         display: flex;
