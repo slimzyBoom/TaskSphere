@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
-    <form class="login-form" @submit.prevent="">
+    <p v-if="errorDisplay" class="error">{{ error }} <span @click="closeError"><font-awesome-icon icon="x"></font-awesome-icon></span></p>
+    <form class="login-form" @submit.prevent="login">
         <h1>SIGN IN</h1>
         <div class="cont">
             <span>
@@ -27,6 +28,7 @@
 
 <script>
 import {ref} from 'vue';
+import { useRouter } from 'vue-router';
 import { images } from '../assets/assets';
 
 export default {
@@ -34,11 +36,35 @@ export default {
     setup(){
         const username = ref('')
         const password = ref('')
+        const error = ref(null)
+        const errorDisplay = ref(false)
 
+        const router = useRouter()
+
+        function login() {
+            
+            if (username.value == 'admin' && password.value == 'admin') {
+                const token = 'fake-token-48u4238vf8uh8'
+                localStorage.setItem('authToken',token)
+                
+                router.push({name: 'dashboard'});
+            }else{
+                error.value= 'Invalid username or password'
+                errorDisplay.value = true
+            }
+        }
+
+        function closeError() {
+            errorDisplay.value = false
+        }
 
         return{
             username,
             password,
+            error,
+            login,
+            closeError,
+            errorDisplay,
             images
         }
 
@@ -49,10 +75,29 @@ export default {
 <style scoped>
     .login-container{
         display: flex;
+        flex-direction: column;
+        gap: 20px;
         align-items: center;
         justify-content: center;
         width: 100vw;
         height: 90vh;
+    }
+
+    .login-container .error{
+        padding: 15px;
+        border-radius: 5px;
+        color: #fffffff5;
+        background-color: rgba(246, 2, 2, 0.838);
+    }
+
+    .login-container .error span{
+        font-size: 11px;
+        margin-left: 7px;
+        cursor: pointer;
+        border: 1px  #000;
+        border: 1px solid #fffffff5;
+        padding: 4px 7px;
+        border-radius: 5px;
     }
 
     .login-form {

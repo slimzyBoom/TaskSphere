@@ -60,7 +60,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
      .signup-container{
         display: flex;
         align-items: center;

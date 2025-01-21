@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView.vue'
 import DashboardView from '../views/DashboardView.vue'
+import AuthLayout from '../layout/AuthLayout.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,12 +30,33 @@ const router = createRouter({
       component: LoginView,
 
     },
+    
     {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: DashboardView,
-    },
+      path: '/app',
+      component: AuthLayout,
+      children : [
+        {
+          path: '',
+          name: 'dashboard',
+          component: DashboardView,
+        },
+      ],
+      meta: { requiresAuth: true },
+    }
   ],
+})
+
+router.beforeEach((to, from, next)=>{
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      next({name: 'login'});
+    }else{
+      next()
+    }
+  }else{
+    next()
+  }
 })
 
 export default router
