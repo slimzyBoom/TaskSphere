@@ -1,11 +1,14 @@
 <template>
   <div class="side-bar">
     <li>
-        <router-link to="#" class="active">
+        <Logo/>
+
+
+        <router-link to="app" :class="{ active: $route.name === 'dashboard' }">
             <img :src="images.overviewIcon" alt="">
             <span>Overview</span>
         </router-link>
-        <router-link to="#">
+        <router-link to="projects" :class="{ active: $route.name === 'projects' }">
             <img :src="images.projectIcon" alt="">
             <span>Projects</span>
         </router-link>
@@ -38,7 +41,9 @@
 
 <script>
  import { images } from '../assets/assets';
+import Logo from './Logo.vue';
 export default {
+  components: { Logo },
     setup(){
         
 
@@ -57,7 +62,7 @@ export default {
         justify-content: space-between;
         height: 100vh;
         width: 232px;
-        padding: 60px 20px;
+        padding: 30px 20px;
         padding-bottom: 23px;
         background-color: var(--white);
         z-index: 3;

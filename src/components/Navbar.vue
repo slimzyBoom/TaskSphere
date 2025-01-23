@@ -20,9 +20,9 @@
           </div>
        </div>
         <nav>
-            <div class="logo">
-                <h1>Logo</h1>
-            </div>
+            
+            <Logo/>
+
             <ul>
                 <li>
                     <a href="#" class="active">Home</a>
@@ -52,7 +52,11 @@
 
 <script>
     import { ref } from 'vue';
+    import Logo from './Logo.vue';
     export default {
+        components:{
+            Logo,
+        },
         
         setup(){
             const isDropDownActive = ref("")
@@ -134,9 +138,10 @@
     nav{
         display: flex;
         justify-content: space-between;
+        align-items: center;
         position: fixed;
         width: 100vw;
-        padding: 35px 50px;
+        padding: 29px 50px;
         margin-bottom: 60px;
         background-color: var(--white) ;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -265,6 +270,10 @@
         .drop-down-menu.active li{
             position: relative;
             font-size: 18px;
+        }
+
+        nav{
+            padding: 25px 30px;
         }
     }
 
