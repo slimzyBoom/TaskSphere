@@ -10,8 +10,9 @@
               </span>
             </div>
             <main>
-               <ProjectsTab class="tab" :class="{active: activeTab === 'projects'}"/>
-               <MyTaskTab class="tab" :class="{active: activeTab === 'myProjects'}"/>
+              <MyTaskTab class="tab" v-if="activeTab === 'myProjects'"/>
+               <ProjectsTab class="tab" v-if="activeTab === 'projects'"/>
+                
             </main>
   </div>
 </template>
@@ -61,14 +62,6 @@ export default {
         position: relative;
         width: 100%;
         background-color: var(--light-gray-bg);
-    }
-
-    .tab{
-      display: none;
-    }
-
-    .tab.active{
-      display: flex;
     }
 
     .projects .tabs-links{
