@@ -17,6 +17,8 @@ import filterCat from './filter-cat.png'
 import sortIcon from './sort.png'
 import activity from './Activity.png'
 import taskImageOne from './task-image1.jpg'
+import taskImageTwo from './task-image2.png'
+import logo from './logo.png'
 
 const images ={
     googleLogo,
@@ -32,12 +34,14 @@ const images ={
     sortIcon,
     activity,
     taskImageOne,
+    taskImageTwo,
     profileTwo,
     profileThree,
     profileFour,
     profileFive,
     profileSix,
     profileSeven,
+    logo,
 }
 
-export {images}
+export {images} 

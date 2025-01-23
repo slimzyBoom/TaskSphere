@@ -5,6 +5,8 @@ import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import AuthLayout from '../layout/AuthLayout.vue'
+import ProjectsView from '../views/ProjectsView.vue'
+import DetailsProjectView from '../views/DetailsProjectView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +41,16 @@ const router = createRouter({
           path: '',
           name: 'dashboard',
           component: DashboardView,
+        },
+        {
+          path: '/projects',
+          name: 'projects',
+          component: ProjectsView,
+        },
+        {
+          path: '/project-details',
+          name: 'project-details',
+          component: DetailsProjectView,
         },
       ],
       meta: { requiresAuth: true },

@@ -1,36 +1,39 @@
 <template>
-  <div class="card">
-    <div class="image">
-        <img :src="images.taskImageOne" alt="">
-    </div>
-    <div class="text">
-        <div class="txt">
-            <h2>Creating Mobile App Design</h2>
-            <p>UI UX Design</p>
-        </div>
-        <div class="progress">
-            <div class="progress-txt">
-                <p>Progress</p>
-                <b>90%</b>
+    <router-link to="project-details">
+        <div class="card">
+            <div class="image">
+                <img :src="images.taskImageTwo" alt="">
             </div>
-            <span style="--value: 90%" class="progress-bar"></span>
-        </div>
-        <div class="cont">
-            <div class="time">
-                <font-awesome-icon :icon="['far', 'clock']"></font-awesome-icon>
-                <p>3 hour</p>
+            <div class="text">
+                <div class="txt">
+                    <h2>Creating Mobile App Design</h2>
+                    <p>UI UX Design</p>
+                </div>
+                <div class="progress">
+                    <div class="progress-txt">
+                        <p>Progress</p>
+                        <b>90%</b>
+                    </div>
+                    <span style="--value: 90%" class="progress-bar"></span>
+                </div>
+                <div class="cont">
+                    <div class="time">
+                        <font-awesome-icon :icon="['far', 'clock']"></font-awesome-icon>
+                        <p>3 hour</p>
+                    </div>
+                    <div class="img">
+                        <img :src="images.profileTwo" alt="">
+                        <img :src="images.profileThree" alt="">
+                        <img :src="images.profileFour" alt="">
+                        <img :src="images.profileFive" alt="">
+                        <img :src="images.profileSix" alt="">
+                    
+                    </div>
+                </div>
             </div>
-            <div class="img">
-                <img :src="images.profileTwo" alt="">
-                <img :src="images.profileThree" alt="">
-                <img :src="images.profileFour" alt="">
-                <img :src="images.profileFive" alt="">
-                <img :src="images.profileSix" alt="">
-             
-            </div>
         </div>
-    </div>
-  </div>
+    </router-link>
+ 
 </template>
 
 <script>
@@ -65,7 +68,14 @@ export default {
         transform: scale(1.01);
     } */
 
+    .card .image{
+        width: 100%;
+        height: 110px;
+    }
+
     .card .image img{
+        width: 100%;
+        height: 100%;
         border-radius: 10px;
     }
 

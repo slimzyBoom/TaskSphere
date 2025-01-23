@@ -61,8 +61,10 @@
             </div>
         </div>
     </div> -->
-
-    <button>Go to Details</button>
+    
+    <router-link to="project-details">
+        <button >Go to Details</button>
+    </router-link>
    
   </div>
   
@@ -88,7 +90,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .todays-task{
         display: flex;
         flex-direction: column;
@@ -206,6 +208,7 @@ export default {
     
     .todays-task .cont .img{
         display: flex;
+        cursor: pointer;
     }
 
     .todays-task .cont .img img{

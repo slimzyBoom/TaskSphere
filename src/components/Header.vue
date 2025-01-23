@@ -2,8 +2,7 @@
   <header class="header">
     <div class="cont">
         <div class="title">
-            <h1 v-if="headerProps.title">{{headerProps.title}}</h1>
-            <p v-if="headerProps.titleText">{{headerProps.titleText }}</p>
+            <WelcomeMessage :headerProps="headerProps"/>
         </div>
         <div class="icons" v-if="headerProps.icons">
             <div class="notification">
@@ -29,12 +28,14 @@
 import { images } from '../assets/assets';
 import FilterTab from './FilterTab.vue';
 import SearchBar from './SearchBar.vue';
+import WelcomeMessage from './WelcomeMessage.vue';
 
 export default {
     props : ['headerProps'],
     components:{
         SearchBar,
         FilterTab,
+        WelcomeMessage
     },
     setup(props){
         return{
@@ -61,17 +62,6 @@ export default {
         justify-content: space-between;
         align-items: center;
 
-    }
-
-    header .title h1{
-        font-size: 22px;
-        font-weight: 600;
-        color: var(--black);
-    }
-
-    header .title p{
-        font-size: 15px;
-        color: var(--gray-text-primary);
     }
 
     header .profile-img{
