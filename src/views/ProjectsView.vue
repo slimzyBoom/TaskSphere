@@ -2,10 +2,10 @@
   <div class="projects">
             <Header :headerProps = "headerProps"></Header>
             <div class="tabs-links">
-              <span :class="{active: activeTab === 'projects'}" @click="toggleActive('projects')">
+              <span :class="{active: activeTab === 'projects'}" @click="toggleTabs('projects')">
                 Projects
               </span>
-              <span :class="{active: activeTab === 'myProjects'}" @click="toggleActive('myProjects')">
+              <span :class="{active: activeTab === 'myProjects'}" @click="toggleTabs('myProjects')">
                 My Projects
               </span>
             </div>
@@ -40,17 +40,18 @@ export default {
         search : true,
         filter: true,
         icons: true,
+        button: true,
     }
     
     
-    function toggleActive(tab) {
+    function toggleTabs(tab) {
       activeTab.value = tab
     }
    
 
     return{
         headerProps,
-        toggleActive,
+        toggleTabs,
         activeTab,
     }
   }
@@ -61,6 +62,7 @@ export default {
    .projects{
         position: relative;
         width: 100%;
+        min-height: 100vh;
         background-color: var(--light-gray-bg);
     }
 

@@ -130,6 +130,7 @@ export default {
         position: relative;
         display: flex;
         width: 100%;
+        min-height: 100vh;
         padding: 30px;
         gap: 30px;
         background-color: var(--light-gray-bg) ;
@@ -192,6 +193,15 @@ export default {
         cursor: pointer;
         border-radius: 5px;
         padding: 7px 12px;
+    }
+
+    .project-details-container .text .cont button::before{
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: .5px;
+        background-color: var(--white);
+        right: 25%;
     }
 
     .project-details-container .text .cont button p{

@@ -43,6 +43,7 @@ export default {
             search : false,
             filter: false,
             icons: true,
+            button: true,
         }
         const upcomingDeadline = {
             title : 'Upcoming Deadline',
@@ -68,6 +69,7 @@ export default {
         position: relative;
         display: flex;
         width: 100%;
+        min-height: 100vh;
     }
 
     .dashboard .dashboard-container {

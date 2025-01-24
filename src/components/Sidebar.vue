@@ -12,11 +12,11 @@
             <img :src="images.projectIcon" alt="">
             <span>Projects</span>
         </router-link>
-        <router-link to="#">
+        <router-link to="">
             <font-awesome-icon :icon="['far', 'calendar-days']" />
             <span>Calendar</span>
         </router-link>
-        <router-link to="#">
+        <router-link to="settings" :class="{ active: $route.name === 'settings' }">
             <img :src="images.settingsIcon" alt="">
             <span>Settings </span>
         </router-link>

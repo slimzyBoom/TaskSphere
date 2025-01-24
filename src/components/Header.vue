@@ -5,8 +5,12 @@
             <WelcomeMessage :headerProps="headerProps"/>
         </div>
         <div class="icons" v-if="headerProps.icons">
+            <router-link to="" v-if="headerProps.button" class="button">
+                    
+                    <font-awesome-icon icon="plus"></font-awesome-icon>
+            </router-link>
             <div class="notification">
-                <router-link to="/">
+                <router-link to="notifications">
                     <font-awesome-icon :icon="['far', 'bell']"></font-awesome-icon>
                 </router-link>
             </div>
@@ -79,9 +83,19 @@ export default {
     header .icons{
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 15px;
     }
     
+    /* header .icons .button{
+        display: flex;
+        color: var(--white);
+        background-color: var(--light-blue);
+        padding: 10px 20px;
+        border-radius: 10px;
+        align-items: center;
+        gap: 10px;
+    } */
+
     header .icons svg{
         font-size: 20px;
         border: 1px solid #eaeaec;
