@@ -77,7 +77,7 @@ export default {
 
     .settings main .settings-container{
         width:  100%;
-        min-height: calc( 100dvh - 180px);
+        min-height: 530px;
         background-color: var(--white);
         border-radius: 10px;
         padding: 32px;

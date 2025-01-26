@@ -5,7 +5,7 @@
             <WelcomeMessage :headerProps="headerProps"/>
         </div>
         <div class="icons" v-if="headerProps.icons">
-            <router-link to="" v-if="headerProps.button" class="button">
+            <router-link to="create-project" v-if="headerProps.button" class="button">
                     
                     <font-awesome-icon icon="plus"></font-awesome-icon>
             </router-link>
@@ -15,7 +15,7 @@
                 </router-link>
             </div>
             <div class="profile-img">
-                <router-link to="/">
+                <router-link to="/profile">
                     <img :src="images.profileOne" alt="">
                 </router-link>
             </div>

@@ -12,7 +12,7 @@
             <img :src="images.projectIcon" alt="">
             <span>Projects</span>
         </router-link>
-        <router-link to="">
+        <router-link to="calendar" :class="{ active: $route.name === 'calendar' }">
             <font-awesome-icon :icon="['far', 'calendar-days']" />
             <span>Calendar</span>
         </router-link>
