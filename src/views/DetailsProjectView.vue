@@ -65,7 +65,13 @@
                         </span>
                         <p>Presenting the design flow</p>
                     </router-link>
-                    
+                </li>
+
+                <li class="add-task" @click="togglePopUp">
+                    <span>
+                        <font-awesome-icon icon="plus"></font-awesome-icon>
+                    </span>
+                    <p>Add Task</p>
                 </li>
 
             </div>
@@ -95,10 +101,34 @@
             </div>
           
             <span class="remove">
-                <font-awesome-icon icon="trash"></font-awesome-icon>
+                ...
             </span>
         </li>
  
+    </div>
+    <div class="task-popup" v-if="popUpActive">
+        <div class="task-popup-box">
+            <div class="title">
+                <h3>Add Task</h3>
+               <font-awesome-icon icon="x" @click="togglePopUp"></font-awesome-icon>
+
+            </div>
+            <div class="details">
+                <div class="cont">
+                    <label>Task Name</label>
+                    <input type="text">
+                </div>
+                <div class="cont">
+                    <label>Assign to </label>
+                    <input type="text">
+                </div>
+
+                <button>
+                    Create Task
+                </button>
+            </div>
+           
+        </div>
     </div>
   </div>
 </template>
@@ -109,17 +139,24 @@ import { images } from '../assets/assets';
 export default {
     setup(){
         const dropdownActive = ref(false)
+        const popUpActive = ref(false)
 
         function toggleDropDown() {
             dropdownActive.value = !dropdownActive.value
-            console.log('toggleDropDown');
             
+        }
+
+        function togglePopUp() {
+            popUpActive.value = !popUpActive.value
+        
         }
 
         return{
             images,
             dropdownActive,
+            popUpActive,
             toggleDropDown,
+            togglePopUp,
         }
     }
 }
@@ -254,6 +291,24 @@ export default {
         align-items: center;
     }
 
+    .project-details-container .text .cont .add-task{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .project-details-container .text .cont .add-task span{
+        width: 30px;
+        height: 30px;
+        color: var(--gray-text-primary);
+        background-color: transparent;
+        border-radius: 0%;
+        font-size: 16px;
+        border: .5px dashed #a7a7a7;
+    }
+
     .project-details-container .text .cont span{
         display: flex;
         align-items: center;
@@ -347,5 +402,74 @@ export default {
         cursor: pointer;
     }
 
+    .task-popup{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0.595);
+        backdrop-filter: blur(10px);
+    }
+
+    .task-popup .task-popup-box{
+        background-color: var(--white);
+        transform: translate(30%, 0%);
+        padding: 20px;
+        top: 50%;
+        border-radius: 10px;
+        width: 400px;
+    }
+
+    .task-popup .task-popup-box .title{
+        display:flex;
+        font-size: 19px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .task-popup .task-popup-box .title svg{
+        cursor: pointer;
+    }
+
+    .task-popup .task-popup-box .details{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .task-popup .task-popup-box .details .cont{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .task-popup .task-popup-box .details .cont label{
+        color: var(--gray-text-primary);
+        font-size: 15px;
+    }
+
+    .task-popup .task-popup-box .details .cont input{
+        border: 1px solid #ccc;
+        padding: 8px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+
+    .task-popup .task-popup-box .details button{
+        padding: 10px;
+        background-color: var(--light-blue);
+        color: var(--white);
+        margin-top: 10px;
+        border-radius: 10px;
+        font-weight: 500;
+    }
+
+    
 
 </style>

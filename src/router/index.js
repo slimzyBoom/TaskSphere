@@ -9,6 +9,9 @@ import ProjectsView from '../views/ProjectsView.vue'
 import DetailsProjectView from '../views/DetailsProjectView.vue'
 import NotificationView from '../views/NotificationView.vue'
 import SettingsView from '../views/SettingsView.vue'
+import CalendarView from '../views/CalendarView.vue'
+import ProfileView from '../views/ProfileView.vue'
+import CreateProjectView from '../views/CreateProjectView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +66,26 @@ const router = createRouter({
           path: '/settings',
           name: 'settings',
           component: SettingsView,
+        },
+        {
+          path: '/calendar',
+          name: 'calendar',
+          component: CalendarView,
+        },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: ProfileView,
+        },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: ProfileView,
+        },
+        {
+          path: '/create-project',
+          name: 'create-project',
+          component: CreateProjectView,
         },
       ],
       meta: { requiresAuth: true },

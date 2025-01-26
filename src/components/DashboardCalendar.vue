@@ -1,17 +1,21 @@
 <template>
-  <div class="dashboard-calendar">
+    <div class="dashboard-calendar">
     <div class="title">
         <p @click="prevWeek" class="arrows">&lt;</p>
         <p>{{ currentMonth }} {{ currentYear }}</p>
         <p @click="nextWeek" class="arrows">&gt;</p>
     </div>
-    <div class="content">
-      <div v-for="(day, index) in currentWeek" :key="index" class="cont" :class="{'active':day.active}">
-        <p>{{day.dayName}}</p>
-        <span>{{day.dayNumber}}</span>
-      </div>
-    </div>
+   <router-link to="calendar">
+      <div class="content">
+        <div v-for="(day, index) in currentWeek" :key="index" class="cont" :class="{'active':day.active}">
+          <p>{{day.dayName}}</p>
+          <span>{{day.dayNumber}}</span>
+        </div>
+     </div>
+    </router-link>
+
   </div>
+  
   
 </template>
 
@@ -52,7 +56,6 @@ export default {
       }
     }
 
-    console.log(currentMonth, currentWeek.value, startOfMonth.date());
 
 
     // Move to the next week
