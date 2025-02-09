@@ -1,59 +1,99 @@
 <template>
    <div class="signup-container">
-    <form class="signup-form" @submit.prevent="">
+    <ErrorDisplay :error="error" v-model="errorDisplay"/>
+    <form class="signup-form" @submit.prevent="handleRegister">
         <h1>SIGN UP</h1>
         <div class="cont">
             <span>
                 <font-awesome-icon icon="envelope" />
             </span>
-           <input type="text" v-model="email" placeholder="Email"> 
+           <input type="email" v-model="form.email" placeholder="Email"> 
         </div>
         <div class="cont">
             <span>
                 <font-awesome-icon icon="user" />
             </span>
-           <input type="text" v-model="username" placeholder="Username"> 
+           <input type="text" v-model="form.username" placeholder="Username"> 
         </div>
         <div class="cont">
             <span>
                 <font-awesome-icon icon="lock" />
             </span>
-            <input type="password" v-model="password" placeholder="Password">
+            <input type="password" v-model="form.password" placeholder="Password">
         </div>
         <div class="cont">
             <span>
                 <font-awesome-icon icon="lock" />
             </span>
-            <input type="password" v-model="cPassword" placeholder="Confirm Password">
+            <input type="password" v-model="form.password_confirmation" placeholder="Confirm Password">
         </div>
         <div class="text">
             <router-link to="/login">Already have an account? <span>Sign In</span></router-link>
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" @click="handleRegister">Register</button>
         <button class="google-btn"><img :src="images.googleLogo" alt=""/> <span>Google</span> </button>
     </form>
   </div>
 </template>
 
 <script>
-import {ref} from 'vue';
+import {ref, reactive} from 'vue';
 import { images } from '../assets/assets';
+import { registerUser } from "../api.js";
+import { useRouter } from 'vue-router';
+import ErrorDisplay from '../components/ErrorDisplay.vue';
+
 
 export default {
-    name: 'login',
+    components:{
+        ErrorDisplay
+    },
     setup(){
-        const email = ref('')
-        const username = ref('')
-        const password = ref('')
-        const cPassword = ref('')
+        const router = useRouter()
 
+        const form = reactive({
+            username: "",
+            email: "",
+            password: "",
+            password_confirmation: "",
+        });
+
+        const loading = ref(false);
+        const error = ref(null);
+        const errorDisplay = ref(false);
+
+
+        const handleRegister = async ()=> {
+            loading.value = true;
+            error.value = null;
+
+            console.log('Register');
+            
+            try {
+                errorDisplay.value = false
+                const response = await registerUser({...form})
+                console.log("Registration successful:", response);
+                // alert("Registration successful!");
+                router.push("/login")
+            } catch (err) {
+                const cleanMessage = err.message.split(" (")[0];
+
+                error.value = cleanMessage;
+                errorDisplay.value = true
+                console.log(cleanMessage);
+                
+            }finally{
+                loading.value = false
+            }
+        }
 
         return{
-            email,
-            username,
-            password,
-            cPassword,
+            form,
+            loading,
+            error,
             images,
+            errorDisplay,
+            handleRegister
         }
 
     }
@@ -63,6 +103,9 @@ export default {
 <style scoped>
      .signup-container{
         display: flex;
+        flex-direction: column;
+        gap: 20px;
+
         align-items: center;
         justify-content: center;
         width: 100vw;

@@ -1,19 +1,20 @@
 <template>
   <div class="login-container">
-    <p v-if="errorDisplay" class="error">{{ error }} <span @click="closeError"><font-awesome-icon icon="x"></font-awesome-icon></span></p>
-    <form class="login-form" @submit.prevent="login">
+    <ErrorDisplay :error="error" v-model="errorDisplay"/>
+
+    <form class="login-form" @submit.prevent="handleLogin">
         <h1>SIGN IN</h1>
         <div class="cont">
             <span>
-                <font-awesome-icon icon="user" />
+                <font-awesome-icon icon="envelope" />
             </span>
-           <input type="text" v-model="username" placeholder="Username"> 
+           <input type="email" v-model="form.email" placeholder="Email"> 
         </div>
         <div class="cont">
             <span>
                 <font-awesome-icon icon="lock" />
             </span>
-            <input type="password" v-model="password" placeholder="Password">
+            <input type="password" v-model="form.password" placeholder="Password">
         </div>
         <div class="text">
             <router-link to="/">Forgot Password?</router-link>
@@ -27,43 +28,88 @@
 </template>
 
 <script>
-import {ref} from 'vue';
+import {reactive, ref, toRaw} from 'vue';
 import { useRouter } from 'vue-router';
 import { images } from '../assets/assets';
+import ErrorDisplay from '../components/ErrorDisplay.vue';
+import { loginUser } from '../api';
+
 
 export default {
     name: 'login',
+    components:{
+        ErrorDisplay
+    },
     setup(){
-        const username = ref('')
-        const password = ref('')
+        const router = useRouter()
+        const form = reactive({
+            email:"",
+            password:"",
+        })
+       
         const error = ref(null)
         const errorDisplay = ref(false)
 
-        const router = useRouter()
-
-        function login() {
-            
-            if (username.value == 'admin' && password.value == 'admin') {
-                const token = 'fake-token-48u4238vf8uh8'
-                localStorage.setItem('authToken',token)
+        const handleLogin = async () =>{
+            try {
+                errorDisplay.value = false
+                const formData = toRaw(form);
+                console.log("Sending request with data:", formData);
                 
-                router.push({name: 'dashboard'});
-            }else{
-                error.value= 'Invalid username or password'
+                const response = await loginUser({...formData})
+                console.log("Login Succesful!", response)
+
+                const fakeToken = formData.email + "6578"
+                localStorage.setItem("authToken", fakeToken);
+                console.log("authToken:", fakeToken);
+                
+
+                router.push("/app/")
+            } catch (err) {
+                const cleanMessage = err.message.split(" (")[0];
+                error.value = cleanMessage;
                 errorDisplay.value = true
+                console.log(err);
             }
         }
+        // async function login() {
+        //     try {
+        //         const res = await fetch("http://localhost:5000/login", {
+        //             method: "POST",
+        //             headers: { "Content-Type": "application/json" },
+        //             body: JSON.stringify({ username: this.username, password: this.password }),
+        //         });
 
-        function closeError() {
-            errorDisplay.value = false
-        }
+        //         const data = await res.json();
+
+        //         if (res.ok) {
+        //             localStorage.setItem("token", data.token);
+        //             router.push({name: 'dashboard'});
+                   
+        //         } else{
+        //             error.value= 'Invalid username or password'
+        //             errorDisplay.value = true
+        //         }
+
+        //         // if (username.value == 'admin' && password.value == 'admin') {
+        //         // const token = 'fake-token-48u4238vf8uh8'
+        //         // localStorage.setItem('authToken',token)
+                
+        //         // }
+                
+        //     } catch (error) {
+        //         console.error("Error logging in:", error);
+        //     }
+            
+           
+        // }
+
 
         return{
-            username,
-            password,
+            form,
             error,
-            login,
-            closeError,
+            handleLogin,
+            // closeError,
             errorDisplay,
             images
         }
@@ -83,22 +129,7 @@ export default {
         height: 90vh;
     }
 
-    .login-container .error{
-        padding: 15px;
-        border-radius: 5px;
-        color: #fffffff5;
-        background-color: rgba(246, 2, 2, 0.838);
-    }
-
-    .login-container .error span{
-        font-size: 11px;
-        margin-left: 7px;
-        cursor: pointer;
-        border: 1px  #000;
-        border: 1px solid #fffffff5;
-        padding: 4px 7px;
-        border-radius: 5px;
-    }
+   
 
     .login-form {
         display: flex;

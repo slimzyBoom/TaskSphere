@@ -6,7 +6,7 @@
     </div>
     <div class="cont">
         <div class="progress-circle" :style=" `--progress: ${progress}%`" >
-            <h2>45%</h2>
+            <h2>{{progress}}%</h2>
         </div>
         <div class="total-task">
             <h2>100</h2>
@@ -22,7 +22,7 @@ export default {
 
     setup(){
 
-        const progress = 45
+        const progress = 90
 
         return{
             progress
