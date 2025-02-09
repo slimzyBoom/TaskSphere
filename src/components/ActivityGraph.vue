@@ -1,14 +1,14 @@
 <template>
-  <div class="box">
-    <div class="text">
-        <h2>Activity</h2>
-        <span>
+  <div class="flex flex-col justify-between gap-4 bg-slate-200 p-5 rounded-xl w-full lg:w-2/3 ">
+    <div class="flex justify-between items-center">
+        <h2 class="text-sm">Activity</h2>
+        <span class="text-xs flex gap-1.5 items-center">
             <p>This Week</p>
-            <p>></p>
+            <font-awesome-icon :icon="['fas', 'chevron-down']" />
         </span>
     </div>
-    <div class="image">
-        <img :src="images.activity"/>
+    <div class="w">
+        <img class="w-full" :src="images.activity"/>
     </div>
   </div>
   
@@ -28,7 +28,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<!-- <style scoped>
     .box{
         display: flex;
         justify-content: space-between;
@@ -56,4 +56,4 @@ export default {
         gap: 10px;
         font-size: 13px;
     }
-</style>
+</style> -->

@@ -1,7 +1,7 @@
 <template>
-  <div class="auth-layout">
+  <div class="relative flex">
     <Sidebar></Sidebar>
-    <div class="content">
+    <div class="w-full pl-0 lg:pl-[232px]">
         <router-view/>
     </div>
   </div>
@@ -17,16 +17,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    .auth-layout{
-        position: relative;
-        display: flex;
-       
-    }
-
-    .auth-layout .content{
-        width: 100%;
-        padding-left: 232px;        
-    }
-</style>

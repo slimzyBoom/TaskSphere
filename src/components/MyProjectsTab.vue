@@ -17,7 +17,7 @@
   
       setup(){
           const timeLimit = {
-              title : 'Time Limit mytask',
+              title : 'My Task',
               cardLimit : 10,
           }
           

@@ -25,7 +25,7 @@
      
     </header>
     <main>
-      <section class="hero">
+      <section class="hero" id="home">
         <!-- <div class="blur-cover"></div> -->
         <div class="hero-container">
           <div class="text">

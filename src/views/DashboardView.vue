@@ -1,70 +1,28 @@
- <template>
-    <div class="dashboard">
-        <div class="dashboard-container">
-            <Header :headerProps = "headerProps"></Header>
-            <main>
-                <div class="analysis">
-                    <TaskSummary></TaskSummary>
-                    <ActivityGraph></ActivityGraph>
-                   
-                </div>
-                <CardContainer :containerData="upcomingDeadline"/>
-                <CardContainer :containerData="newTask" />
+<template>
+  <div class="relative flex flex-col lg:flex-row w-full min-h-screen">
+    <div
+      class="relative w-full lg:w-[70%] xl:w-[72.2%] bg-gray-50 overflow-hidden"
+    >
+      <Header :headerProps="headerProps"></Header>
 
-            </main>
+      <section class="px-[36px] mt-5 block lg:hidden">
+        <WelcomeMessage :headerProps="headerProps"></WelcomeMessage>
+      </section>
+      <main class="flex flex-col gap-[50px] py-[35px] px-[30px]">
+        <div class="flex flex-col lg:flex-row gap-[25px] items-center ">
+          <TaskSummary class="flex-1"></TaskSummary>
+          <ActivityGraph></ActivityGraph>
         </div>
-
-        <RightSideBar></RightSideBar>
-        
+        <CardContainer :containerData="upcomingDeadline" />
+        <CardContainer :containerData="newTask" />
+      </main>
     </div>
-  
+
+    <RightSideBar></RightSideBar>
+  </div>
 </template>
 
-<script>
-import ActivityGraph from '../components/ActivityGraph.vue';
-import Header from '../components/Header.vue';
-import TaskSummary from '../components/TaskSummary.vue';
-import CardContainer from '../components/CardContainer.vue';
-import RightSideBar from '../components/RightSideBar.vue';
-
-export default {
-    components:{
-        Header,
-        TaskSummary,
-        ActivityGraph,
-        CardContainer,
-        RightSideBar
-    },
-    setup(){
-        const userName = 'Freddie';
-        const headerProps = {
-            title :  `Hi ${userName}`,
-            titleText: "Let's finish your task today !",
-            search : false,
-            filter: false,
-            icons: true,
-            button: true,
-        }
-        const upcomingDeadline = {
-            title : 'Upcoming Deadline',
-            cardLimit : 10,
-        }
-        
-        const newTask = {
-            title : 'New Task',
-            cardLimit : 10,
-        }
-
-        return{
-            headerProps,
-            upcomingDeadline,
-            newTask,
-        }
-    }
-}
-</script>
-
-<style scoped>
+<!-- <style scoped>
     .dashboard{
         position: relative;
         display: flex;
@@ -76,7 +34,7 @@ export default {
         position: relative;
         width: 72%;
         background-color: var(--light-gray-bg) ;
-        overflow: hidden;
+
     }
 
 
@@ -92,4 +50,50 @@ export default {
         display: flex;
         gap: 25px;
     }
-</style>
+</style> -->
+
+<script>
+import ActivityGraph from "../components/ActivityGraph.vue";
+import Header from "../components/Header.vue";
+import TaskSummary from "../components/TaskSummary.vue";
+import CardContainer from "../components/CardContainer.vue";
+import RightSideBar from "../components/RightSideBar.vue";
+import WelcomeMessage from "../components/WelcomeMessage.vue";
+
+export default {
+  components: {
+    Header,
+    TaskSummary,
+    ActivityGraph,
+    CardContainer,
+    RightSideBar,
+    WelcomeMessage
+  },
+  setup() {
+    const userName = "Freddie";
+    const headerProps = {
+      title: `Hi ${userName}`,
+      titleText: "Let's finish your task today !",
+      search: false,
+      filter: false,
+      icons: true,
+      button: true,
+    };
+    const upcomingDeadline = {
+      title: "Upcoming Deadline",
+      cardLimit: 10,
+    };
+
+    const newTask = {
+      title: "New Task",
+      cardLimit: 10,
+    };
+
+    return {
+      headerProps,
+      upcomingDeadline,
+      newTask,
+    };
+  },
+};
+</script>

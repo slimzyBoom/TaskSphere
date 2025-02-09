@@ -1,42 +1,35 @@
 <template>
-  <div class="box">
-    <div class="cont">
-        <h3>Running Task</h3>
-        <h1>65</h1>
+  <div
+    class="flex bg-slate-800 text-white p-5 rounded-xl w-full lg:w-1/3 flex-row lg:flex-col lg:gap-7 justify-between"
+  >
+    <div class="flex flex-col justify-between lg:gap-4">
+      <h3>Running Task</h3>
+      <h1 class="text-5xl lg:text-3xl">{{ taskStore.uncompletedTasks }}</h1>
     </div>
-    <div class="cont">
-        <div class="progress-circle" :style=" `--progress: ${progress}%`" >
-            <h2>45%</h2>
-        </div>
-        <div class="total-task">
-            <h2>100</h2>
-            <p>Task</p>
-        </div>
+    <div class="flex gap-5 items-center">
+      <RadialProgress
+        :completed-tasks="taskStore.completedTasks"
+        :total-tasks="taskStore.totalTasks"
+      />
+      <div class="total-task flex flex-col text-left gap-2">
+        <h2 class="text-2xl">{{ taskStore.totalTasks }}</h2>
+        <p class="text-sm text-gray-400">Task</p>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-
-
-    setup(){
-
-        const progress = 45
-
-        return{
-            progress
-        }
-    }
-}
+<script setup>
+import RadialProgress from "./RadialProgress.vue";
+import { useTaskStore } from "../stores/tasks";
+const taskStore = useTaskStore();
 </script>
 
-<style scoped>
+<!-- <style scoped>
     .box{
         display: flex;
         flex-direction: column;
         width: 204px;
-        /* width: 30%; */
         height: 214px;
         border-radius: 10px;
         background-color: var(--black);
@@ -102,4 +95,4 @@ export default {
 
 
 
-</style>
+</style> -->

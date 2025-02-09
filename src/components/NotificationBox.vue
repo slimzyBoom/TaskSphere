@@ -1,25 +1,31 @@
 <template>
-  <div class="notification-box">
-    <div class="icon">
+  <div class="notification-box h-44 lg:h-32">
+    <div :class="['icon', colour]">
         <font-awesome-icon icon="bell"></font-awesome-icon>
     </div>
     <div class="details">
-        <h2>New Task Created</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae adipisci cumque quidem ducimus amet non, tempora fuga voluptatum. Voluptas fugit nulla eius aliquam rerum voluptatibus delectus tenetur. Nisi, labore esse!</p>
+        <h2>{{ notification.title }}</h2>
+        <p>{{ notification.description }}</p>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-
-}
+<script setup>
+const props = defineProps({
+    notification: {
+        type: Object,
+        required: true
+    },
+    colour: {
+        type: String,
+        required: true
+    }
+})
 </script>
 
 <style scoped>
     .notification-box{
         display: flex;
-        height: 100px;
         background-color: var(--white);
         border-radius: 10px;
         /* gap: 20px; */
@@ -36,7 +42,7 @@ export default {
         width: 200px;
         height: 100%;
         color: var(--white);
-        background-color: red;
+        /* background-color: red; */
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
 
@@ -46,6 +52,7 @@ export default {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: 10px 0px;
         gap: 2px;
         padding: 15px 20px;
 

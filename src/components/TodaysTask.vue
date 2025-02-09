@@ -8,7 +8,7 @@
             <h3>...</h3>
         </div>
         <div class="image">
-            <img :src="images.taskImageOne" alt="">
+            <img :src="images.taskImageOne" class="w-full" alt="">
         </div>
         <div class="text">
             <div class="txt">

@@ -1,5 +1,5 @@
 <template>
-    <div class="search-bar">
+    <div class="search-bar w-3/4 md:max-w-xs">
       <input type="text" placeholder="Search Task">
       <font-awesome-icon icon="search"/>
     </div>
@@ -15,7 +15,7 @@
       .search-bar{
         position: relative;
         display: flex;
-        width: 40%;
+        /* width: 40%; */
         align-items: center;
       }
   

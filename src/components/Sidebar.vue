@@ -1,40 +1,48 @@
 <template>
-  <div class="side-bar">
-    <li>
+  <div class="fixed lg:flex flex-col top-0 left-0 h-screen py-8 pb-4 px-5 justify-between w-[232px] z-10 hidden ">
+    <li class="flex flex-col gap-10">
         <Logo/>
 
 
-        <router-link to="app" :class="{ active: $route.name === 'dashboard' }">
+        <div class="flex gap-3 flex-col">
+            <router-link :to="{ name: 'dashboard'}" :class="['flex gap-2.5 p-2 rounded-md', { 'bg-slate-100' : $route.name === 'dashboard'} ]" >
             <img :src="images.overviewIcon" alt="">
             <span>Overview</span>
         </router-link>
-        <router-link to="projects" :class="{ active: $route.name === 'projects' }">
+        <router-link :to="{ name: 'projects'}" :class="['flex gap-2.5 p-2 rounded-md', { 'bg-slate-100' : $route.name === 'projects'} ]">
             <img :src="images.projectIcon" alt="">
             <span>Projects</span>
         </router-link>
-        <router-link to="calendar" :class="{ active: $route.name === 'calendar' }">
-            <font-awesome-icon :icon="['far', 'calendar-days']" />
+        <router-link :to="{ name: 'calendar'}" :class="['flex gap-3 p-2 rounded-md', { 'bg-slate-100' : $route.name === 'calendar'} ]" >
+            <font-awesome-icon :icon="['far', 'calendar-days']" class="text-xl text-slate-400" />
             <span>Calendar</span>
         </router-link>
-        <router-link to="settings" :class="{ active: $route.name === 'settings' }">
+        <router-link :to="{ name: 'settings' }" :class="['flex gap-2.5 p-2 rounded-md', { 'bg-slate-100' : $route.name === 'settings'} ]">
             <img :src="images.settingsIcon" alt="">
             <span>Settings </span>
         </router-link>
+        </div>
     </li>
 
-    <div class="help-center">
-       <span class="question-mark">?</span>
-       <div class="container">
-            <div class="text">
-                <h2>Help Center</h2>
-                <p>Having Trouble in Learning.
-                    Please contact us for more questions.
-                </p>
-            </div>
-            <button class="btn">
-                Go To Help Center
-            </button>
-       </div>
+    
+    <div
+      class="bg-slate-900 text-white p-3 lg:h-48 xl:h-56 justify-center items-center flex flex-col gap-4 rounded-lg relative"
+    >
+      <span
+        class="w-8 h-8 rounded-full absolute -top-4 bg-neutral-900 flex justify-center items-center font-bold ring-2 shadow-md shadow-white ring-white text-lg"
+        >?</span
+      >
+      <div class="text-center flex flex-col gap-2 flex-1 mt-8">
+        <h2 class="">Help Center</h2>
+        <p class="text-sm">
+          Having Trouble in Learning. Please contact us for more questions.
+        </p>
+      </div>
+      <button
+        class="flex justify-center gap-2 w-full py-1.5 bg-white rounded-lg text-sm font-semibold text-black"
+      >
+        Go To Help Center
+      </button>
     </div>
   </div>
 </template>
