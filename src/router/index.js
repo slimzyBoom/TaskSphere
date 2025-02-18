@@ -30,11 +30,13 @@ const router = createRouter({
       path: '/signup',
       name: 'signup',
       component: SignupView,
+      meta: { requiresGuest: true },
     },
     {
       path: '/login',
       name: 'login',
       component: LoginView,
+      meta: { requiresGuest: true },
 
     },
     
@@ -93,17 +95,21 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to, from, next)=>{
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      next({name: 'login'});
-    }else{
-      next()
-    }
-  }else{
-    next()
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem("token");
+
+  // If the user is authenticated and trying to access guest-only pages (e.g., login, register), redirect them to home
+  if (isAuthenticated && to.meta.requiresGuest) {
+    next({ name: "dashboard" });
   }
-})
+  // If the user is NOT authenticated and trying to access a protected page, redirect them to login
+  else if (!isAuthenticated && to.meta.requiresAuth) {
+    next({ name: "login" });
+  }
+  // Otherwise, allow the navigation
+  else {
+    next();
+  }
+});
 
 export default router
