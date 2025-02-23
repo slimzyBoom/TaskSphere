@@ -98,7 +98,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem("token");
 
-  // If the user is authenticated and trying to access guest-only pages (e.g., login, register), redirect them to home
+  // If the user is authenticated and trying to access guest-only pages (e.g., login, register), redirect them to dashboard page
   if (isAuthenticated && to.meta.requiresGuest) {
     next({ name: "dashboard" });
   }
