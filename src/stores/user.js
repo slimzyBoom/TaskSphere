@@ -1,5 +1,9 @@
 import { defineStore } from "pinia";
-import { registerUserService, loginUserService } from "../services/userAuth";
+import {
+  registerUserService,
+  loginUserService,
+  getUserService,
+} from "../services/user.auth.service";
 
 export const useUserStore = defineStore("users", {
   state: () => ({
@@ -38,15 +42,18 @@ export const useUserStore = defineStore("users", {
         throw error;
       }
     },
-    async getUser () {
-        try {
-            const data = await getUserService(this.getUserId);
-            if (!data) return;
-            this.user = data.data;
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    setUser(user) {
+      this.user = user;
+    },
+    async getUser() {
+      try {
+        const data = await getUserService(this.getUserId);
+        if (!data) return;
+        this.user = data.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   persist: {
     strategies: [

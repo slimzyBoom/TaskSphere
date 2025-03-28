@@ -11,7 +11,6 @@
         <font-awesome-icon
           :icon="['fas', 'bars']"
           class="text-xl text-slate-500"
-          
         />
       </div>
       <div class="icons" v-if="headerProps.icons">
@@ -29,7 +28,7 @@
         </div>
         <div class="profile-img">
           <router-link to="/profile">
-            <img :src="images.profileOne" alt="" />
+            <img :src="userStore.user.image || images.profileOne" alt="" />
           </router-link>
         </div>
       </div>
@@ -45,12 +44,17 @@
       <FilterTab></FilterTab>
     </div>
 
-    <!-- Drop Down Menu  -->
-     <div class="fixed inset-0 backdrop-blur h-screen z-10" v-if="isOpen" @click="toggleDropDown"></div>
-    <section class="left-0 container absolute z-20 top-6 px-4" v-if="isOpen" >
+    <!-- Drop Down Button -->
+    <div
+      class="fixed inset-0 backdrop-blur h-screen z-10"
+      v-if="isOpen"
+      @click="toggleDropDown"
+    ></div>
+    <!-- Dropdown Menu -->
+    <section class="left-0 container absolute z-20 top-6 px-4" v-if="isOpen">
       <div class="bg-slate-100 p-4 rounded-md flex flex-col gap-4">
         <div
-          class="active:border-2 active:border-blue-500  h-12 w-12 flex items-center justify-center self-start cursor-pointer"
+          class="active:border-2 active:border-blue-500 h-12 w-12 flex items-center justify-center self-start cursor-pointer"
           @click="toggleDropDown"
         >
           <font-awesome-icon :icon="['fas', 'x']" class="text-lg" />
@@ -94,16 +98,18 @@
 
 <script setup>
 import { images } from "../assets/assets";
-import { ref } from 'vue'
+import { ref } from "vue";
 import FilterTab from "./FilterTab.vue";
 import SearchBar from "./SearchBar.vue";
 import WelcomeMessage from "./WelcomeMessage.vue";
-defineProps(["headerProps"])
+import { useUserStore } from "@/stores/user";
+const userStore = useUserStore();
+defineProps(["headerProps"]);
 const isOpen = ref(false);
 
 const toggleDropDown = () => {
-    isOpen.value = !isOpen.value;
-}
+  isOpen.value = !isOpen.value;
+};
 </script>
 
 <style scoped>

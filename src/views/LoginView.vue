@@ -17,7 +17,7 @@
         <p v-if="errors.password" class="text-xs text-red-400">{{ errors.password }}</p>
       </div>
       <div class="text">
-        <router-link to="/">Forgot Password?</router-link>
+        <router-link :to="{ name: 'forgot-password' }">Forgot Password?</router-link>
         <br />
         <router-link :to="{ name: 'signup' }"
           >Don't have an account? <span>Sign Up</span></router-link
