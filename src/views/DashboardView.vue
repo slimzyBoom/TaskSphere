@@ -9,7 +9,7 @@
         <WelcomeMessage :headerProps="headerProps"></WelcomeMessage>
       </section>
       <main class="flex flex-col gap-[50px] py-[35px] px-[30px]">
-        <div class="flex flex-col lg:flex-row gap-[25px] items-center ">
+        <div class="flex flex-col lg:flex-row gap-[25px] items-center">
           <TaskSummary class="flex-1"></TaskSummary>
           <ActivityGraph></ActivityGraph>
         </div>
@@ -22,78 +22,34 @@
   </div>
 </template>
 
-<!-- <style scoped>
-    .dashboard{
-        position: relative;
-        display: flex;
-        width: 100%;
-        min-height: 100vh;
-    }
-
-    .dashboard .dashboard-container {
-        position: relative;
-        width: 72%;
-        background-color: var(--light-gray-bg) ;
-
-    }
-
-
-    .dashboard main{
-        display: flex;
-        flex-direction: column;
-        gap: 50px;
-        padding: 35px 30px;
-
-    }
-
-    .dashboard .analysis{
-        display: flex;
-        gap: 25px;
-    }
-</style> -->
-
-<script>
+<script setup>
 import ActivityGraph from "../components/ActivityGraph.vue";
 import Header from "../components/Header.vue";
 import TaskSummary from "../components/TaskSummary.vue";
 import CardContainer from "../components/CardContainer.vue";
 import RightSideBar from "../components/RightSideBar.vue";
 import WelcomeMessage from "../components/WelcomeMessage.vue";
+import { useUserStore } from "@/stores/user";
+import { onMounted } from "vue";
+const userStore = useUserStore();
 
-export default {
-  components: {
-    Header,
-    TaskSummary,
-    ActivityGraph,
-    CardContainer,
-    RightSideBar,
-    WelcomeMessage
-  },
-  setup() {
-    const userName = "Freddie";
-    const headerProps = {
-      title: `Hi ${userName}`,
-      titleText: "Let's finish your task today !",
-      search: false,
-      filter: false,
-      icons: true,
-      button: true,
-    };
-    const upcomingDeadline = {
-      title: "Upcoming Deadline",
-      cardLimit: 10,
-    };
-
-    const newTask = {
-      title: "New Task",
-      cardLimit: 10,
-    };
-
-    return {
-      headerProps,
-      upcomingDeadline,
-      newTask,
-    };
-  },
+const userName = userStore.user?.username || "User";
+const headerProps = {
+  title: `Hi ${userName}`,
+  titleText: "Let's finish your task today !",
+  search: false,
+  filter: false,
+  icons: true,
+  button: true,
 };
+const upcomingDeadline = {
+  title: "Upcoming Deadline",
+  cardLimit: 10,
+};
+
+const newTask = {
+  title: "New Task",
+  cardLimit: 10,
+};
+onMounted(userStore.getUser)
 </script>
