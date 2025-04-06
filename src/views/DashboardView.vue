@@ -51,5 +51,5 @@ const newTask = {
   title: "New Task",
   cardLimit: 10,
 };
-onMounted(userStore.getUser)
+onMounted(userStore.getUser);
 </script>

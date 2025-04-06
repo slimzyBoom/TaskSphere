@@ -3,7 +3,18 @@ import { getAllProjectsService } from "@/services/projects.service";
 
 export const useProjectStore = defineStore("projects", {
   state: () => ({
-    projects: [],
+    projects: [
+      {
+        name: "First Task",
+        description: "This is the first task. ",
+        completed: false,
+      },
+      {
+        name: "Second Task",
+        description: " This is the second task. ",
+        completed: false,
+      },
+    ],
   }),
   getters: {
     totalProjects: (state) => state.projects.length,

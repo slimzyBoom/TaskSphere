@@ -34,7 +34,9 @@ export default {
                 effortlessly.</span
               >
             </p>
-            <button>Get Started Now</button>
+            <RouterLink to="/login">
+              <button>Get Started</button>
+            </RouterLink>
           </div>
           <div class="image">
             <img :src="images.heroImgOne" alt="" />
@@ -99,9 +101,9 @@ export default {
         <div class="testimonial-container">
           <div class="card">
             <div class="cont">
-              <img :src="images.profileOne" alt="" />
+              <img :src="images.profileTwo" alt="" />
               <span>
-                <h3>John doe</h3>
+                <h3>Mike Freeman</h3>
                 <div class="stars">
                   <font-awesome-icon icon="star" />
                   <font-awesome-icon icon="star" />
@@ -121,13 +123,13 @@ export default {
               customize their frequency would be great. Other than that, I’m
               really happy with it!
             </div>
-            <h4 class="date">Jan.02.2025</h4>
+            <h4 class="date">Dec.16.2024</h4>
           </div>
           <div class="card">
             <div class="cont">
-              <img :src="images.profileOne" alt="" />
+              <img :src="images.profileThree" alt="" />
               <span>
-                <h3>John doe</h3>
+                <h3>Joseph Clark</h3>
                 <div class="stars">
                   <font-awesome-icon icon="star" />
                   <font-awesome-icon icon="star" />
@@ -153,7 +155,7 @@ export default {
             <div class="cont">
               <img :src="images.profileOne" alt="" />
               <span>
-                <h3>John doe</h3>
+                <h3>Robert Jake</h3>
                 <div class="stars">
                   <font-awesome-icon icon="star" />
                   <font-awesome-icon icon="star" />
@@ -172,7 +174,7 @@ export default {
               workflow means I never miss an update. Highly recommend for teams
               looking for better organization!
             </p>
-            <h4 class="date">Jan.02.2025</h4>
+            <h4 class="date">Mar.10.2025</h4>
           </div>
         </div>
       </section>

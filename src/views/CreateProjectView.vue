@@ -85,7 +85,7 @@ import popUp from "@/components/popUp.vue";
 import { createProjectService } from "@/services/projects.service";
 import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
-const isActive = ref(false);
+let isActive = ref(false);
 const content = ref("");
 const success = ref(false);
 const collaborationStatus = ref("");
