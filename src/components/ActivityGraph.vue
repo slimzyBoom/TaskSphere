@@ -4,7 +4,7 @@
   >
     <div class="flex justify-between items-center mb-2">
       <span class="text-sm font-medium">Activity</span>
-      <span class="text-sm text-gray-600 flex gap-3"
+      <span class="text-sm text-gray-600 flex gap-3 items-center"
         >This week <font-awesome-icon :icon="['fas', 'chevron-down']" />
       </span>
     </div>

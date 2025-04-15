@@ -10,7 +10,7 @@
       </section>
       <main class="flex flex-col gap-[50px] py-[35px] px-[30px]">
         <div class="flex flex-col lg:flex-row gap-[25px] items-center">
-          <TaskSummary class="flex-1"></TaskSummary>
+          <TaskSummary></TaskSummary>
           <ActivityGraph></ActivityGraph>
         </div>
         <CardContainer :containerData="upcomingDeadline" />
