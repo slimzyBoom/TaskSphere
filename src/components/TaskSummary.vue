@@ -14,8 +14,10 @@
         :total-tasks="projectStore.totalProjects"
       />
       <div class="total-task flex flex-col text-left gap-2">
-        <h2 class="text-2xl">{{ projectStore.totalTasks }}</h2>
-        <p class="text-sm text-gray-400">Task</p>
+        <h2 class="text-2xl">{{ projectStore.totalProjects }}</h2>
+        <p class="text-sm text-gray-400">
+          {{ projectStore.totalProjects > 1 ? "Tasks" : "Task" }}
+        </p>
       </div>
     </div>
   </div>
@@ -26,75 +28,3 @@ import RadialProgress from "./RadialProgress.vue";
 import { useProjectStore } from "../stores/projects";
 const projectStore = useProjectStore();
 </script>
-
-<!-- <style scoped>
-    .box{
-        display: flex;
-        flex-direction: column;
-        width: 204px;
-        height: 214px;
-        border-radius: 10px;
-        background-color: var(--black);
-        padding: 20px 20px;
-        color: var(--white);
-        
-    }
-
-    .box h3{
-        color: var(--white);
-    }
-
-    .box h1{
-        font-size: 32px;
-        font-weight: 600;
-        padding: 20px 0;
-    }
-
-    .box .cont:nth-child(2){
-        display: flex;
-        gap: 38px;
-        align-items: center;
-    }
-
-    .box .progress-circle{        
-        width: 68px;
-        height: 68px;
-        border-radius: 50%;
-        background: conic-gradient(var(--light-blue) var(--progress), #546eff23 0%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        
-
-    }
-
-    .box .progress-circle::before {
-        content: '';
-        width: 92%;
-        height: 92%;
-        border-radius: 50%;
-        background-color: var(--black);
-        position: absolute;
-        font-size: 18px;
-    }
-
-   
-    .box .cont p{
-        color: var(--gray-text-secondary);
-    }
-
-    .box .cont h2{
-        font-size: 20px;
-        font-weight: 600;
-    }
-
-    .box .progress-circle h2{
-        z-index: 2;
-        font-size: 18px;
-        font-weight: 400;
-    }
-
-
-
-</style> -->
