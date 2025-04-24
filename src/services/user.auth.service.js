@@ -1,9 +1,6 @@
 import axios from "axios";
-const url = import.meta.env.VITE_APP_API_URL;
-// import { useUserStore } from "@/stores/user";
-// import { setActivePinia } from "pinia";
-// setActivePinia(useUserStore);
-// const userStore = useUserStore();
+const url =
+  import.meta.env.VITE_APP_API_URL;
 
 export const registerUserService = async (credentials) => {
   try {
@@ -21,8 +18,6 @@ export const loginUserService = async (credentials) => {
     const response = await axios.post(`${url}/login`, credentials);
     return response.data;
   } catch (error) {
-    console.log(error.message);
-
     throw error;
   }
 };
