@@ -106,8 +106,9 @@ const login = async () => {
   } catch (error) {
     isActive.value = true;
     success.value = false;
-    content.value = error.response?.data?.message ||
-    "An unexpected error occurred. Please try again.";
+    content.value =
+      error.response?.data?.message ||
+      "An unexpected error occurred. Please try again.";
     console.error(error);
   }
 };

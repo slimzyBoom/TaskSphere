@@ -67,7 +67,7 @@
           </label>
         </div>
 
-        <input type="submit" value="Save Project" />
+        <input type="submit" value="Save Project" class="w-full lg:w-1/5" />
       </form>
       <popUp
         v-if="isActive && content"
@@ -175,11 +175,6 @@ const handleSubmit = async () => {
   gap: 10px;
 }
 
-/* .create-project main .create-project-container .cont h3 {
-  font-size: 14px;
-  font-weight: 450;
-} */
-
 .create-project main .create-project-container .cont input,
 .create-project main .create-project-container .cont textarea {
   border: 1.2px solid var(--dark-gray-bg);
@@ -215,7 +210,6 @@ const handleSubmit = async () => {
   color: var(--white);
   background-color: var(--light-blue);
   top: 100%;
-  margin-top: 20px;
   font-size: 16px;
   font-weight: 500;
   border-radius: 10px;

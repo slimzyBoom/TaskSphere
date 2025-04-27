@@ -52,24 +52,27 @@
       </div>
     </li>
 
-    <div
-      class="bg-slate-900 text-white p-3 lg:h-48 xl:h-56 justify-center items-center flex flex-col gap-4 rounded-lg relative"
-    >
-      <span
-        class="w-8 h-8 rounded-full absolute -top-4 bg-neutral-900 flex justify-center items-center font-bold ring-2 shadow-md shadow-white ring-white text-lg"
-        >?</span
+    <div class="flex flex-col gap-4">
+      <div
+        class="bg-slate-900 text-white p-3 lg:h-48 xl:h-56 justify-center items-center flex flex-col gap-4 rounded-lg relative"
       >
-      <div class="text-center flex flex-col gap-2 flex-1 mt-8">
-        <h2 class="">Help Center</h2>
-        <p class="text-sm">
-          Having Trouble in Learning. Please contact us for more questions.
-        </p>
+        <span
+          class="w-8 h-8 rounded-full absolute -top-4 bg-neutral-900 flex justify-center items-center font-bold ring-2 shadow-md shadow-white ring-white text-lg"
+          >?</span
+        >
+        <div class="text-center flex flex-col gap-2 flex-1 mt-8">
+          <h2 class="">Help Center</h2>
+          <p class="text-sm">
+            Having Trouble in Learning. Please contact us for more questions.
+          </p>
+        </div>
+        <button
+          class="flex justify-center gap-2 w-full py-1.5 bg-white rounded-lg text-sm font-semibold text-black"
+        >
+          Go To Help Center
+        </button>
       </div>
-      <button
-        class="flex justify-center gap-2 w-full py-1.5 bg-white rounded-lg text-sm font-semibold text-black"
-      >
-        Go To Help Center
-      </button>
+      <logoutButton />
     </div>
   </div>
 </template>
@@ -77,8 +80,9 @@
 <script>
 import { images } from "../assets/assets";
 import Logo from "./Logo.vue";
+import logoutButton from "./logoutButton.vue";
 export default {
-  components: { Logo },
+  components: { Logo, logoutButton },
   setup() {
     return {
       images,
