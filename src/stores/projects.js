@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getAllProjectsService } from "@/services/projects.service";
+import { getAllProjects } from "@/services/projects.service";
 
 export const useProjectStore = defineStore("projects", {
   state: () => ({
@@ -45,7 +45,7 @@ export const useProjectStore = defineStore("projects", {
   actions: {
     getAllProjects: async () => {
       try {
-        const data = await getAllProjectsService();
+        const data = await getAllProjects();
         state.projects = data.data;
       } catch (error) {
         console.error(error.message);

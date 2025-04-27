@@ -1,8 +1,8 @@
 <template>
   <div class="projects-tab">
     
-        <CardContainer :containerData="timeLimit"/>
-        <CardContainer :containerData="newTask"/>
+        <CardContainer :containerData="timeLimit" :loading="loading"/>
+        <CardContainer :containerData="newTask" :loading="loading"/>
 
     
   </div>
