@@ -1,65 +1,81 @@
 <template>
-    <router-link to="project-details">
-        <div class="card">
-            <div class="image">
-                <img :src="images.taskImageTwo" alt="">
-            </div>
-            <div class="text">
-                <div class="txt">
-                    <h2>Creating Mobile App Design</h2>
-                    <p>UI UX Design</p>
-                </div>
-                <div class="progress">
-                    <div class="progress-txt">
-                        <p>Progress</p>
-                        <b>90%</b>
-                    </div>
-                    <span style="--value: 90%" class="progress-bar"></span>
-                </div>
-                <div class="cont">
-                    <div class="time">
-                        <font-awesome-icon :icon="['far', 'clock']"></font-awesome-icon>
-                        <p>3 hour</p>
-                    </div>
-                    <div class="img">
-                        <img :src="images.profileTwo" alt="">
-                        <img :src="images.profileThree" alt="">
-                        <img :src="images.profileFour" alt="">
-                        <img :src="images.profileFive" alt="">
-                        <img :src="images.profileSix" alt="">
-                    
-                    </div>
-                </div>
-            </div>
+    <router-link :to="{ name: 'project-details', params: { id: card.id } }">
+      <div class="card">
+        <div class="image">
+          <!-- <img
+            :src="card.image
+              ? `${import.meta.env.VITE_API_BASE_URL}/${card.image}`
+              : images.taskImageTwo"
+            :alt="card.name"
+          /> -->
+          <img :src="images.taskImageTwo" alt="">
         </div>
+        <div class="text">
+          <div class="txt">
+            <h2>{{ card.name }}</h2>
+            <p>{{ card.description }}</p>
+          </div>
+          <div class="progress">
+            <div class="progress-txt">
+              <p>Progress</p>
+              <b>{{ card.completion_percentage }}%</b>
+            </div>
+            <span
+              class="progress-bar"
+              :style="{ '--value': card.completion_percentage + 2 + '%' }"
+            ></span>
+          </div>
+          <div class="cont">
+            <div class="time">
+              <font-awesome-icon :icon="['far', 'clock']" />
+              <p class="text-sm">{{date}}</p>
+            </div>
+            <div class="img">
+              <img
+                v-for="collab in (card.collaborators || [])"
+                :key="collab.id"
+                :src="collab.avatarUrl"
+                alt="avatar"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </router-link>
- 
-</template>
+  </template>
+  
+<script setup>
+  import { defineProps, computed } from 'vue'
+  import { images } from '../assets/assets'
+  import { formatDuration } from '@/utils/formatDuration.js' // update the path
 
-<script>
-import { images } from '../assets/assets'
+  
+  const props = defineProps({
+    card: {
+      type: Object,
+      required: true
+    },
+    dateMessage: String,  // "Starts", "Ends", or "Assigned"
+  })
 
-export default {
-    
-    setup(){
+  const date = formatDuration(props.card, props.dateMessage)
+  
 
-        return{
-            images,
-        }
-    }
-}
+  console.log(date);
+  
+
 </script>
-
+  
 <style scoped>
     .card{
         display: flex;
         flex-direction: column;
-        min-width: 328px;
+        width: 298px;
         height: 314px;
         gap: 20px;
         border-radius: 10px;
         background-color: var(--white);
-        padding: 24px;
+        padding: 20px 15px;
         cursor: pointer;
         transition: .3s ease;
     }
@@ -70,7 +86,7 @@ export default {
 
     .card .image{
         width: 100%;
-        height: 110px;
+        height: 150px;
     }
 
     .card .image img{

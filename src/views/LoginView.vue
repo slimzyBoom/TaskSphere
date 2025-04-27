@@ -6,15 +6,8 @@
         <span>
           <font-awesome-icon icon="user" />
         </span>
-        <input
-          type="text"
-          v-model="form.email"
-          placeholder="Email"
-          class="w-full"
-        />
-        <p v-if="errors.email" class="text-xs text-red-400">
-          {{ errors.email }}
-        </p>
+        <input type="text" v-model="form.email" placeholder="Email" />
+        <p v-if="errors.email" class="text-xs text-red-400">{{ errors.email }}</p>
       </div>
       <div class="cont">
         <span>

@@ -20,6 +20,7 @@ import taskImageOne from "./task-image1.jpg";
 import taskImageTwo from "./task-image2.png";
 import logo from "./logo.png";
 import linearSort from "./setting-4.png";
+import emptyFolder from "./empty-folder.png";
 
 const images = {
   googleLogo,
@@ -44,6 +45,7 @@ const images = {
   profileSeven,
   logo,
   linearSort,
+  emptyFolder
 };
 
 export { images };

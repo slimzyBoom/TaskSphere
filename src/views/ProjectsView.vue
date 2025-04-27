@@ -15,29 +15,30 @@
         My Projects
       </span>
     </div>
-    <main>
-      <MyTaskTab class="tab" v-if="activeTab === 'myProjects'" />
-      <ProjectsTab class="tab" v-else />
+    <!-- <div class="" > -->
+      <Spinner v-if="loading" :occupiedHeight="'214px'"/>
+    <!-- </div> -->
+    <main v-else>
+      <ProjectsTab class="tab" v-if="activeTab === 'projects'"  :loading="loading" :data="allProjects"/>
+      <MyTaskTab class="tab" v-else-if="activeTab == 'myProjects'" :loading="loading" :data="allProjects"/>
     </main>
   </div>
 </template>
 
-<script>
+<script setup>
 import Header from "../components/Header.vue";
 import CardContainer from "../components/CardContainer.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import ProjectsTab from "../components/ProjectsTab.vue";
 import MyTaskTab from "../components/MyProjectsTab.vue";
-export default {
-  components: {
-    Header,
-    CardContainer,
-    ProjectsTab,
-    MyTaskTab,
-  },
+import { getAllProjects } from "@/services/projects.service";
+import Spinner from "@/components/Spinner.vue";
 
-  setup() {
-    const activeTab = ref("projects");
+    const activeTab = ref('projects');
+    const allProjects = ref([])
+    const adminProjects = ref([])
+    const loading = ref(true)
+    const error = ref(null)
 
     const headerProps = {
       title: "Explore Projects",
@@ -50,15 +51,37 @@ export default {
 
     function toggleTabs(tab) {
       activeTab.value = tab;
+      
     }
 
-    return {
-      headerProps,
-      toggleTabs,
-      activeTab,
-    };
-  },
-};
+  const handleGetProjects = async () =>{
+    try {
+      loading.value = true
+      const response = await getAllProjects()
+      const data = response.data
+      error.value = (null)
+
+      if (data) {
+        allProjects.value = data.all_projects || []
+        adminProjects.value = data.adminProjects || []
+      }
+      // toggleTabs('projects')
+      loading.value  = false
+      
+      
+    } catch (err) {
+      
+      error.value = "Failed to load projects. Please try again."
+      console.log(error.value);
+      throw err
+      
+    }
+  }
+
+  onMounted(()=>{
+    handleGetProjects()
+  });
+
 </script>
 
 <style scoped>

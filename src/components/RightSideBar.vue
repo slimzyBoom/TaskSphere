@@ -1,5 +1,5 @@
 <template>
-  <div class="static lg:fixed flex flex-col gap-[40px] w-full lg:w-[23.4%] lg:h-screen bg-gray-200 right-0 top-0 py-[32px] px-[15px]">
+  <div class="static lg:fixed flex flex-col gap-[40px] w-full lg:w-[23.4%] lg:h-screen bg-gray-200 right-0 top-0 py-[32px] px-[15px] z-10">
     <DashboardCalendar/>
     <TodaysTask/>
     
