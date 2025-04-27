@@ -33,7 +33,7 @@ export const formatDuration = (card, dateMessage) => {
     const parts = formattedDistance.split(' ');
   
     // Return everything except the first word
-    return message + ': ' + parts.slice(1).join(' ');
+    return message + ': ' + formattedDistance;
   }
   return '—'
 }

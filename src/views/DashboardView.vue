@@ -8,13 +8,15 @@
       <section class="px-[36px] mt-5 block lg:hidden">
         <WelcomeMessage :headerProps="headerProps"></WelcomeMessage>
       </section>
-      <main class="flex flex-col gap-[50px] py-[35px] px-[30px]">
+      <Spinner v-if="loading" :occupiedHeight="'214px'"/>
+      <main v-else class="flex flex-col gap-[50px] py-[35px] px-[30px]">
         <div class="flex flex-col lg:flex-row gap-[25px] items-center">
           <TaskSummary></TaskSummary>
           <ActivityGraph></ActivityGraph>
         </div>
         <CardContainer :containerData="newTask" :loading="loading"/>
         <CardContainer :containerData="upcomingDeadline" :loading="loading"/>
+
       </main>
     </div>
 
@@ -32,6 +34,7 @@ import WelcomeMessage from "../components/WelcomeMessage.vue";
 import { useUserStore } from "@/stores/user";
 import {ref, onMounted } from "vue";
 import { getDashboard } from "@/services/dashboard.service";
+import Spinner from "@/components/Spinner.vue";
 const userStore = useUserStore();
 
 const formatDateMessage = (date, label = '') => {
@@ -67,14 +70,12 @@ const headerProps = {
 };
 const upcomingDeadline = {
   title: "Upcoming Deadline",
-  cardLimit: 10,
   cards: nearingDeadlineProjects,
   dateMessage: "Ends",
 };
 
 const newTask = {
   title: "New Task",
-  cardLimit: 10,
   cards: upcomingProjects,
   dateMessage: "Starts",
 };

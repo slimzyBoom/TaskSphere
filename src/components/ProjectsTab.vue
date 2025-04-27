@@ -1,37 +1,34 @@
 <template>
   <div class="projects-tab">
     
-        <CardContainer :containerData="timeLimit"/>
-        <CardContainer :containerData="newTask"/>
+        <CardContainer :containerData="timeLimit" :loading="loading"/>
+        <CardContainer :containerData="newTask" :loading="loading"/>
 
     
   </div>
 </template>
 
-<script>
-import CardContainer from './CardContainer.vue';
-export default {
-    components: {
-        CardContainer
+<script setup>
+    import { reactive, watch } from 'vue'
+    import CardContainer from './CardContainer.vue'
+
+    const props = defineProps({
+        data: { type: Array, required: true },
+        loading: { type: Boolean, default: false }
+    })
+
+    const timeLimit = reactive({ title: 'Time Limit', cards: props.data })
+    const newTask   = reactive({ title: 'New Task', cards: props.data, dateMessage: 'Starts' })
+
+    watch(
+    () => props.data,
+    (list) => {
+        timeLimit.cards = list
+        newTask.cards   = list
     },
-
-    setup(){
-        const timeLimit = {
-            title : 'Time Limit',
-            cardLimit : 10,
-        }
-        
-        const newTask = {
-            title : 'New Task',
-            cardLimit : 10,
-        }
-
-        return{
-            newTask,
-            timeLimit,
-        }
-    }
-}
+    { immediate: true }
+    )
+  
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 import api from "@/libs/api";
 
-export const getAllProjectsService = async () => {
+export const getAllProjects = async () => {
   try {
     const response = await api.get(`/projects`);
     return response.data;
@@ -10,9 +10,9 @@ export const getAllProjectsService = async () => {
   }
 };
 
-export const createProjectService = async (projects) => {
+export const createProject = async (projects) => {
   try {
-    const response = await axios.post(`${url}/projects`, projects);
+    const response = await api.post(`${url}/projects`, projects);
     return response.data;
   } catch (error) {
     console.error(error.message);

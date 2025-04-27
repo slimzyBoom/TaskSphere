@@ -47,7 +47,7 @@
   import 'swiper/css/navigation'
   
   import Card from './Card.vue'
-import { useUnwrappedArray } from '../../composables/useUnwrappedArray';
+import { useUnwrappedArray } from '@/composables/useUnwrappedArray';
 import { images } from '@/assets/assets';
   
   const props = defineProps({
