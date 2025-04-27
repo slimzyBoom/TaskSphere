@@ -10,7 +10,7 @@ export const getAllProjects = async () => {
   }
 };
 
-export const createProject = async (projects) => {
+export const createProjectService = async (projects) => {
   try {
     const response = await api.post(`${url}/projects`, projects);
     return response.data;
