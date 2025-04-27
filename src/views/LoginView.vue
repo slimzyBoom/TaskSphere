@@ -13,11 +13,24 @@
         <span>
           <font-awesome-icon icon="lock" />
         </span>
-        <input type="password" v-model="form.password" placeholder="Password" />
-        <p v-if="errors.password" class="text-xs text-red-400">{{ errors.password }}</p>
+        <input
+          :type="inputType"
+          v-model="form.password"
+          placeholder="Password"
+          class="w-full"
+        />
+        <p v-if="errors.password" class="text-xs text-red-400">
+          {{ errors.password }}
+        </p>
+      </div>
+      <div class="flex gap-2 items-center">
+        <input type="checkbox" id="showPassword" @change="handleShowPassword" />
+        <label for="showPassword" class="text-sm">Show Password</label>
       </div>
       <div class="text">
-        <router-link :to="{ name: 'forgot-password' }">Forgot Password?</router-link>
+        <router-link :to="{ name: 'forgot-password' }"
+          >Forgot Password?</router-link
+        >
         <br />
         <router-link :to="{ name: 'signup' }"
           >Don't have an account? <span>Sign Up</span></router-link
@@ -28,6 +41,12 @@
         <img :src="images.googleLogo" alt="" /> <span>Google</span>
       </button>
     </form>
+    <popUp
+      v-if="isActive && content"
+      :content="content"
+      :success="success"
+      @close="isActive = false"
+    />
   </div>
 </template>
 
@@ -37,8 +56,11 @@ import { useUserStore } from "../stores/user";
 const userStore = useUserStore();
 import { useRouter } from "vue-router";
 import { images } from "../assets/assets";
+import popUp from "@/components/popUp.vue";
 
-const errorDisplay = ref(false);
+const isActive = ref(false);
+const success = ref(false);
+const content = ref("");
 const router = useRouter();
 const form = reactive({
   email: "",
@@ -48,8 +70,13 @@ const errors = reactive({
   email: "",
   password: "",
 });
+const inputType = ref("password");
 
 // Functions
+const handleShowPassword = () => {
+  inputType.value = inputType.value === "password" ? "text" : "password";
+};
+
 const formValidation = () => {
   let isValid = true;
   if (!form.email) {
@@ -72,8 +99,15 @@ const login = async () => {
   if (!formValidation()) return;
   try {
     await userStore.loginUser(form);
+    isActive.value = true;
+    success.value = true;
+    content.value = "Login successful";
     router.push({ name: "dashboard" });
   } catch (error) {
+    isActive.value = true;
+    success.value = false;
+    content.value = error.response?.data?.message ||
+    "An unexpected error occurred. Please try again.";
     console.error(error);
   }
 };
@@ -145,10 +179,10 @@ const login = async () => {
   font-size: 15px;
 }
 
-.login-form input {
+/* .login-form input {
   width: 100%;
   font-size: 14px;
-}
+} */
 
 .login-form button {
   background-color: var(--light-blue);

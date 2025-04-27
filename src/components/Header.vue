@@ -37,7 +37,7 @@
       <WelcomeMessage :headerProps="headerProps" />
     </div>
     <div
-      class="flex justify-between w-full"
+      class="flex justify-between"
       v-if="headerProps.filter && headerProps.search"
     >
       <SearchBar></SearchBar>
@@ -45,11 +45,11 @@
     </div>
 
     <!-- Drop Down Button -->
-    <!-- <div
+    <div
       class="fixed inset-0 backdrop-blur h-screen z-10"
       v-if="isOpen"
       @click="toggleDropDown"
-    ></div> -->
+    ></div>
     <!-- Dropdown Menu -->
     <section class="left-0 container absolute z-20 top-6 px-4" v-if="isOpen">
       <div class="bg-slate-100 p-4 rounded-md flex flex-col gap-4">

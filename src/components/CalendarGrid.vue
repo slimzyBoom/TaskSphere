@@ -168,4 +168,70 @@ export default {
         margin-left: 12px;
         color: var(--gray-text-primary);
     }
+
+    @media (max-width: 768px) {
+  .calendar-grid {
+    padding: 20px;
+  }
+
+  .calendar-grid .header h1 {
+    font-size: 18px;
+  }
+
+  .calendar-grid .box .day-header,
+  .calendar-grid .box .calendar-days {
+    gap: 10px;
+    row-gap: 20px;
+  }
+
+  .calendar-grid .box .calendar-days .calendar-day span {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .calendar-grid .box .calendar-days .calendar-day .event-popup {
+    width: 180px;
+    top: 35px;
+    padding: 8px;
+  }
+
+  .calendar-grid .box .calendar-days .calendar-day .event-popup-text h3 {
+    font-size: 13px;
+  }
+
+  .calendar-grid .box .calendar-days .calendar-day .event-popup-text p {
+    font-size: 11px;
+  }
+
+  .calendar-grid .box .calendar-days .calendar-day .no-event {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-grid {
+    padding: 10px;
+  }
+
+  .calendar-grid .header h1 {
+    font-size: 16px;
+  }
+
+  .calendar-grid .box .calendar-days .calendar-day span {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .calendar-grid .box .calendar-days {
+    gap: 6px;
+    row-gap: 15px;
+  }
+
+  .calendar-grid .box .day-header h3 {
+    font-size: 12px;
+  }
+}
+
 </style>

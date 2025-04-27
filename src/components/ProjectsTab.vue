@@ -8,27 +8,30 @@
   </div>
 </template>
 
-<script setup>
-    import { reactive, watch } from 'vue'
-    import CardContainer from './CardContainer.vue'
-
-    const props = defineProps({
-        data: { type: Array, required: true },
-        loading: { type: Boolean, default: false }
-    })
-
-    const timeLimit = reactive({ title: 'Time Limit', cards: props.data })
-    const newTask   = reactive({ title: 'New Task', cards: props.data, dateMessage: 'Starts' })
-
-    watch(
-    () => props.data,
-    (list) => {
-        timeLimit.cards = list
-        newTask.cards   = list
+<script>
+import CardContainer from './CardContainer.vue';
+export default {
+    components: {
+        CardContainer
     },
-    { immediate: true }
-    )
-  
+
+    setup(){
+        const timeLimit = {
+            title : 'Time Limit',
+            cardLimit : 10,
+        }
+        
+        const newTask = {
+            title : 'New Task',
+            cardLimit : 10,
+        }
+
+        return{
+            newTask,
+            timeLimit,
+        }
+    }
+}
 </script>
 
 <style scoped>

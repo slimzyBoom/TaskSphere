@@ -1,5 +1,4 @@
 <template>
-
   <div class="projects">
     <Header :headerProps="headerProps"></Header>
     <div class="tabs-links">

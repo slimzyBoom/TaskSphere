@@ -36,13 +36,9 @@
   
   <script setup>
   import { defineProps, computed, onMounted } from 'vue'
-  
-  // 1️⃣ Import Swiper Vue components
   import { Swiper, SwiperSlide } from 'swiper/vue'
-  // 2️⃣ Import only the core Navigation module
   import { Navigation } from 'swiper/modules';
   
-  // 3️⃣ Import Swiper styles
   import 'swiper/css'
   import 'swiper/css/navigation'
   
@@ -87,13 +83,11 @@ import { images } from '@/assets/assets';
     width: 100%;
   }
   
-  /* Optional: override Swiper arrow colors or positioning */
   .swiper-button-next,
   .swiper-button-prev {
     color: #333;
   }
   
-  /* Ensure your slides have no extra padding/margin (if desired) */
   .swiper-slide {
     display: flex;
     /* justify-content: center; */
