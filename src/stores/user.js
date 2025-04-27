@@ -53,7 +53,7 @@ export const useUserStore = defineStore("users", {
         localStorage.removeItem("userId");
         this.isAuthenticated = false;
       }catch(error) {
-        console.error(error.messgae);
+        console.error(error.message);
       }
     },
     setUser(user) {
