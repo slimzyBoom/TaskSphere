@@ -3,6 +3,7 @@ import {
   registerUserService,
   loginUserService,
   getUserService,
+  logoutUserService
 } from "../services/user.auth.service";
 
 export const useUserStore = defineStore("users", {
@@ -40,6 +41,19 @@ export const useUserStore = defineStore("users", {
         localStorage.setItem("userId", data.data.id);
       } catch (error) {
         throw error;
+      }
+    },
+    async logoutUser () {
+      try {
+        const response = await logoutUserService();
+        if(!response) return;
+        this.user = null;
+        this.token = null;
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        this.isAuthenticated = false;
+      }catch(error) {
+        console.error(error.messgae);
       }
     },
     setUser(user) {

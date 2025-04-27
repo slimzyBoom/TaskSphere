@@ -27,8 +27,7 @@ export const logoutUserService = async () => {
     const response = await axios.post(`${url}/logout`);
     return response.data;
   } catch (error) {
-    console.log(error.message);
-    throw error;
+    console.error(error.message);
   }
 };
 

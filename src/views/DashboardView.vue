@@ -30,7 +30,7 @@ import CardContainer from "../components/CardContainer.vue";
 import RightSideBar from "../components/RightSideBar.vue";
 import WelcomeMessage from "../components/WelcomeMessage.vue";
 import { useUserStore } from "@/stores/user";
-import { onMounted } from "vue";
+// import { onMounted } from "vue";
 const userStore = useUserStore();
 
 const userName = userStore.user?.username || "User";
@@ -51,5 +51,5 @@ const newTask = {
   title: "New Task",
   cardLimit: 10,
 };
-onMounted(userStore.getUser);
+// onMounted(userStore.getUser);
 </script>
