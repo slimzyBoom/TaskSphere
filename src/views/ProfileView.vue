@@ -41,11 +41,9 @@
             </div>
           </div>
         </div>
-        <button
-          class="flex gap-2 justify-center items-center font-medium text-white rounded-md bg-blue-500 w-full cursor-pointer md:w-1/5 mt-5 py-2"
-        >
-          <font-awesome-icon :icon="['fas', 'right-from-bracket']" /> Logout
-        </button>
+        <div class="mt-4 w-full md:w-1/5">
+          <logout-button />
+        </div>
       </div>
     </main>
   </div>
@@ -57,6 +55,7 @@ import { images } from "../assets/assets";
 import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
 const gender = ref("male");
+import logoutButton from "@/components/logoutButton.vue";
 </script>
 
 <style scoped>

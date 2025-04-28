@@ -211,7 +211,6 @@ const handleSubmit = async () => {
   color: var(--white);
   background-color: var(--light-blue);
   top: 100%;
-  margin-top: 20px;
   font-size: 16px;
   font-weight: 500;
   border-radius: 10px;
