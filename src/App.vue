@@ -36,6 +36,11 @@
     scroll-behavior: smooth;
 }
 
+.swiper-button-prev:after, .swiper-button-next:after {
+    font-family: swiper-icons;
+    font-size: 36px;
+}
+
 </style>
 
 

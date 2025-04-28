@@ -1,8 +1,9 @@
 <template>
-    <div class="my-task-tab">
-      
-          <CardContainer :containerData="myTask"/>
-          <CardContainer :containerData="newTask"/>
+    <div class="my-task-tab max-vsm:!px-[20px]">
+        <GridCardContainer :containerData="myTask" :loading="loading"/>
+        
+        <!-- <CardContainer :containerData="myTask"/> -->
+        <CardContainer :containerData="newTask" :loading="loading"/>
   
       
     </div>
@@ -10,6 +11,7 @@
   
   <script setup>
   import CardContainer from './CardContainer.vue';
+  import GridCardContainer from './GridCardContainer.vue';
   import { reactive, watch } from 'vue'
     
     const props = defineProps({
@@ -17,11 +19,9 @@
         loading: { type: Boolean, default: false }
     })
 
-    // make them reactive objects
     const myTask = reactive({ title : 'My Task', cards: props.data, dateMessage: 'Starts' })
     const newTask   = reactive({ title: 'New Task', cards: props.data, dateMessage: 'Starts' })
 
-    // sync them with props.data whenever it arrives or changes
     watch(
     () => props.data,
     (list) => {

@@ -5,70 +5,47 @@
         <div class="title">
           <h2>Create Project</h2>
         </div>
+
         <div class="cont">
           <h3>Project Name</h3>
-          <input
-            type="text"
-            placeholder="Name of your project"
-            v-model="project.name"
-          />
+          <input type="text" placeholder="Name of your project" v-model="project.name" />
         </div>
 
         <div class="cont">
           <h3>Project Description</h3>
-          <textarea
-            placeholder="Describe your project"
-            v-model="project.description"
-          ></textarea>
+          <textarea placeholder="Describe your project" v-model="project.description"></textarea>
         </div>
+
         <div class="cont">
-          <h3 class="text-xl font-semibold">Timeline</h3>
+          <h3>Timeline</h3>
           <div class="mt-4 flex flex-col gap-4">
-            <h5 class="text-sm">Start date</h5>
-            <input
-              type="date"
-              name="start_date"
-              id="start_date"
-              v-model="project.start_date"
-            />
-            <h5 class="text-sm">End date</h5>
-            <input
-              type="date"
-              name="end_date"
-              id="end_date"
-              v-model="project.end_date"
-            />
+            <h5>Start date</h5>
+            <input type="date" v-model="project.start_date" />
+            <h5>End date</h5>
+            <input type="date" v-model="project.end_date" />
           </div>
         </div>
+
         <div class="cont">
           <h3>Image</h3>
           <input type="file" @change="handleImage" />
         </div>
+
         <div class="flex flex-col gap-4">
           <h3>Project Ownership</h3>
-          <label class="flex gap-2 items-center"
-            ><input
-              type="radio"
-              name="owner"
-              v-model="collaborationStatus"
-              value="personal"
-            />
+          <label class="flex gap-2 items-center">
+            <input type="radio" name="owner" value="personal" v-model="collaborationStatus" />
             <span>Personal</span>
           </label>
-
-          <label class="flex gap-2 items-center"
-            ><input
-              type="radio"
-              name="owner"
-              v-model="collaborationStatus"
-              value="collaboration"
-            />
+          <label class="flex gap-2 items-center">
+            <input type="radio" name="owner" value="collaboration" v-model="collaborationStatus" />
             <span>Collaboration</span>
           </label>
         </div>
 
-        <input type="submit" value="Save Project" class="w-full lg:w-1/5" />
+        <input type="submit" :value="loading ? 'Submitting...': 'Save Project'" :disabled="!isFormValid" />
       </form>
+
       <popUp
         v-if="isActive && content"
         :content="content"
@@ -80,23 +57,35 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import popUp from "@/components/popUp.vue";
-import { createProjectService } from "@/services/projects.service";
+import { createProject } from "@/services/projects.service";
 import { useUserStore } from "@/stores/user";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
 const userStore = useUserStore();
-let isActive = ref(false);
+
+const isActive = ref(false);
 const content = ref("");
 const success = ref(false);
-const collaborationStatus = ref("");
+const collaborationStatus = ref("personal");
+const loading = ref(false)
+
 const project = reactive({
-  admin_id: userStore.userId,
+  admin_id: localStorage.getItem('userId') ,
   name: "",
   description: "",
   image: null,
   start_date: "",
   end_date: "",
-  status: collaborationStatus.value || "personal",
+  status: "personal", // default
+});
+
+// Watch collaborationStatus and update project.status
+watch(collaborationStatus, (newStatus) => {
+  project.status = newStatus;
 });
 
 const handleImage = (e) => {
@@ -104,13 +93,8 @@ const handleImage = (e) => {
 };
 
 const validate = () => {
-  if (
-    !project.name ||
-    !project.description ||
-    !project.start_date ||
-    project.admin_id
-  ) {
-    content.value = "Project name, description and start date is required";
+  if (!project.name || !project.description || !project.start_date) {
+    content.value = "Project name, description, and start date are required.";
     isActive.value = true;
     success.value = false;
     return false;
@@ -118,24 +102,36 @@ const validate = () => {
   return true;
 };
 
+const isFormValid = computed(() => {
+  return project.name && project.description && project.start_date;
+});
+
+
 const handleSubmit = async () => {
-  validate();
+  if (!validate()) return;
+  loading.value = true
   try {
-    const data = await createProjectService(project);
-    content.value =
-      "Project saved you can go to projects page to edit and start up";
+    console.log(project)
+    const data = await createProject(project);
+    content.value = "Project saved! You can go to the projects page to edit and start.";
     success.value = true;
-    isActive = true;
+    isActive.value = true;
+    // toast.success("Project saved! You can edit it on the Projects page.");
   } catch (error) {
     console.error(error.message);
     content.value =
       error.response?.data?.message ||
       "An unexpected error occurred. Please try again.";
-    isActive.value = true;
     success.value = false;
+    isActive.value = true;
+    // toast.error(error.message || "An unexpected error occurred.");
+  }finally{
+    loading.value = false
+
   }
 };
 </script>
+
 
 <style scoped>
 .create-project {
@@ -153,7 +149,7 @@ const handleSubmit = async () => {
 .create-project main .create-project-container {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 30px;
   background-color: var(--white);
   position: relative;
   padding: 30px;
@@ -173,6 +169,11 @@ const handleSubmit = async () => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.create-project main .create-project-container .cont h3 {
+  /* font-size: 14px; */
+  font-weight: 600;
 }
 
 .create-project main .create-project-container .cont input,
@@ -213,5 +214,12 @@ const handleSubmit = async () => {
   font-size: 16px;
   font-weight: 500;
   border-radius: 10px;
+  cursor: pointer;
 }
+
+.create-project main .create-project-container input:disabled{
+  background-color: #BAC8FF
+}
+
 </style>
+
