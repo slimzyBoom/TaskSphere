@@ -16,7 +16,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 library.add(far, fas, fab);
 
 const pinia = createPinia();
-pinia.use(piniaPluginPersistedstate);
+// pinia.use(piniaPluginPersistedstate);
 
 createApp(App)
   .use(pinia)

@@ -28,7 +28,7 @@
         </div>
         <div class="profile-img">
           <router-link to="/profile">
-            <img :src="userStore.user.image || images.profileOne" alt="" />
+            <img :src="userStore.user?.image || images.profileOne" alt="" />
           </router-link>
         </div>
       </div>

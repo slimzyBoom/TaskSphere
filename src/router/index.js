@@ -93,11 +93,6 @@ const router = createRouter({
           component: ProfileView,
         },
         {
-          path: "/profile",
-          name: "profile",
-          component: ProfileView,
-        },
-        {
           path: "/update-profile",
           name: "update-profile",
           component: EditProfileView,
