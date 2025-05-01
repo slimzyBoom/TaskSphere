@@ -1,6 +1,6 @@
 <template>
     <router-link :to="{ name: 'project-details', params: { id: card.id } }">
-      <div class="card max-tny:!h-[250px]  max-tny:!p-[10px] max-tny:!gap-[10px]">
+      <div class="card max-tny:!h-[230px]  max-tny:!p-[10px] max-tny:!gap-[10px]">
         <div class="image max-vsm:!min-h-[120px] max-tny:!min-h-[90px]">
           <!-- <img
             :src="card.image
@@ -28,7 +28,7 @@
           <div class="cont mt-2 max-vsm:!mt-0">
             <div class="time">
               <font-awesome-icon :icon="['far', 'clock']" class="max-vsm:!text-[12px] max-tny:!text-[10px]"/>
-              <p class="text-sm max-vsm:!text-[12px]  max-vsm:!leading-3 max-tny:!text-[10px]">{{date}}</p>
+              <p class="text-sm max-vsm:!text-[12px]  max-vsm:!leading-3 max-tny:!text-[10px]">{{date}} </p>
             </div>
             <div class="img">
               <img
