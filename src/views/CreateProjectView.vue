@@ -80,13 +80,12 @@ const project = reactive({
   image: null,
   start_date: "",
   end_date: "",
-  status: "personal", // default
+  status: "",
 });
 
-// Watch collaborationStatus and update project.status
-watch(collaborationStatus, (newStatus) => {
-  project.status = newStatus;
-});
+// watch(collaborationStatus, (newStatus) => {
+//   project.status = newStatus;
+// });
 
 const handleImage = (e) => {
   project.image = e.target.files[0];
@@ -103,7 +102,7 @@ const validate = () => {
 };
 
 const isFormValid = computed(() => {
-  return project.name && project.description && project.start_date;
+  return project.name && project.description && project.start_date && project.end_date;
 });
 
 
