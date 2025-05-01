@@ -1,5 +1,5 @@
 <template>
-  <header class="header bg-white lg:bg-gray-50">
+  <header class="header bg-white lg:bg-gray-50 max-vsm:!px-[20px]">
     <div class="cont">
       <div class="title hidden lg:block">
         <WelcomeMessage :headerProps="headerProps" />
@@ -10,7 +10,7 @@
       >
         <font-awesome-icon
           :icon="['fas', 'bars']"
-          class="text-xl text-slate-500"
+          class="text-xl text-slate-500 max-vsm:!text-[16px]"
         />
       </div>
       <div class="icons" v-if="headerProps.icons">

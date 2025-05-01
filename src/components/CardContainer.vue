@@ -17,9 +17,19 @@
             navigation
             :space-between="20"
             :breakpoints="{
-            640:  { slidesPerView: 1 },
-            768:  { slidesPerView: 2 },
-            1024: { slidesPerView: 2.5 }
+            0:  { slidesPerView: 1.2},
+            370:  { slidesPerView: 1.4 },
+            490:  { slidesPerView: 1.7 },
+            640:  { slidesPerView: 2 },
+            // 1024: { slidesPerView: 2 },
+            // 1124: { slidesPerView: 2.1 },
+            700: { slidesPerView: 2.2 },
+            760: { slidesPerView: 2.5 },
+            850:  { slidesPerView: 2.8},
+            1024: { slidesPerView: 2 },
+            1124: { slidesPerView: 2.1 },
+            1180: { slidesPerView: 2.3 },
+            1350: { slidesPerView: 2.5 }
             }"
         >
             <SwiperSlide

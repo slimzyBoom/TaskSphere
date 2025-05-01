@@ -1,6 +1,6 @@
 <template>
     <router-link :to="{ name: 'project-details', params: { id: card.id } }">
-      <div class="card max-tny:!h-[260px]  max-tny:!p-[10px] max-tny:!gap-[10px] max-tny:!w-[230px] max-vsm:!w-[250px] max-lg:!w-[270px] max-xl:!w-[250px]">
+      <div class="card max-tny:!h-[230px]  max-tny:!p-[10px] max-tny:!gap-[10px]">
         <div class="image max-vsm:!min-h-[120px] max-tny:!min-h-[90px]">
           <!-- <img
             :src="card.image
@@ -27,8 +27,8 @@
           </div>
           <div class="cont mt-2 max-vsm:!mt-0">
             <div class="time">
-              <font-awesome-icon :icon="['far', 'clock']" class="max-vsm:!text-[12px] max-tny:!text-[10px]" />
-              <p class="text-sm max-vsm:!text-[12px]  max-vsm:!leading-3 max-tny:!text-[10px]">{{date}}</p>
+              <font-awesome-icon :icon="['far', 'clock']" class="max-vsm:!text-[12px] max-tny:!text-[10px]"/>
+              <p class="text-sm max-vsm:!text-[12px]  max-vsm:!leading-3 max-tny:!text-[10px]">{{date}} </p>
             </div>
             <div class="img">
               <img
@@ -47,7 +47,7 @@
 <script setup>
   import { defineProps, computed } from 'vue'
   import { images } from '../assets/assets'
-  import { formatDuration } from '@/utils/formatDuration.js' 
+  import { formatDuration } from '@/utils/formatDuration.js' // update the path
 
   
   const props = defineProps({
@@ -70,8 +70,8 @@
     .card{
         display: flex;
         flex-direction: column;
-        width: 278px;
-        height: 314px;
+        width: 100%;
+        height: 320px;
         gap: 20px;
         border-radius: 10px;
         background-color: var(--white);
@@ -86,7 +86,7 @@
 
     .card .image{
         width: 100%;
-        height: 150px;
+        min-height: 130px;
     }
 
     .card .image img{
@@ -167,7 +167,7 @@
         border-radius: 50%;
         background-color: var(--light-blue);
     }
-    
+
     @media not all and (min-width: 380px) {
         .card .progress .progress-bar{
             height: 5px;        
@@ -179,7 +179,7 @@
           height: 12px;
         }
     }
-
+    
     .card .cont .img{
         display: flex;
     }

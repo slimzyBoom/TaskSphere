@@ -66,7 +66,6 @@ import Spinner from "@/components/Spinner.vue";
         adminProjects.value = data.adminProjects || []
       }
       // toggleTabs('projects')
-      loading.value  = false
       
       
     } catch (err) {
@@ -75,6 +74,9 @@ import Spinner from "@/components/Spinner.vue";
       console.log(error.value);
       throw err
       
+    }finally{
+      loading.value  = false
+
     }
   }
 
