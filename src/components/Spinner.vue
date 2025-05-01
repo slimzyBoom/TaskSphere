@@ -1,5 +1,5 @@
 <template>
-   <div :style="dynamicStyle" className="container flex items-center absolute justify-center w-full bg-white z-10">
+   <div :style="dynamicStyle" className="container flex items-center absolute justify-center min-w-full bg-white z-10">
       <div
         className="inline-block h-16 w-16 animate-spin rounded-full border-8 border-solid border-current border-e-transparent align-[-0.125em] text-[#BAC8FF]"
         role="status"

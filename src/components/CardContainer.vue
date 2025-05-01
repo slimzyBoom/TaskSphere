@@ -17,8 +17,8 @@
             navigation
             :space-between="20"
             :breakpoints="{
-            0:  { slidesPerView: 1},
-            370:  { slidesPerView: 1.3 },
+            0:  { slidesPerView: 1.2},
+            370:  { slidesPerView: 1.4 },
             490:  { slidesPerView: 1.7 },
             640:  { slidesPerView: 2 },
             // 1024: { slidesPerView: 2 },

@@ -5,11 +5,14 @@
     >
       <Header :headerProps="headerProps"></Header>
 
-      <section class="px-[36px] mt-5 block lg:hidden">
+      <section class="px-[36px] max-vsm:!px-[20px] mt-5 block lg:hidden">
         <WelcomeMessage :headerProps="headerProps"></WelcomeMessage>
       </section>
-      <Spinner v-if="loading" :occupiedHeight="'214px'"/>
-      <main v-else class="flex flex-col gap-[50px] py-[35px] px-[30px]">
+      <div  v-if="loading" class="relative min-h-[80vh]  max-lg:pt-[87px] lg:min-h-[90vh] ">
+        <Spinner :occupiedHeight="'214px'"/>
+
+      </div>
+      <main v-else class="flex flex-col gap-[50px] max-vsm:!px-[20px] py-[35px] px-[30px]">
         <div class="flex flex-col lg:flex-row gap-[25px] items-center">
           <TaskSummary></TaskSummary>
           <ActivityGraph></ActivityGraph>

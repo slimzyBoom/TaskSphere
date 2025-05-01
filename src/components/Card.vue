@@ -47,7 +47,7 @@
 <script setup>
   import { defineProps, computed } from 'vue'
   import { images } from '../assets/assets'
-  import { formatDuration } from '@/utils/formatDuration.js' // update the path
+  import { formatDuration } from '@/utils/formatDuration.js' 
 
   
   const props = defineProps({
