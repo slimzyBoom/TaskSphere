@@ -18,7 +18,6 @@ const user_store = useUserStore();
 
 const handleLogout = () => {
   user_store.logoutUser();
-  router.push({ name: 'login' });
 };
 
 </script>

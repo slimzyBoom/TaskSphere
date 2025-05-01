@@ -1,6 +1,6 @@
 import axios from "axios";
-const url =
-  import.meta.env.VITE_APP_API_URL;
+const url = import.meta.env.VITE_APP_API_URL;
+import { api, axios_api } from "@/libs/api";
 
 export const registerUserService = async (credentials) => {
   try {
@@ -24,10 +24,14 @@ export const loginUserService = async (credentials) => {
 
 export const logoutUserService = async () => {
   try {
-    const response = await axios.post(`${url}/logout`);
+    const response = await axios_api.post(`${url}/logout`);
+    if (!response) {
+      throw new Error("Logout failed");
+    }
     return response.data;
   } catch (error) {
     console.error(error.message);
+    throw error;
   }
 };
 
@@ -57,11 +61,7 @@ export const resetPasswordService = async (password) => {
 
 export const getUserService = async (id) => {
   try {
-    const response = await axios.get(`${url}/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+    const response = await api.get(`${url}/users/${id}`);
     return response.data;
   } catch (error) {
     console.log(error.message);

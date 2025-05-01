@@ -20,7 +20,7 @@
           :to="{ name: 'projects' }"
           :class="[
             'flex gap-2.5 p-2 rounded-md',
-            { 'bg-slate-100': $route.name === 'projects' || $route.name ===  'create-project' },
+            { 'bg-slate-100': $route.name === 'projects' || $route.name ===  'create-project' || $route.name ==  'project-details' },
           ]"
         >
           <img :src="images.projectIcon" alt="" />

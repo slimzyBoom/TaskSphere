@@ -95,18 +95,25 @@ const updateProfile = async () => {
   const formData = new FormData();
   formData.append("_method", "PUT");
   if (profile.name) formData.append("name", profile.name);
+  else formData.append("name", userStore.user.username);
   if (profile.phone) formData.append("phone", profile.phone);
   if (profile.image) formData.append("image", profile.image);
   if (profile.email) formData.append("email", profile.email);
+  else formData.append("email", userStore.user.email);
   try {
     const data = await updateUserProfileService(userStore.userId, formData);
     if (data) {
+      // Update user store with new data
       userStore.setUser(data);
+
+      // Reset profile data
       profile.name = "";
       profile.email = "";
       profile.phone = "";
       profile.image = null;
       previewImage.value = null;
+
+      // Update popup
       content.value = "Profile updated successfully";
       isActive.value = true;
       success.value = true;
@@ -114,8 +121,7 @@ const updateProfile = async () => {
   } catch (error) {
     console.error(error.message);
     content.value =
-      error.response?.data?.message ||
-      "An unexpected error occurred. Please try again.";
+      error.message || "An unexpected error occurred. Please try again.";
     isActive.value = true;
     success.value = false;
   }

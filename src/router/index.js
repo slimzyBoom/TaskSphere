@@ -68,7 +68,7 @@ const router = createRouter({
           component: ProjectsView,
         },
         {
-          path: "/project-details",
+          path: "/project-details/:id",
           name: "project-details",
           component: DetailsProjectView,
         },
@@ -86,11 +86,6 @@ const router = createRouter({
           path: "/calendar",
           name: "calendar",
           component: CalendarView,
-        },
-        {
-          path: "/profile",
-          name: "profile",
-          component: ProfileView,
         },
         {
           path: "/profile",

@@ -47,10 +47,21 @@ export const createProject = async (project) => {
 
 export const getProjectService = async (id) => {
   try {
-    const response = await axios.get(`${url}/projects/${id}`);
+    const response = await api.get(`/projects/${id}`);
     return response.data;
   } catch (error) {
     console.error(error.message);
     throw new Error (error.response);
   }
 };
+
+export const deleteProjectService = async (id) => {
+  try {
+    const response = await api.delete(`/projects/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error.message);
+    throw new Error (error.response);
+  }
+};
+

@@ -19,7 +19,7 @@ import "vue-toastification/dist/index.css";
 library.add(far, fas, fab);
 
 const pinia = createPinia();
-pinia.use(piniaPluginPersistedstate);
+// pinia.use(piniaPluginPersistedstate);
 
 createApp(App)
   .use(pinia)
