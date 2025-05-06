@@ -1,14 +1,14 @@
 <template>
     <router-link :to="{ name: 'project-details', params: { id: card.id } }">
-      <div class="card max-tny:!h-[260px]  max-tny:!p-[10px] max-tny:!gap-[10px] max-tny:!w-[230px] max-vsm:!w-[250px] max-lg:!w-[270px] max-xl:!w-[250px]">
-        <div class="image max-vsm:!min-h-[120px] max-tny:!min-h-[90px]">
+      <div class="card max-tny:!w-[82vw] max-lg:!w-[270px] max-xl:!w-[250px]">
+        <div class="image max-vsm:!min-h-[130px]">
           <!-- <img
             :src="card.image
               ? `${import.meta.env.VITE_API_BASE_URL}/${card.image}`
               : images.taskImageTwo"
             :alt="card.name"
           /> -->
-          <img :src="images.taskImageTwo" alt="">
+          <img :src="card.image || images.taskImageTwo" alt="">
         </div>
         <div class="text">
           <div class="txt max-vsm:!text-sm  max-tny:!text-[12px]">
@@ -55,7 +55,7 @@
       type: Object,
       required: true
     },
-    dateMessage: String,  // "Starts", "Ends", or "Assigned"
+    dateMessage: String,  
   })
 
   const date = formatDuration(props.card, props.dateMessage)
@@ -174,7 +174,7 @@
         }
 
         .card .progress .progress-bar::after{ 
-          left: calc(var(--value) - 6px);
+          left: calc(var(--value) - 10px);
           width: 12px;
           height: 12px;
         }

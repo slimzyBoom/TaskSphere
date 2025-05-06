@@ -17,9 +17,9 @@
             navigation
             :space-between="20"
             :breakpoints="{
-            0:  { slidesPerView: 1.2},
-            370:  { slidesPerView: 1.4 },
-            490:  { slidesPerView: 1.7 },
+            0:  { slidesPerView: 1},
+            420:  { slidesPerView: 1.4 },
+            520:  { slidesPerView: 1.7 },
             640:  { slidesPerView: 2 },
             // 1024: { slidesPerView: 2 },
             // 1124: { slidesPerView: 2.1 },
@@ -100,7 +100,7 @@ import { images } from '@/assets/assets';
   
   .swiper-slide {
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
   }
   </style>
   

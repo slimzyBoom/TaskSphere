@@ -41,6 +41,9 @@
     font-size: 36px;
 }
 
+.first-letter-capital::first-letter {
+  text-transform: uppercase;
+}
 </style>
 
 

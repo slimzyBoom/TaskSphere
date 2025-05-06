@@ -1,23 +1,25 @@
 <template>
   <div class="create-project">
-    <main>
-      <form class="create-project-container" @submit.prevent="handleSubmit">
-        <div class="title">
-          <h2>Create Project</h2>
+    <Header :headerProps="headerProps"></Header>
+
+    <main class="max-vsm:!p-5">
+      <form class="create-project-container max-vsm:!p-5 " @submit.prevent="handleSubmit">
+        <div class="title md:!hidden max-vsm:!text-xl">
+          <h2>Create New Project</h2>
         </div>
 
         <div class="cont">
-          <h3>Project Name</h3>
+          <h3 class="max-vsm:!text-sm">Project Name</h3>
           <input type="text" placeholder="Name of your project" v-model="project.name" />
         </div>
 
         <div class="cont">
-          <h3>Project Description</h3>
+          <h3 class="max-vsm:!text-sm">Project Description</h3>
           <textarea placeholder="Describe your project" v-model="project.description"></textarea>
         </div>
 
         <div class="cont">
-          <h3>Timeline</h3>
+          <h3 class="max-vsm:!text-sm">Timeline</h3>
           <div class="mt-4 flex flex-col gap-4">
             <h5>Start date</h5>
             <input type="date" v-model="project.start_date" />
@@ -27,20 +29,32 @@
         </div>
 
         <div class="cont">
-          <h3>Image</h3>
-          <input type="file" @change="handleImage" />
-        </div>
+          <h3 class="max-vsm:!text-sm">Image</h3>
 
-        <div class="flex flex-col gap-4">
-          <h3>Project Ownership</h3>
-          <label class="flex gap-2 items-center">
-            <input type="radio" name="owner" value="personal" v-model="collaborationStatus" />
-            <span>Personal</span>
-          </label>
-          <label class="flex gap-2 items-center">
-            <input type="radio" name="owner" value="collaboration" v-model="collaborationStatus" />
-            <span>Collaboration</span>
-          </label>
+          <div
+            class="border-2 border-dashed border-gray-300 h-60 rounded flex items-center justify-center cursor-pointer"
+            @click="triggerFileInput"
+          >
+            <div v-if="previewUrl" class="w-full h-full relative rounded overflow-hidden">
+              <img
+                :src="previewUrl"
+                alt="Preview"
+                class="w-full h-full object-fill"
+              />
+            </div>
+            <div v-else class="flex flex-col justify-center items-center">
+              <font-awesome-icon class="text-4xl text-[#BAC8FF]" :icon="['far', 'image']" />
+
+              <p class="text-[#BAC8FF] mt-2">Click to Upload</p>
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              ref="fileInputRef"
+              class="hidden"
+              @change="handleImageChange"
+            />
+          </div>
         </div>
 
         <input type="submit" :value="loading ? 'Submitting...': 'Save Project'" :disabled="!isFormValid" />
@@ -57,6 +71,7 @@
 </template>
 
 <script setup>
+import Header from "../components/Header.vue";
 import { ref, reactive, watch, computed } from "vue";
 import popUp from "@/components/popUp.vue";
 import { createProject } from "@/services/projects.service";
@@ -73,6 +88,22 @@ const success = ref(false);
 const collaborationStatus = ref("personal");
 const loading = ref(false)
 
+const fileInputRef = ref(null)
+const previewUrl = ref(null)
+
+const triggerFileInput = () => {
+  fileInputRef.value?.click()
+}
+
+const headerProps = {
+  title: "Create New Project",
+  titleText: "Provide project information to stay organized",
+  search: false,
+  filter: false,
+  icons: true,
+  button: true,
+};
+
 const project = reactive({
   admin_id: localStorage.getItem('userId') ,
   name: "",
@@ -82,6 +113,15 @@ const project = reactive({
   end_date: "",
   status: "",
 });
+
+const handleImageChange = (event) => {
+  const file = event.target.files[0]
+  if (file) {
+    previewUrl.value = URL.createObjectURL(file)
+    project.image = file;
+
+  }
+}
 
 // watch(collaborationStatus, (newStatus) => {
 //   project.status = newStatus;
@@ -115,7 +155,6 @@ const handleSubmit = async () => {
     content.value = "Project saved! You can go to the projects page to edit and start.";
     success.value = true;
     isActive.value = true;
-    // toast.success("Project saved! You can edit it on the Projects page.");
   } catch (error) {
     console.error(error.message);
     content.value =
@@ -123,7 +162,6 @@ const handleSubmit = async () => {
       "An unexpected error occurred. Please try again.";
     success.value = false;
     isActive.value = true;
-    // toast.error(error.message || "An unexpected error occurred.");
   }finally{
     loading.value = false
 
@@ -180,6 +218,7 @@ const handleSubmit = async () => {
   border: 1.2px solid var(--dark-gray-bg);
   border-radius: 10px;
   padding: 10px;
+  font-size:14px;
 }
 
 .create-project main .create-project-container .cont textarea {

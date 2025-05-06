@@ -2,7 +2,7 @@
   <div class="projects-tab max-vsm:!px-[20px]">
         <GridCardContainer :containerData="timeLimit" :loading="loading"/>
         <!-- <CardContainer /> -->
-        <CardContainer :containerData="newTask" :loading="loading"/>
+        <!-- <CardContainer :containerData="newTask" :loading="loading"/> -->
 
     
   </div>
@@ -10,7 +10,7 @@
 
 <script setup>
     import CardContainer from './CardContainer.vue';
-    import { reactive, watch } from 'vue'
+    import { computed, watch } from 'vue'
     import GridCardContainer from './GridCardContainer.vue';
 
 
@@ -19,14 +19,20 @@
         loading: { type: Boolean, default: false }
     })
 
-    const timeLimit = reactive({ title : 'Time Limit', cards: props.data, dateMessage: 'Starts' })
-    const newTask   = reactive({ title: 'New Task', cards: props.data, dateMessage: 'Starts' })
+    
+    const timeLimit = computed(() => ({
+        title: 'Time Limit',
+        cards: props.data,        
+        dateMessage: 'Starts'
+    }))
+    // const newTask   = reactive({ title: 'New Task', cards: props.data, dateMessage: 'Starts' })
 
+   
     watch(
     () => props.data,
     (list) => {
         timeLimit.cards = list
-        newTask.cards   = list
+        // newTask.cards   = list
     },
     { immediate: true }
     )

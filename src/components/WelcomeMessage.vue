@@ -1,6 +1,6 @@
 <template>
   <div class="welcome-message">
-    <h1 v-if="headerProps.title">{{headerProps.title}}</h1>
+    <h1 v-if="headerProps.title ">{{headerProps.title}}</h1>
      <p v-if="headerProps.titleText">{{headerProps.titleText }}</p>
   </div>
   
@@ -17,6 +17,7 @@ export default {
         font-size: 22px;
         font-weight: 600;
         color: var(--black);
+        text-transform: capitalize;
     }
 
     .welcome-message p{

@@ -10,9 +10,9 @@ import {
  *   - card.created_at: ISO string
  *   - card.start_date: ISO string (optional)
  *   - card.end_date:   ISO string (optional)
- * @param {'Ends'|'auto'} mode
- *   - 'auto'  → only show “Ends” if end_date is within 7 days AFTER the start
- *   - 'Ends'  → always show “Ends” (if end_date exists), regardless of how far away
+ * @param {'End'|'auto'} mode
+ *   - 'auto'  → only show “End” if end_date is within 7 days AFTER the start
+ *   - 'End'  → always show “End” (if end_date exists), regardless of how far away
  */
 export function formatDuration(card, mode = 'auto') {
   const now = new Date()
@@ -27,17 +27,17 @@ export function formatDuration(card, mode = 'auto') {
 
     // Already begun?
     if (isPast(start)) {
-      // a) Forced “Ends” mode wins:
-      if (mode === 'Ends' && card.end_date) {
-        return fmt('Ends', new Date(card.end_date))
+      // a) Forced “End” mode wins:
+      if (mode === 'End' && card.end_date) {
+        return fmt('End', new Date(card.end_date))
       }
 
-      // b) Auto “Ends” only if end_date is within 7 days from now:
+      // b) Auto “End” only if end_date is within 7 days from now:
       if (card.end_date) {
         const end = new Date(card.end_date)
         const daysUntilEnd = differenceInDays(end, now)
         if (daysUntilEnd >= 0 && daysUntilEnd <= 7) {
-          return fmt('Ends', end)
+          return fmt('End', end)
         }
       }
 
@@ -51,14 +51,14 @@ export function formatDuration(card, mode = 'auto') {
 
   // 2) No start_date, but maybe an end_date?
   if (card.end_date) {
-    if (mode === 'Ends') {
-      return fmt('Ends', new Date(card.end_date))
+    if (mode === 'End') {
+      return fmt('End', new Date(card.end_date))
     }
-    // If auto mode, show “Ends” only if within 7 days:
+    // If auto mode, show “End” only if within 7 days:
     const end = new Date(card.end_date)
     const daysUntilEnd = differenceInDays(end, now)
     if (daysUntilEnd >= 0 && daysUntilEnd <= 7) {
-      return fmt('Ends', end)
+      return fmt('End', end)
     }
   }
 

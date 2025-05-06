@@ -3,277 +3,465 @@
     <Spinner :occupiedHeight="'-10%'"/>
 
   </div>
-  <div v-else class="project-details flex flex-col lg:flex-row max-tny:!p-[20px]">
-    <div class="project-details-container w-full lg:w-[70%] max-tny:!p-[20px]">
-      <div class="image max-vsm:!h-[280px] max-tny:!h-[240px]">
-        <img :src="images.taskImageTwo" alt="" />
-      </div>
-      <div class="text">
-        <div class="flex flex-col ">
-          <h1 className="max-vsm:!text-2xl  max-tny:!text-xl">{{project.name}}</h1>
-          <div class="flex gap-1 items-center !text-[#54577A]">
-            <font-awesome-icon :icon="['far', 'clock']" class="max-vsm:!text-[12px] max-tny:!text-[10px]" />
-            <h5>{{date}}</h5>
-          </div>
+  <div v-else>
+    <Header :headerProps="headerProps"></Header>
+
+    <div  class="project-details flex flex-col lg:flex-row max-tny:!p-[20px]">
+      <div class="project-details-container w-full lg:w-[70%] max-tny:!p-[20px]">
+        <div class="image max-vsm:!h-[280px] max-tny:!h-[200px]">
+          <img :src="images.taskImageTwo" alt="" />
         </div>
-        <div class="cont">
-          <div class="title">
-            <h2 class="max-vsm:!text-xl max-tny:!text-lg">Description</h2>
-            <!-- <div class="button" @click="toggleDropDown">
-              <button>
-                <p>Edit Project</p>
-                <i>▼</i>
-              </button>
-              <div class="dropdown" v-if="dropdownActive">
-                <p>Schedule Meeting</p>
-                <hr />
-                <p>Edit Project</p>
+        <div class="text max-tny:!gap-5">
+          <div class="flex flex-col ">
+            <h1 className="max-vsm:!text-2xl  max-tny:!text-xl">{{project.name}}</h1>
+            <div class="flex gap-1 items-center !text-[#54577A]">
+              <font-awesome-icon :icon="['far', 'clock']" class="max-vsm:!text-[12px] max-tny:!text-[10px]" />
+              <h5>{{date}}</h5>
+            </div>
+          </div>
+          <div class="cont">
+            <div class="title">
+              <h2 class="max-vsm:!text-xl max-tny:!text-[16px]">Description</h2>
+            
+              <div v-if="admin" class="flex gap-1">
+                <!-- <button>
+                  <font-awesome-icon :icon="['far', 'square-check']" class="max-vsm:!text-[12px] max-tny:!text-[10px] !text-[#546fff]" />
+                </button> -->
+                <button @click="editProjectModal = true">
+                  <font-awesome-icon :icon="['far', 'edit']" class="text-xl !text-[#009033]" />
+                </button>
+
+                <button @click="deleteModal = true">
+                  <font-awesome-icon :icon="['fas', 'trash']" class="text-xl !text-[#FF3231]" />
+                </button>
               </div>
-            </div> -->
-           
-            <div v-if="admin" class="flex gap-1 text-lg">
-              <!-- <button>
-                <font-awesome-icon :icon="['far', 'square-check']" class="max-vsm:!text-[12px] max-tny:!text-[10px] !text-[#546fff]" />
-              </button> -->
-              <button>
-                <font-awesome-icon :icon="['far', 'edit']" class="text-xl !text-[#009033]" />
-              </button>
-
-              <button @click="deleteModal = true">
-                <font-awesome-icon :icon="['fas', 'trash']" class="text-xl !text-[#FF3231]" />
-              </button>
+          
+          
             </div>
-        
-        
+            <p class="fsl !break-words">
+            {{ project.description }}
+            </p>
           </div>
-          <p class="fsl">
-           {{ project.description }}
-          </p>
-        </div>
-        <div class="cont">
-          <h2 class="max-vsm:!text-xl max-tny:!text-lg">Project Tasks</h2>
-          <div v-if="project.tasks.length == 0" class="w-full flex flex-col gap-2 justify-center items-center min-h-[5rem]">
-              <p class="!text-[16px]">No task at the moment</p>
-              
-          </div>
-
-          <li class="flex justify-between" v-else  v-for="task in project.tasks" :key="task.id">
-            <div class="flex !gap-[6px] items-center">
-              <span @click="handleTaskStatus(task, task.status == 'completed' ? 'pending': 'completed')" :class="task.status == 'completed' ? '!bg-[#546fff]' : '!bg-none'">
-                <font-awesome-icon v-if="task.status == 'completed'" icon="check"  class="!text-[12px]"/>
-              </span>
-              <router-link>
-                 <p class="max-tny:!text-[12px]">{{task.description}}</p>
-              </router-link>
+          <div class="cont">
+            <h2 class="max-vsm:!text-xl max-tny:!text-[16px]">Project Tasks</h2>
+            <div v-if="project.tasks.length == 0" class="w-full flex flex-col gap-2 justify-center items-center min-h-[5rem]">
+                <p class="!text-[16px]">No task at the moment</p>
             </div>
-            <button @click="handleDeleteTask(task.id)">
-              <font-awesome-icon :icon="['fas', 'trash']" class="text-[16px] max-tny:text-sm !text-[#546fff]" />
-            </button>
-          </li>
 
-        
-          <li v-if="admin" class="add-task" @click="togglePopUp">
+            <li class="flex justify-between gap-3" v-else  v-for="task in project.tasks" :key="task.id">
+              <div class="flex !gap-[6px] items-center">
+                <span @click="admin && handleTaskStatus(task, task.status == 'completed' ? 'pending': 'completed')" :class="task.status == 'completed' ? '!bg-[#546fff]' : '!bg-none'">
+                  <font-awesome-icon v-if="task.status == 'completed'" icon="check"  class="!text-[12px]"/>
+                </span>
+                <router-link>
+                  <p class="max-tny:!text-[12px] first-letter-capital">{{task.description}}</p>
+                </router-link>
+              </div>
+              <div v-if="admin" class="flex gap-2 max-tny:gap-1">
+                <button @click="handleEditTask(task)">
+                  <font-awesome-icon :icon="['far', 'edit']" class="text-[16px] max-tny:text-sm !text-[#546fff]" />
+                </button>
+                <button @click="handleDeleteTask(task.id)">
+                  <font-awesome-icon :icon="['fas', 'trash']" class="text-[16px] max-tny:text-sm !text-[#546fff]" />
+                </button>
+              </div>
+             
+            </li>
+          
+            <li v-if="admin" class="add-task" @click="togglePopUp">
               <span>
                 <font-awesome-icon icon="plus"></font-awesome-icon>
               </span>
               <p>Add Task</p>
             </li>
-          
+          </div>
         </div>
       </div>
-    </div>
-    <div class="collaborators w-full lg:w-[28%]">
-      <div class="title">
-        <h3 class="font-bold text-xl lg:text-lg">Collaborators</h3>
+      <div class="collaborators w-full lg:w-[28%]">
+        <div class="title">
+          <h3 class="font-bold text-xl lg:text-lg">Collaborators</h3>
 
-        <div class="icon" v-if="admin">
-          <font-awesome-icon icon="plus"></font-awesome-icon>
+          <div class="icon" v-if="admin" @click="collaboratorModal = true">
+            <font-awesome-icon icon="plus"></font-awesome-icon>
+          </div>
         </div>
-      </div>
-      <div v-if="project.users.length == 0" class="w-full flex flex-col gap-2 justify-center items-center min-h-[5rem]">
+        <div v-if="project.users.length == 0" class="w-full flex flex-col gap-2 justify-center items-center min-h-[5rem]">
             <p class="!text-[16px]">No collaborators</p>
             
         </div>
-      <div v-else class="collab">
-       
-        <li  v-for="n in 3" :key="n">
-          <div class="info">
-            <img :src="images.profileOne" alt="" />
+        <div v-else class="collab" >
+          <li v-if="!admin" >
+            <div class="info">
+              <img :src="project.admin.image || images.profileOne" alt="" />
 
-            <div class="txt">
-              <h4 class="name">John Doe</h4>
-              <h5 class="job">UI/UX Designer</h5>
+              <div class="txt">
+                <h4 class="name flex capitalize items-end">{{ project.admin.username }} <p class="!text-[12px] font-normal ml-0.5">(admin)</p> </h4>
+                <h5 class="job">{{project.admin.email}}</h5>
+              </div>
             </div>
-          </div>
 
-          <span class="remove"> ... </span>
-        </li>
+          </li>
+          <template  v-for="user in project.users" :key="user.id">
+            <li class="relative" v-if="user.id !== userId" >
+              <div class="info">
+                <img :src="user.image || images.profileOne" alt="" />
+
+                <div class="txt">
+                  <h4 class="name truncate capitalize">{{ user.username }}</h4>
+                  <h5 class="truncate max-w-[200px] !leading-4" >{{user.email}}</h5>
+                </div>
+              </div>
+
+              <span @click="toggleCollaboratorDropDown(user)" v-if="admin" class="remove"> ... </span>
+              <div v-if="collaboratorDropdown && collaboratorDropdownUser.id == user.id" class="shadow bg-white rounded-lg absolute w-[120px] -right-2 top-6 z-20 overflow-hidden">
+                <li @click=" collaboratorDropdown = false; removeCollaboratorModal = true" class="border-b p-1 pl-3 text-sm cursor-pointer hover:bg-red-500 hover:text-white">Remove</li>
+                <li class="border-b p-1 pl-3 text-sm cursor-pointer hover:bg-[#546fff] hover:text-white">Assign task</li>
+              </div>
+            </li>
+          </template>
+         
+        </div>
       </div>
-    </div>
-    <div class="task-popup" v-if="popUpActive">
-      <form class="task-popup-box max-tny:!p-[15px]" @submit.prevent="handleCreateTask">
-        <div class="title">
-          <h3>Add Task</h3>
-          <font-awesome-icon icon="x" @click="togglePopUp"></font-awesome-icon>
-        </div>
-        <div class="details">
-          <div class="cont">
-            <label>Task Name</label>
-            <input v-model="task.description" type="text" placeholder="e.g Build a website"/>
+      <div class="task-popup" v-if="popUpActive">
+        <form class="task-popup-box max-tny:!p-[15px]" @submit.prevent="handleCreateTask">
+          <div class="title">
+            <h3>Add Task</h3>
+            <font-awesome-icon icon="x" @click="togglePopUp"></font-awesome-icon>
           </div>
-          <div class="cont">
-              <label>Start date</label>
-              <input type="date" v-model="task.start_date" />
-          </div>
-          <div class="cont">
-              <label>End date</label>
-              <input type="date" v-model="task.end_date" />
-          
-          </div>
-          <div class="cont">
-            <label>Assign to </label>
-            <input type="text" placeholder="e.g Sam@gmail.com" />
-          </div>
-
-          <button type="submit">{{taskLoading ? 'Creating...' :'Create Task'}}</button>
-        </div>
-      </form>
-    </div>
-    <div v-if="deleteModal == true" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40">
-      <div class="bg-white rounded-lg p-6 max-w-md">
-          <h3 class="text-xl text-center font-semibold mb-4">Delete Project</h3>
-          <div class="mb-6 text-center">
-              <span class="font-medium">Are you sure you want to delete this project</span>?
-              <p class="mt-2">
-                  This action will delete this project and there is no way to retrieve it
-              </p>
+          <div class="details">
+            <div class="cont">
+              <label>Task Name</label>
+              <input v-model="task.description" type="text" placeholder="e.g Build a website"/>
             </div>
+            <div class="cont">
+                <label>Start date</label>
+                <input type="date" v-model="task.start_date" />
+            </div>
+            <div class="cont">
+                <label>End date</label>
+                <input type="date" v-model="task.end_date" />
+            
+            </div>
+            <!-- <div class="cont">
+              <label>Assign to </label>
+              <input type="text" placeholder="e.g Sam@gmail.com" />
+            </div> -->
+
+            <button type="submit">{{taskLoading ? 'Creating...' :'Create Task'}}</button>
+          </div>
+        </form>
+      </div>
+      <div class="task-popup" v-if="editTaskModal">
+        <form class="task-popup-box max-tny:!p-[15px]" @submit.prevent="handleUpdateTask">
+          <div class="title">
+            <h3>Edit Task</h3>
+            <font-awesome-icon icon="x" @click="editTaskModal = false"></font-awesome-icon>
+          </div>
+          <div class="details">
+            <div class="cont">
+              <label>Task Name</label>
+              <input v-model="task.description" type="text" placeholder="e.g Build a website"/>
+            </div>
+            <div class="cont">
+                <label>Start date</label>
+                <input type="date" v-model="task.start_date" />
+            </div>
+            <div class="cont">
+                <label>End date</label>
+                <input type="date" v-model="task.end_date" />
+            
+            </div>
+            <!-- <div class="cont">
+              <label>Assign to </label>
+              <input type="text" placeholder="e.g Sam@gmail.com" />
+            </div> -->
+
+            <button type="submit">{{editTaskModalLoading ? 'Updating...' :'Update Task'}}</button>
+          </div>
+        </form>
+      </div>
+      <div v-if="deleteModal == true" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40">
+        <div class="bg-white rounded-lg p-6 max-w-md">
+            <!-- <h3 class="text-xl text-center font-semibold mb-4">Delete Project</h3> -->
+            <div class="mb-6 text-center">
+                <span class="font-medium">Are you sure you want to delete this project</span>?
+                <p class="mt-2">
+                    This action will delete this project and there is no way to retrieve it
+                </p>
+              </div>
+            <div class="flex justify-end gap-4">
+                <button
+                    @click="deleteModal = false"
+                    class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                    Cancel
+                </button>
+                <button
+                    @click="deleteProject"
+                    :class="`px-4 py-2 text-white rounded-lg transition-colors text-sm ${
+                              deleteModalLoading
+                                ? 'bg-red-300 cursor-not-allowed'
+                                : 'bg-red-600 hover:bg-red-700'
+                            }`"            
+                    :disabled="deleteModalLoading"
+                >
+            
+                  <span v-if="deleteModalLoading" class="flex items-center justify-center ">
+                      <svg class="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Deleting...
+                  </span>
+                  <span v-else>Delete Project</span>
+                </button>
+            </div>
+        </div>
+      </div>
+      <div v-if="deleteTaskModal == true" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40">
+        <div class="bg-white rounded-lg p-6 max-w-md">
+            <!-- <h3 class="text-xl text-center font-semibold mb-4">Delete Task</h3> -->
+            <div class="mb-6 text-center">
+                <span class="font-medium">Are you sure you want to delete this task</span>?
+                <p class="mt-2">
+                    This action will delete this task and there is no way to retrieve it
+                </p>
+              </div>
+            <div class="flex justify-end gap-4">
+                <button
+                    @click="deleteTaskModal = false"
+                    class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                    Cancel
+                </button>
+                <button
+                    @click="deleteTask"
+                    :class="`px-4 py-2 text-white rounded-lg transition-colors text-sm ${
+                              deleteModalLoading
+                                ? 'bg-red-300 cursor-not-allowed'
+                                : 'bg-red-600 hover:bg-red-700'
+                            }`"            
+                    :disabled="deleteTaskModalLoading"
+                >
+            
+                  <span v-if="deleteTaskModalLoading" class="flex items-center justify-center ">
+                      <svg class="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Deleting...
+                  </span>
+                  <span v-else>Delete Task</span>
+                </button>
+            </div>
+        </div>
+      </div>
+      <div v-if="changeStatusModal == true" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40">
+        <div class="bg-white rounded-lg p-6 max-w-md">
+          <h3 class=" text-center font-semibold">Confirm Status Update</h3>
+          <div class="mb-6 text-center">
+            <!-- <span class="font-medium">Are you sure you want to change the task status</span>? -->
+            <p class="mt-2">
+              This will update the task's status to <span class="font-semibold italic">{{ changeStatus }}</span>. Are you sure you want to proceed?
+            </p>
+          </div>
           <div class="flex justify-end gap-4">
               <button
-                  @click="deleteModal = false"
-                  class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                  @click="changeStatusModal = false"
+                  class="px-4 py-2 text-gray-600 hover:bg-gray-100 text-sm rounded-lg transition-colors"
               >
                   Cancel
               </button>
               <button
-                  @click="deleteProject"
+                  @click="changeStatus == 'completed' ? handleTaskCompleted() : handleTaskPending() "
                   :class="`px-4 py-2 text-white rounded-lg transition-colors text-sm ${
-                            deleteModalLoading
-                              ? 'bg-red-300 cursor-not-allowed'
-                              : 'bg-red-600 hover:bg-red-700'
+                            changeStatusLoading
+                              ? 'bg-[#5c74fe] cursor-not-allowed'
+                              : 'bg-[#546fff] hover:bg-[#4c66fa]'
                           }`"            
-                  :disabled="deleteModalLoading"
+                  :disabled="changeStatusLoading"
               >
           
-                <span v-if="deleteModalLoading" class="flex items-center justify-center ">
+                <span v-if="changeStatusLoading" class="flex items-center justify-center text-sm">
                     <svg class="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Deleting...
+                    Updating...
                 </span>
-                 <span v-else>Delete Project</span>
+                  <span v-else>Update Status</span>
               </button>
           </div>
+        </div>
       </div>
-    </div>
-
-    <div v-if="deleteTaskModal == true" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40">
-      <div class="bg-white rounded-lg p-6 max-w-md">
-          <h3 class="text-xl text-center font-semibold mb-4">Delete Task</h3>
-          <div class="mb-6 text-center">
-              <span class="font-medium">Are you sure you want to delete this task</span>?
-              <p class="mt-2">
-                  This action will delete this task and there is no way to retrieve it
-              </p>
+      <div class="task-popup" v-if="editProjectModal">
+        <form class="task-popup-box !max-h-[90vh] !overflow-auto max-tny:!p-[15px]" @submit.prevent="handleUpdateProject">
+          <div class="title">
+            <h3>Edit Project</h3>
+            <font-awesome-icon icon="x" @click="editProjectModal = false"></font-awesome-icon>
+          </div>
+          <div class="details">
+            <div class="cont">
+              <label>Project Name</label>
+              <input v-model="project.name" type="text" placeholder="e.g Build a website"/>
             </div>
-          <div class="flex justify-end gap-4">
-              <button
-                  @click="deleteTaskModal = false"
-                  class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+            <div class="cont">
+              <label>Project Description</label>
+              <textarea class="!min-h-[100px]" v-model="project.description" type="text" placeholder="e.g Building a website" ></textarea>
+            </div>
+            <div class="cont">
+              <h3 class="max-vsm:!text-sm">Image</h3>
+              <div
+                class="border-2 border-dashed border-gray-300 h-40 rounded flex items-center justify-center cursor-pointer"
+                @click="triggerFileInput"
               >
-                  Cancel
-              </button>
-              <button
-                  @click="deleteTask"
-                  :class="`px-4 py-2 text-white rounded-lg transition-colors text-sm ${
-                            deleteModalLoading
-                              ? 'bg-red-300 cursor-not-allowed'
-                              : 'bg-red-600 hover:bg-red-700'
-                          }`"            
-                  :disabled="deleteTaskModalLoading"
-              >
-          
-                <span v-if="deleteTaskModalLoading" class="flex items-center justify-center ">
-                    <svg class="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Deleting...
-                </span>
-                 <span v-else>Delete Task</span>
-              </button>
-          </div>
-      </div>
-    </div>
-    <div v-if="changeStatusModal == true" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40">
-      <div class="bg-white rounded-lg p-6 max-w-md">
-        <h3 class="text-xl text-center font-semibold mb-4">Confirm Status Update</h3>
-        <div class="mb-6 text-center">
-          <!-- <span class="font-medium">Are you sure you want to change the task status</span>? -->
-          <p class="mt-2">
-            This will update the task's status to <span class="font-semibold italic">{{ changeStatus }}</span>. Are you sure you want to proceed?
-          </p>
-        </div>
-        <div class="flex justify-end gap-4">
-            <button
-                @click="changeStatusModal = false"
-                class="px-4 py-2 text-gray-600 hover:bg-gray-100 text-sm rounded-lg transition-colors"
-            >
-                Cancel
-            </button>
-            <button
-                @click="changeStatus == 'completed' ? handleTaskCompleted() : handleTaskPending() "
-                :class="`px-4 py-2 text-white rounded-lg transition-colors text-sm ${
-                          changeStatusLoading
-                            ? 'bg-[#5c74fe] cursor-not-allowed'
-                            : 'bg-[#546fff] hover:bg-[#4c66fa]'
-                        }`"            
-                :disabled="changeStatusLoading"
-            >
-        
-              <span v-if="changeStatusLoading" class="flex items-center justify-center text-sm">
-                  <svg class="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Updating...
-              </span>
-                <span v-else>Update Status</span>
-            </button>
-        </div>
-      </div>
-    </div>
-   
+                <div v-if="previewUrl" class="w-full h-full relative rounded overflow-hidden">
+                  <img
+                    :src="previewUrl"
+                    alt="Preview"
+                    class="w-full h-full object-fill"
+                  />
+                </div>
+                <div v-else class="flex flex-col justify-center items-center">
+                  <font-awesome-icon class="text-4xl text-[#BAC8FF]" :icon="['far', 'image']" />
 
-    <popUp
-        v-if="isActive && content"
-        :content="content"
-        :success="success"
-        @close="isActive = false"
-      />
+                  <p class="text-[#BAC8FF] mt-2">Click to Upload</p>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref="fileInputRef"
+                  class="hidden"
+                  @change="handleImageChange"
+                />
+              </div>
+            </div>
+            <div class="cont">
+                <label>Start date</label>
+                <input type="date" v-model="formattedStartDate" />
+            </div>
+            <div class="cont">
+                <label>End date</label>
+                <input type="date" v-model="formattedEndDate" />
+            
+            </div>
+            <div class="cont">
+              <label>Status</label>
+              <select v-model="project.status" class="border rounded cursor-pointer px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option class="cursor-pointer" value="upcoming">Upcoming</option>
+                <option class="cursor-pointer" value="in-progress">In Progress</option>
+                <option class="cursor-pointer" value="completed">Completed</option>
+              </select>
+            </div>
+            <!-- <div class="cont">
+              <label>Assign to </label>
+              <input type="text" placeholder="e.g Sam@gmail.com" />
+            </div> -->
+
+            <button type="submit">{{editProjectModalLoading ? 'Updating...' :'Update Project'}}</button>
+          </div>
+        </form>
+      </div>
+      <div class="task-popup" v-if="collaboratorModal">
+        <form class="task-popup-box max-tny:!p-[15px]" @submit.prevent="handleAddCollaborators">
+          <div class="title">
+            <h3>Add Collaborator</h3>
+            <font-awesome-icon icon="x" @click="closeCollaboratorModal"></font-awesome-icon>
+          </div>
+          <div class="details">
+            <div class="flex w-full border rounded-lg items-center">
+              <font-awesome-icon class="text-gray-400 p-2.5" icon="search"></font-awesome-icon>
+              <input v-model="searchedUser" type="text" class="border-none w-full h-full placeholder:text-sm" placeholder="Search User...">
+            </div>
+            <div v-if="filteredData.length > 0"  class="flex flex-col gap-2 h-[300px] overflow-auto">
+              <template v-for="user in filteredData" :key="user.id">
+                <li
+                  v-if="user.id !== userId"
+                  @click="selectedCollaborator = user"
+                  :class="{
+                    'bg-[#546fff] text-white': selectedCollaborator.id === user.id,
+                    'hover:bg-[#546fff] hover:text-white rounded-lg w-full cursor-pointer p-2': true
+                  }"
+                >
+                  <div class="flex gap-1">
+                    <img class="w-[40px] h-[40px] rounded-full" :src="user.image || images.profileOne" alt="" />
+                    <div class="txt">
+                      <h4 class="name capitalize">{{ user.username }}</h4>
+                      <h5 class="job !-mt-1">{{ user.email }}</h5>
+                    </div>
+                  </div>
+                </li>
+               </template>
+            </div>
+            <div v-else class="h-[300px] p-1 text-[15px] text-gray-500 flex text-center justify-center">
+              No user found
+            </div>
+            <button :disabled="!selectedCollaborator || !selectedCollaborator.id" type="submit">{{collaboratorModalLoading ? 'Submiting...' :'Submit'}}</button>
+          </div>
+        </form>
+      </div>    
+      <div v-if="removeCollaboratorModal == true" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40">
+        <div class="bg-white rounded-lg p-6 max-w-md">
+            <!-- <h3 class="text-xl text-center font-semibold mb-4">Remove Collaborator</h3> -->
+            <div class="mb-6 text-center">
+                <span class="font-medium">Are you sure you want to remove <span class="capitalize italic">{{ collaboratorDropdownUser.username }} </span></span> ?
+                <p class="mt-2">
+                  This action will remove the user from the project and all their task associations.
+                </p>
+              </div>
+            <div class="flex justify-end gap-4">
+                <button
+                    @click="removeCollaboratorModal = false"
+                    class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                    Cancel
+                </button>
+                <button
+                    @click="handleRemoveCollaborators"
+                    :class="`px-4 py-2 text-white rounded-lg transition-colors text-sm ${
+                              removeCollaboratorModalLoading
+                                ? 'bg-red-300 cursor-not-allowed'
+                                : 'bg-red-600 hover:bg-red-700'
+                            }`"            
+                    :disabled="removeCollaboratorModalLoading"
+                >
+            
+                  <span v-if="removeCollaboratorModalLoading" class="flex items-center justify-center ">
+                      <svg class="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Removing...
+                  </span>
+                  <span v-else>Remove User</span>
+                </button>
+            </div>
+        </div>
+      </div>  
+
+      <popUp
+          v-if="isActive && content"
+          :content="content"
+          :success="success"
+          @close="isActive = false"
+        />
+    </div>
   </div>
+ 
 </template>
 
 <script setup>
   import { onMounted, ref, reactive, computed } from "vue";
   import { images } from "../assets/assets";
   import { useRoute, useRouter } from 'vue-router'
-  import { deleteProjectService, getProjectService } from "@/services/projects.service";
+  import { deleteProjectService, getProjectService, updateProject } from "@/services/projects.service";
   import { formatDuration } from '@/utils/formatDuration.js'
   import Spinner from "@/components/Spinner.vue";
-  import { createTask, deleteTaskService, markTaskCompleted, markTaskPending } from "@/services/tasks.service";
+  import { createTask, deleteTaskService, markTaskCompleted, markTaskPending, updateTask } from "@/services/tasks.service";
   import popUp from "@/components/popUp.vue";
+  import Header from "@/components/Header.vue"
+  import { fetchAllUsersService } from "@/services/user.auth.service";
+  import { addCollaborator, deleteCollaborator } from "@/services/collaborators.service";
 
   const route = useRoute()
   const router = useRouter()
@@ -297,6 +485,44 @@
   const changeStatus = ref('completed')
   const changeStatusLoading = ref(false)
   const changeStatusModal = ref(false)
+  const editProjectModal = ref(false)
+  const editProjectModalLoading = ref(false)
+  const editTaskModal = ref(false)
+  const editTaskModalLoading = ref(false)
+  const allUsers = ref([])
+  const selectedCollaborator = ref({})
+  const collaboratorModal = ref(false)
+  const collaboratorModalLoading = ref(false)
+  const searchedUser = ref('')
+  const collaboratorDropdown = ref(false)
+  const collaboratorDropdownUser = ref([])
+  const removeCollaboratorModal = ref(false)
+  const removeCollaboratorModalLoading = ref(false)
+
+  const fileInputRef = ref(null)
+  const previewUrl = ref(null)
+
+  const filteredData = computed(() =>
+    allUsers.value.filter((user) =>
+      user.username.toLowerCase().includes(searchedUser.value.toLowerCase())
+    )
+  );
+
+  const triggerFileInput = () => {
+    fileInputRef.value?.click()
+  }
+
+  const toggleCollaboratorDropDown = (user) =>{
+    if (collaboratorDropdownUser.value === user) {
+      collaboratorDropdown.value = !collaboratorDropdown.value;
+      if (!collaboratorDropdown.value) {
+        collaboratorDropdownUser.value = null;
+      }
+    } else {
+      collaboratorDropdown.value = true;
+      collaboratorDropdownUser.value = user;
+    }
+  }
 
   const project = ref({
     id: '',
@@ -320,7 +546,17 @@
     users: [],
   })
 
+  const headerProps = {
+    title: "Project Details",
+    titleText: "Stay aligned with your team on key project details.",
+    search: false,
+    filter: false,
+    icons: true,
+    button: true,
+  };
+
   const task = reactive({
+    id: "",
     project_id: id ,
     description: "",
     start_date: "",
@@ -331,7 +567,39 @@
   const dropdownActive = ref(false);
   const popUpActive = ref(false);
 
-  const validate = () => {
+  const formattedStartDate = computed({
+    get() {
+      return project.value.start_date?.split('T')[0] || ''
+    },
+    set(value) {
+      project.value.start_date = `${value}T00:00:00.000000Z`
+    }
+  })
+
+  const formattedEndDate = computed({
+    get() {
+      return project.value.end_date?.split('T')[0] || ''
+    },
+    set(value) {
+      project.value.end_date = `${value}T00:00:00.000000Z`
+    }
+  })
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0]
+    if (file) {
+      previewUrl.value = URL.createObjectURL(file)
+      project.value.image = file;
+
+    }
+  }
+
+  const closeCollaboratorModal = () =>{
+    selectedCollaborator.value = {}
+    collaboratorModal.value = false
+  }
+
+  const taskValidate = () => {
     if (!task.description || !task.start_date || !task.end_date) {
       content.value = "Task name, start date and end date are required.";
       isActive.value = true;
@@ -341,12 +609,35 @@
     return true;
   };
 
-  function toggleDropDown() {
-    dropdownActive.value = !dropdownActive.value;
+  function handleEditTask(val) {
+    task.description = val.description
+    task.start_date = val.start_date
+    task.end_date = val.end_date
+    task.id = val.id
+
+    editTaskModal.value = true
+    
   }
 
   function togglePopUp() {
     popUpActive.value = !popUpActive.value;
+  }
+
+  const handleGetAllUsers = async ()=>{
+    loading.value = true
+    try {
+
+      const response = await fetchAllUsersService()
+
+      allUsers.value = response.data
+
+      loading.value = false
+      error.value = null
+      
+    } catch (error) {
+      error.value = error.message
+      throw new Error(error || 'Failed to fetch users')
+    }
   }
 
   const handleGetProjectDetails = async ()=>{
@@ -357,9 +648,10 @@
       
       date = formatDuration(project.value)
       admin = response?.data?.admin?.id == userId
+      console.log(response.data);
       
-      console.log(admin);
       loading.value = false
+      previewUrl.value = response?.data.image
       error.value = null
     } catch (error) {
       error.value = error
@@ -368,6 +660,29 @@
     }
   }
 
+  const handleUpdateProject = async () => {
+    editProjectModalLoading.value = true
+    try {
+      console.log(project.value)
+      const data = await updateProject(project.value, id);
+      handleGetProjectDetails()
+      content.value = "Project updated!";
+      success.value = true;
+      isActive.value = true;
+
+    } catch (error) {
+      console.error(error.message);
+      content.value =
+        error.message ||
+        "An unexpected error occurred. Please try again.";
+      success.value = false;
+      isActive.value = true;
+    }finally{
+      editProjectModalLoading.value = false
+      editProjectModal.value = false
+
+    }
+  };
  
   const deleteProject = async () =>{
     try {
@@ -403,9 +718,7 @@
   }
 
   const handleCreateTask = async () => {
-    // console.log(validate());
-    
-    if (!validate()) return;
+    if (!taskValidate()) return;
     taskLoading.value = true
     try {
       const data = await createTask(task);
@@ -422,6 +735,32 @@
       isActive.value = true;
     }finally{
       taskLoading.value = false
+
+    }
+  };
+
+  const handleUpdateTask = async () => {
+    if (!taskValidate()) return;
+    editTaskModalLoading.value = true
+    try {
+      const data = await updateTask(task);
+      task.description = ""
+      task.start_date = ""
+      task.end_date = ""
+      task.id = ""
+      content.value = "Task updated succefully!";
+      success.value = true;
+      isActive.value = true;
+      editTaskModal.value = false;
+      handleGetProjectDetails()
+    } catch (error) {
+      content.value =
+        error.message ||
+        "An unexpected error occurred. Please try again.";
+      success.value = false;
+      isActive.value = true;
+    }finally{
+      editTaskModalLoading.value = false
 
     }
   };
@@ -451,6 +790,7 @@
       isActive.value = true;
     }finally{
       changeStatusLoading.value = false
+      changeStatusModal.value = false
 
     }
   }
@@ -474,12 +814,67 @@
       isActive.value = true;
     }finally{
       changeStatusLoading.value = false
+      changeStatusModal.value = false
 
     }
   }
 
+  const handleAddCollaborators = async () =>{
+    collaboratorModalLoading.value = true
+    try {
+      
+      const response = await addCollaborator(id, selectedCollaborator.value.id)
+
+
+      content.value = "User added succefully!";
+      success.value = true;
+      isActive.value = true;
+      popUpActive.value = false;
+      handleGetProjectDetails();
+      
+    } catch (error) {
+      content.value =
+        error.message ||
+        "An unexpected error occurred. Please try again.";
+      success.value = false;
+      isActive.value = true;
+    }finally{
+      collaboratorModal.value = false
+      collaboratorModalLoading.value = false
+      selectedCollaborator.value = []
+    }
+  }
+
+  const handleRemoveCollaborators = async () =>{
+    removeCollaboratorModalLoading.value = true
+    try {
+      console.log(id, selectedCollaborator.value.id);
+      
+      const response = await deleteCollaborator(id, collaboratorDropdownUser.value.id)
+
+
+      content.value = "User removed succefully!";
+      success.value = true;
+      isActive.value = true;
+      popUpActive.value = false;
+      handleGetProjectDetails();
+      
+    } catch (error) {
+      content.value =
+        error.message ||
+        "An unexpected error occurred. Please try again.";
+      success.value = false;
+      isActive.value = true;
+    }finally{
+      removeCollaboratorModal.value = false
+      removeCollaboratorModalLoading.value = false
+    }
+  }
+
+
   onMounted(()=>{
     handleGetProjectDetails()
+    handleGetAllUsers()
   })
 </script>
 
@@ -603,7 +998,7 @@
 .project-details-container .text .cont p {
   font-size: 14px;
   font-weight: 400;
-  line-height: 28px;
+  line-height: 13px;
 }
 
 .project-details-container .text .cont li a {
@@ -665,12 +1060,14 @@
   padding: 20px 19px;
   border-radius: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-bottom: 40px;
 }
 
 .collaborators::-webkit-scrollbar {
   background: var(--white);
   width: 6px;
+  height: 6px;
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
   overflow: hidden;
@@ -684,7 +1081,7 @@
 
 .collaborators li {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: space-between;
 }
 
@@ -695,8 +1092,8 @@
 }
 
 .collaborators li img {
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   border-radius: 50%;
 }
 
@@ -781,7 +1178,8 @@
   font-size: 15px;
 }
 
-.task-popup .task-popup-box .details .cont input {
+.task-popup .task-popup-box .details .cont input,
+.task-popup .task-popup-box .details .cont textarea {
   border: 1px solid #ccc;
   padding: 8px;
   font-size: 14px;
@@ -795,5 +1193,12 @@
   margin-top: 10px;
   border-radius: 10px;
   font-weight: 500;
+  cursor: pointer;
 }
+
+button:disabled{
+  background-color: #546eff95 !important;
+  cursor: default  !important;
+}
+
 </style>

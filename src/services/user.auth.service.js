@@ -1,3 +1,4 @@
+import api from "@/libs/api";
 import axios from "axios";
 const url =
   import.meta.env.VITE_APP_API_URL;
@@ -24,7 +25,9 @@ export const loginUserService = async (credentials) => {
 
 export const logoutUserService = async () => {
   try {
-    const response = await axios.post(`${url}/logout`);
+    const response = await api.post(`/logout`);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     return response.data;
   } catch (error) {
     console.error(error.message);
@@ -62,6 +65,16 @@ export const getUserService = async (id) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+    throw error;
+  }
+};
+
+export const fetchAllUsersService = async (id) => {
+  try {
+    const response = await api.get(`/users`);
     return response.data;
   } catch (error) {
     console.log(error.message);

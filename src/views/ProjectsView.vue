@@ -1,6 +1,7 @@
 <template>
   <div class="projects">
-    <Header :headerProps="headerProps"></Header>
+    <Header :headerProps="headerProps" 
+    v-model:search="searchedTask"></Header>
     <div class="tabs-links">
       <span
         :class="{ active: activeTab === 'projects' }"
@@ -19,8 +20,8 @@
       <Spinner v-if="loading" :occupiedHeight="'214px'"/>
     <!-- </div> -->
     <main v-else>
-      <ProjectsTab class="tab" v-if="activeTab === 'projects'"  :loading="loading" :data="allProjects"/>
-      <MyTaskTab class="tab" v-else-if="activeTab == 'myProjects'" :loading="loading" :data="allProjects"/>
+      <ProjectsTab class="tab" v-if="activeTab === 'projects'"  :loading="loading" :data="filteredProjects"/>
+      <MyTaskTab class="tab" v-else-if="activeTab == 'myProjects'" :loading="loading" :data="filteredMyProjects"/>
     </main>
   </div>
 </template>
@@ -28,7 +29,7 @@
 <script setup>
 import Header from "../components/Header.vue";
 import CardContainer from "../components/CardContainer.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import ProjectsTab from "../components/ProjectsTab.vue";
 import MyTaskTab from "../components/MyProjectsTab.vue";
 import { getAllProjects } from "@/services/projects.service";
@@ -39,6 +40,7 @@ import Spinner from "@/components/Spinner.vue";
     const adminProjects = ref([])
     const loading = ref(true)
     const error = ref(null)
+    const searchedTask = ref('')
 
     const headerProps = {
       title: "Explore Projects",
@@ -49,10 +51,22 @@ import Spinner from "@/components/Spinner.vue";
       button: true,
     };
 
-    function toggleTabs(tab) {
-      activeTab.value = tab;
-      
-    }
+  function toggleTabs(tab) {
+    activeTab.value = tab;
+    
+  }
+
+  const filteredProjects = computed(() =>
+    allProjects.value.filter(p =>
+      p.name.toLowerCase().includes(searchedTask.value.toLowerCase())
+    )
+  )
+
+  const filteredMyProjects = computed(() =>
+    adminProjects.value.filter(p =>
+      p.name.toLowerCase().includes(searchedTask.value.toLowerCase())
+    )
+  )
 
   const handleGetProjects = async () =>{
     try {
@@ -60,10 +74,11 @@ import Spinner from "@/components/Spinner.vue";
       const response = await getAllProjects()
       const data = response.data
       error.value = (null)
-
+      console.log(response);
+      
       if (data) {
         allProjects.value = data.all_projects || []
-        adminProjects.value = data.adminProjects || []
+        adminProjects.value = data.admin_projects || []
       }
       // toggleTabs('projects')
       
