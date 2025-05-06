@@ -1,15 +1,14 @@
 <template>
     <div class="search-bar w-3/4 md:max-w-xs">
-      <input type="text" placeholder="Search Task">
+      <input type="text" placeholder="Search Task" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)">
       <font-awesome-icon icon="search"/>
     </div>
   </template>
   
-  <script>
-  export default {
-  
-  }
-  </script>
+<script setup>
+defineProps({ modelValue: String })
+</script>
   
   <style scoped>
       .search-bar{

@@ -1,7 +1,7 @@
 <template>
     <router-link :to="{ name: 'project-details', params: { id: card.id } }">
-      <div class="card max-tny:!h-[230px]  max-tny:!p-[10px] max-tny:!gap-[10px]">
-        <div class="image max-vsm:!min-h-[120px] max-tny:!min-h-[90px]">
+      <div class="card ">
+        <div class="image max-vsm:!min-h-[130px]">
           <!-- <img
             :src="card.image
               ? `${import.meta.env.VITE_API_BASE_URL}/${card.image}`
@@ -11,12 +11,12 @@
           <img :src="images.taskImageTwo" alt="">
         </div>
         <div class="text">
-          <div class="txt max-vsm:!text-sm  max-tny:!text-[12px]">
+          <div class="txt max-vsm:!text-sm ">
             <h2 class="line-clamp-1 max-vsm:!text-[14px]">{{ card.name }}</h2>
             <p class="line-clamp-1">{{ card.description }}</p>
           </div>
           <div class="progress">
-            <div class="progress-txt max-vsm:!text-sm max-tny:!text-[12px]">
+            <div class="progress-txt max-vsm:!text-sm">
               <p>Progress</p>
               <b>{{ card.completion_percentage }}%</b>
             </div>
@@ -55,7 +55,7 @@
       type: Object,
       required: true
     },
-    dateMessage: String,  // "Starts", "Ends", or "Assigned"
+    dateMessage: String,  
   })
 
   const date = formatDuration(props.card, props.dateMessage)
@@ -174,7 +174,7 @@
         }
 
         .card .progress .progress-bar::after{ 
-          left: calc(var(--value) - 6px);
+          left: calc(var(--value) - 12px);
           width: 12px;
           height: 12px;
         }

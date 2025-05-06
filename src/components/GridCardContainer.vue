@@ -1,19 +1,19 @@
 <template>
     <div class="card-container">
       <div class="header">
-        <h1>{{ containerData.title }}</h1>
+        <h1>{{ title }}</h1>
       </div>
       <div class="flex items-center h-full min-h-[320px] justify-center">
         <div v-if="loading">Loading... </div>
 
         <div v-else-if=" cardsToShow.length === 0" class="empty h-full flex flex-col gap-1 items-center">
             <img :src="images.emptyFolder" alt="Empty" class="w-[140px] mx-auto" />
-            <p class="text-center mt-2 text-gray-500">No {{ containerData.title.toLowerCase() }}</p>
+            <p class="text-center mt-2 text-gray-500">No {{ title.toLowerCase() }}</p>
         </div>
 
-        <div v-else class="grid grid-cols-2 w-full sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-between gap-10 max-sm:gap-5 max-tny:gap-4 lg:gap-5 xl:gap-10">
+        <div v-else class="grid grid-cols-1 w-full tny:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 justify-between gap-10 max-sm:gap-5 max-tny:gap-4 lg:gap-5 xl:gap-10">
             <div v-for="card in cardsToShow" :key="card.id" >
-                <GridCard :card="card" :dateMessage="containerData.dateMessage"/>
+                <GridCard :card="card" :dateMessage="dateMessage"/>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
   </template>
   
 <script setup>
-    import { defineProps, computed, onMounted } from 'vue'
+    import { defineProps, computed, onMounted, toRefs } from 'vue'
     
     import Card from './Card.vue'
     import GridCard from './GridCard.vue'
@@ -41,7 +41,8 @@
     loading: { type: Boolean, default: false },
   })
 
-    const cardsToShow = useUnwrappedArray(props.containerData.cards)
+  const { title, cards, dateMessage } = toRefs(props.containerData)
+  const cardsToShow = computed(() => props.containerData.cards || [])
     
 
   </script>

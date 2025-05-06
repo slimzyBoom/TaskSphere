@@ -1,20 +1,14 @@
 import { api } from "@/libs/api";
 
 
-export const createTask = async (project) => {
+export const createTask = async (task) => {
     try {
       const formData = new FormData();
-      formData.append('project_id', project.project_id);
-    //   formData.append('name', project.name);
-      formData.append('description', project.description);
-      formData.append('start_date', project.start_date);
-      formData.append('end_date', project.end_date);
-      // formData.append('status', project.status);
-  
-      if (project.image) {
-        formData.append('image', project.image);
-      }
-  
+      formData.append('project_id', task.project_id);
+      formData.append('description', task.description);
+      formData.append('start_date', task.start_date);
+      formData.append('end_date', task.end_date);
+    
       const response = await api.post(`/tasks`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -27,6 +21,35 @@ export const createTask = async (project) => {
        console.error("Full error:", error);
   
        // Log specific parts if available
+       console.error("Backend message:", error.response?.data?.message || "No specific error message");
+   
+       // Now throw a clean error
+       const errorMessage = error.response?.data?.message || "Something went wrong while creating the task.";
+       throw new Error(errorMessage);
+  
+    }
+  };
+
+  export const updateTask = async (task) => {
+    try {
+      const formData = new FormData();
+      formData.append('project_id', task.project_id);
+      formData.append('description', task.description);
+      formData.append('start_date', task.start_date);
+      formData.append('end_date', task.end_date);
+     
+      formData.append('_method', 'PUT');
+
+      const response = await api.post(`/tasks/${task.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      return response.data;
+    } catch (error) {
+       console.error("Full error:", error);
+  
        console.error("Backend message:", error.response?.data?.message || "No specific error message");
    
        // Now throw a clean error

@@ -74,7 +74,7 @@ const headerProps = {
 const upcomingDeadline = {
   title: "Upcoming Deadline",
   cards: nearingDeadlineProjects,
-  dateMessage: "Ends",
+  dateMessage: "End",
 };
 
 const newTask = {

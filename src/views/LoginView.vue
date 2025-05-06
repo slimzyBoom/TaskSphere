@@ -3,28 +3,28 @@
     <form class="login-form" @submit.prevent="login">
       <h1>SIGN IN</h1>
       <div class="cont">
-        <span>
+        <span class="p-2">
           <font-awesome-icon icon="user" />
         </span>
         <input type="text" v-model="form.email" placeholder="Email" />
         <p v-if="errors.email" class="text-xs text-red-400">{{ errors.email }}</p>
       </div>
       <div class="cont">
-        <span>
+        <span class="p-2">
           <font-awesome-icon icon="lock" />
         </span>
         <input
           :type="inputType"
           v-model="form.password"
           placeholder="Password"
-          class="w-full"
+          class=""
         />
         <p v-if="errors.password" class="text-xs text-red-400">
           {{ errors.password }}
         </p>
       </div>
       <div class="flex gap-2 items-center">
-        <input type="checkbox" id="showPassword" @change="handleShowPassword" />
+        <input class="check" type="checkbox" id="showPassword" @change="handleShowPassword" />
         <label for="showPassword" class="text-sm">Show Password</label>
       </div>
       <div class="text">
@@ -169,21 +169,20 @@ const login = async () => {
 .login-form .cont {
   display: flex;
   align-items: center;
-  gap: 11px;
   width: 100%;
   border: 1px solid var(--black);
   border-radius: 5px;
-  padding: 10px;
 }
 
 .login-form .cont svg {
   font-size: 15px;
 }
 
-/* .login-form input {
+.login-form input:not(.check) {
   width: 100%;
-  font-size: 14px;
-} */
+  height: 100%;
+  padding-left: 8px;
+}
 
 .login-form button {
   background-color: var(--light-blue);

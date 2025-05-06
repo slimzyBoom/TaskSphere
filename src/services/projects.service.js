@@ -45,6 +45,43 @@ export const createProject = async (project) => {
   }
 };
 
+export const updateProject = async (project, projectId) => {
+  try {
+    const formData = new FormData();
+    formData.append('admin_id',  project.admin.id);
+    formData.append('name', project.name);
+    formData.append('description', project.description);
+    formData.append('start_date', project.start_date == null ? "" : project.start_date);
+    formData.append('end_date', project.end_date  == null ? "" : project.end_date);
+    // formData.append('status', project.status);
+
+    if (project.image) {
+      formData.append('image', project.image);
+    }
+
+    formData.append('_method', 'PUT');
+
+    const response = await api.post(`/projects/${projectId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+     // Log the full error for debugging
+     console.error("Full error:", error);
+
+     // Log specific parts if available
+     console.error("Backend message:", error.response?.data?.message || "No specific error message");
+ 
+     // Now throw a clean error
+     const errorMessage = error.response?.data?.message || "Something went wrong while creating the project.";
+     throw new Error(errorMessage);
+
+  }
+};
+
 export const getProjectService = async (id) => {
   try {
     const response = await api.get(`/projects/${id}`);

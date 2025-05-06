@@ -1,21 +1,21 @@
 <template>
-  <header class="header bg-white lg:bg-gray-50 max-vsm:!px-[20px]">
+  <header class="header bg-white lg:bg-gray-50 max-vsm:!px-[20px] max-vsm:!pt-[25px] max-tny:!py-6">
     <div class="cont">
       <div class="title hidden lg:block">
         <WelcomeMessage :headerProps="headerProps" />
       </div>
       <div
-        class="w-12 h-12 flex items-center justify-center cursor-pointer lg:hidden border border-slate-300 rounded-full"
+        class="w-12 h-12 max-tny:!h-9 max-tny:!w-9 flex items-center justify-center cursor-pointer lg:hidden border border-slate-300 rounded-full"
         @click="toggleDropDown"
       >
         <font-awesome-icon
           :icon="['fas', 'bars']"
-          class="text-xl text-slate-500 max-vsm:!text-[16px]"
+          class="text-xl text-slate-500 max-vsm:!text-[15px]"
         />
       </div>
       <div class="icons" v-if="headerProps.icons">
         <router-link
-          to="create-project"
+          :to="{ name: 'create-project'}"
           v-if="headerProps.button"
           class="button"
         >
@@ -40,11 +40,13 @@
       class="flex justify-between"
       v-if="headerProps.filter && headerProps.search"
     >
-      <SearchBar></SearchBar>
+      <SearchBar 
+        v-model="localSearch"
+        @update:modelValue="val => $emit('update:search', val)"
+      />
       <FilterTab></FilterTab>
     </div>
 
-    <!-- Drop Down Button -->
     <div
       class="fixed inset-0 backdrop-blur h-screen z-10"
       v-if="isOpen"
@@ -98,18 +100,24 @@
 
 <script setup>
 import { images } from "../assets/assets";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import FilterTab from "./FilterTab.vue";
 import SearchBar from "./SearchBar.vue";
 import WelcomeMessage from "./WelcomeMessage.vue";
 import { useUserStore } from "@/stores/user";
 const userStore = useUserStore();
-defineProps(["headerProps"]);
 const isOpen = ref(false);
 
-const toggleDropDown = () => {
-  isOpen.value = !isOpen.value;
-};
+const props = defineProps({
+  headerProps: Object,
+  search: { type: String, default: '' }
+})
+const emit = defineEmits(['update:search'])
+
+const localSearch = ref(props.search)
+
+
+watch(() => props.search, v => localSearch.value = v)
 </script>
 
 <style scoped>
@@ -131,8 +139,8 @@ header .cont {
 }
 
 header .profile-img {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
 }
 
 header .profile-img img {
@@ -163,5 +171,17 @@ header .icons svg {
   padding: 10px 12px;
   border-radius: 50%;
   color: var(--gray-text-secondary);
+}
+
+@media not all and (min-width: 420px) {
+  header .profile-img {
+    width: 30px;
+    height: 30px;
+  }
+
+  header .icons svg {
+    font-size: 16px;
+    padding: 7px 9px;
+  }
 }
 </style>

@@ -24,10 +24,9 @@ export const loginUserService = async (credentials) => {
 
 export const logoutUserService = async () => {
   try {
-    const response = await axios_api.post(`${url}/logout`);
-    if (!response) {
-      throw new Error("Logout failed");
-    }
+    const response = await api.post(`/logout`);
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
     return response.data;
   } catch (error) {
     console.error(error.message);
@@ -62,6 +61,16 @@ export const resetPasswordService = async (password) => {
 export const getUserService = async (id) => {
   try {
     const response = await api.get(`${url}/users/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error.message);
+    throw error;
+  }
+};
+
+export const fetchAllUsersService = async (id) => {
+  try {
+    const response = await api.get(`/users`);
     return response.data;
   } catch (error) {
     console.log(error.message);
