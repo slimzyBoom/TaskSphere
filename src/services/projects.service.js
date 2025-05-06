@@ -1,4 +1,4 @@
-import api from "@/libs/api";
+import { api } from "@/libs/api";
 
 export const getAllProjects = async () => {
   try {

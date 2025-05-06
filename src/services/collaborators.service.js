@@ -1,5 +1,4 @@
-import api from "@/libs/api";
-
+import { api } from "@/libs/api";
 
 export  const addCollaborator = async(project_id, userId)=>{
     try {
