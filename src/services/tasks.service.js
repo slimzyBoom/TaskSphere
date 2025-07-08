@@ -90,6 +90,30 @@ export const markTaskPending = async (id) =>{
     }
 }
 
+export const updateTaskStatus = async (id, status)=>{
+ try {
+        
+        const formData = new FormData()
+        formData.append('status', status)
+
+        console.log('before:', formData.value);
+        
+        const response = await api.put(`/${id}/update-status`, formData)
+
+        console.log('after');
+
+
+        return response.data
+        
+    } catch (error) {
+        console.error("Full error:", error);
+       console.error("Backend message:", error.response?.data?.message || "No specific error message");
+
+       const errorMessage = error.response?.data?.message || "Something went wrong while updating the status.";
+       throw new Error(errorMessage);
+    }
+}
+
 export const deleteTaskService = async (id) =>{
     try {
         

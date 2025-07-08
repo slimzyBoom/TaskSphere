@@ -116,6 +116,10 @@ const emit = defineEmits(['update:search'])
 
 const localSearch = ref(props.search)
 
+const toggleDropDown = () =>{
+  isOpen.value = !isOpen.value 
+}
+
 
 watch(() => props.search, v => localSearch.value = v)
 </script>

@@ -132,8 +132,8 @@ const handleImage = (e) => {
 };
 
 const validate = () => {
-  if (!project.name || !project.description || !project.start_date) {
-    content.value = "Project name, description, and start date are required.";
+  if (!project.name || !project.description ) {
+    content.value = "Project name and decription are required.";
     isActive.value = true;
     success.value = false;
     return false;
@@ -142,7 +142,7 @@ const validate = () => {
 };
 
 const isFormValid = computed(() => {
-  return project.name && project.description && project.start_date && project.end_date;
+  return project.name && project.description 
 });
 
 

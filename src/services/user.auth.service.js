@@ -35,13 +35,15 @@ export const logoutUserService = async () => {
 };
 
 export const forgotPasswordService = async (email) => {
+  const formData = new FormData()
+
+  formData.append('email', email)
+
   try {
-    const response = await axios.post(`${url}/forgot-password`, {
-      email: email,
-    });
+    const response = await api.post(`/forgot-password`, formData);
     return response.data;
   } catch (error) {
-    console.error("Forget password request failed: ", error.message);
+    console.error("Forget password request failed: ", error);
     throw error;
   }
 };

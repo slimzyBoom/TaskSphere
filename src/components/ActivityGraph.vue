@@ -23,34 +23,42 @@ import { LineChart } from "echarts/charts";
 import { CanvasRenderer } from "echarts/renderers";
 import { GridComponent, TooltipComponent } from "echarts/components";
 import VChart from "vue-echarts";
+import { ref, computed, onMounted } from "vue";
+import { getChartData } from "@/services/dashboard.service";
 use([CanvasRenderer, LineChart, GridComponent, TooltipComponent]);
-import { ref, computed, watch } from "vue";
-import { groupBy } from "lodash";
-import { useProjectStore } from "@/stores/projects";
 
-const projectStore = useProjectStore();
-const tasks = projectStore.projects;
-const completedTasks = ref({});
-
-// Watch for changes in tasks and update completedTasks
-watch(
-  tasks,
-  (newTasks) => {
-    const completed = newTasks.filter((task) => task.completed);
-    completedTasks.value = groupBy(completed, (task) =>
-      new Date(task.completionDate).getDay()
-    );
-  },
-  { deep: true }
-);
-
-// Computed property to update chart data
-const chartData = computed(() => {
-  const days = ["S", "M", "T", "W", "T", "F", "S"];
-  return days.map((_, index) => completedTasks.value[index]?.length || 0);
+// Store the raw API data
+const weeklyData = ref({
+  Monday: 0,
+  Tuesday: 0,
+  Wednesday: 0,
+  Thursday: 0,
+  Friday: 0,
+  Saturday: 0,
+  Sunday: 0,
 });
 
-const chartOptions = ref({
+const fetchChartData = async ()=>{
+  try {
+    const response = await getChartData()
+    weeklyData.value = response.weekly_task_completion
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// You can fetch this from an API onMounted
+onMounted(async () => {
+  fetchChartData()
+});
+
+// Order data for chart
+const daysOrder = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const chartData = computed(() => daysOrder.map(day => weeklyData.value[day] || 0));
+
+// Make chartOptions reactive
+const chartOptions = computed(() => ({
   tooltip: {
     trigger: "axis",
     backgroundColor: "black",
@@ -58,8 +66,8 @@ const chartOptions = ref({
     borderWidth: 1,
     textStyle: { color: "white", fontSize: 12 },
     formatter: (params) => {
-      let value = params[0].value; // Get value from first dataset
-      return `<div style="text-align: center;">Task: ${value}</div>`;
+      const value = params[0].value;
+      return `<div style="text-align: center;">Tasks: ${value}</div>`;
     },
   },
   grid: {
@@ -71,7 +79,7 @@ const chartOptions = ref({
   },
   xAxis: {
     type: "category",
-    data: ["S", "M", "T", "W", "T", "F", "S"],
+    data: daysOrder.map(day => day[0]), // First letter (S, M, T, etc.)
     axisLine: { show: false },
     boundaryGap: true,
     axisTick: { show: false },
@@ -105,5 +113,6 @@ const chartOptions = ref({
       },
     },
   ],
-});
+}));
 </script>
+
