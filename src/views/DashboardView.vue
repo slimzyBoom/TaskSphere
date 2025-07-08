@@ -19,8 +19,46 @@
         </div>
         <CardContainer :containerData="newTask" :loading="loading"/>
         <CardContainer :containerData="upcomingDeadline" :loading="loading"/>
+        <CardContainer :containerData="completedTask" :loading="loading"/>
 
       </main>
+      <div v-if="!loading && modalIndicator == true && inviteLink" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40">
+        <div class="bg-white rounded-lg p-6 max-w-md max-tny:p-4">
+            <div class="mb-6 text-center">
+                <span class="font-semibold max-tny:text-[15px] md:text-lg">You’ve Been Invited to Join a Project</span> 
+                <p class="mt-2 max-tny:text-sm">
+                    You’ve been added as a collaborator on the project <i class="font-medium"> {{inviteProjectName}}</i>.  Accept to access the workspace.
+                </p>
+                </div>
+            <div class="flex justify-end gap-4">
+                <button
+                    @click="modalIndicator = false"
+                    class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors text-sm"
+                >
+                    Cancel
+                </button>
+                <button
+                    @click="handleRemoveCollaborators"
+                    :class="`px-4 py-2 text-white rounded-lg transition-colors text-sm ${
+                                removeCollaboratorModalLoading
+                                ? 'bg-red-300 cursor-not-allowed'
+                                : 'bg-red-600 hover:bg-red-700'
+                            }`"            
+                    :disabled="removeCollaboratorModalLoading"
+                >
+            
+                    <span v-if="removeCollaboratorModalLoading" class="flex items-center justify-center ">
+                        <svg class="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Accepting...
+                    </span>
+                    <span v-else>Accept Invite</span>
+                </button>
+            </div>
+        </div>
+      </div>
     </div>
 
     <RightSideBar></RightSideBar>
@@ -36,9 +74,14 @@ import RightSideBar from "../components/RightSideBar.vue";
 import WelcomeMessage from "../components/WelcomeMessage.vue";
 import { useUserStore } from "@/stores/user";
 import {ref, onMounted } from "vue";
-import { getDashboard } from "@/services/dashboard.service";
+import { getUpcomingProjects, getDeadlineProjects } from "@/services/dashboard.service";
 import Spinner from "@/components/Spinner.vue";
+import { useRoute } from "vue-router";
+import { getProjectService } from "@/services/projects.service";
+
 const userStore = useUserStore();
+const route = useRoute();
+
 
 const formatDateMessage = (date, label = '') => {
   if (!date) return '—'
@@ -57,6 +100,11 @@ const formatDateMessage = (date, label = '') => {
 
 const loading = ref(true)
 const error = ref(null)
+const modalIndicator = ref(false)
+const inviteLink  = ref('')
+const expires = ref('')
+const signature = ref('')
+const inviteProjectName = ref('')
 const ongoingProjects = ref([])
 const nearingDeadlineProjects = ref([])
 const upcomingProjects = ref([])
@@ -78,23 +126,27 @@ const upcomingDeadline = {
 };
 
 const newTask = {
-  title: "New Task",
+  title: "New Projects",
   cards: upcomingProjects,
   dateMessage: "Starts",
 };
 
-const handleGetDashboard = async () =>{
+const completedTask = {
+  title: "Completed Projects",
+  cards: completedProjects,
+  dateMessage: "End",
+};
+
+
+const handleGetUpcomingProjects = async () =>{
   try {
     loading.value = true
-    const response = await getDashboard()
+    const response = await getUpcomingProjects()
     const data = response.data
     error.value = (null)
 
     if (data) {
-      ongoingProjects.value = data.ongoing || []
-      upcomingProjects.value = data.upcoming || []
-      nearingDeadlineProjects.value = data.nearing_deadline || []
-      completedProjects.value = data.completed || []
+      upcomingProjects.value = data || []
     }
     
     
@@ -109,8 +161,66 @@ const handleGetDashboard = async () =>{
   }
 }
 
+
+const handleGetDeadlineProjects = async () =>{
+  try {
+    loading.value = true
+    const response = await getDeadlineProjects()
+    const data = response.data
+    error.value = (null)
+
+    if (data) {
+      nearingDeadlineProjects.value = data || []
+    }
+    
+    
+  } catch (err) {
+    
+    error.value = "Failed to load dashboard. Please try again."
+    console.log(error.value);
+     throw err
+    
+  }finally{
+    loading.value  = false
+  }
+}
+
+const checkInviteLink = async() =>{
+  const encodedLink = route.query.inviteLink;
+  modalIndicator.value = route.query.modalIndicator === 'true';
+  if (!encodedLink || !modalIndicator) return;
+
+  inviteLink.value = decodeURIComponent(encodedLink);
+  
+  const [path, queryString] = inviteLink.value.split('?');
+  
+  const queryParams = new URLSearchParams(queryString);
+  const projectId = inviteLink.value.split("projects/")[1].split("/")[0]
+  expires.value = queryParams.get('expires');
+  signature.value = queryParams.get('signature');
+
+  console.log('inviteLink:', inviteLink.value);
+  
+
+  try {
+    const response = await getProjectService(projectId)
+    inviteProjectName.value = response.data.name;
+    
+  } catch (error) {
+    throw new error
+  }
+
+
+  console.log('invite Link:', inviteLink.value);
+  console.log('projectId:', projectId);
+  
+
+}
+
 onMounted(()=>{
+  checkInviteLink()
   userStore.getUser()
-  handleGetDashboard()
+  handleGetUpcomingProjects()
+  handleGetDeadlineProjects()
 });
 </script>

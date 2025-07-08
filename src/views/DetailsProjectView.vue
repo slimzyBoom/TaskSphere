@@ -9,7 +9,7 @@
     <div  class="project-details flex flex-col lg:flex-row max-tny:!p-[20px]">
       <div class="project-details-container w-full lg:w-[70%] max-tny:!p-[20px]">
         <div class="image max-vsm:!h-[280px] max-tny:!h-[200px]">
-          <img :src="images.taskImageTwo" alt="" />
+          <img :src="project.image || images.taskImageTwo" alt="" />
         </div>
         <div class="text max-tny:!gap-5">
           <div class="flex flex-col ">
@@ -28,17 +28,17 @@
                   <font-awesome-icon :icon="['far', 'square-check']" class="max-vsm:!text-[12px] max-tny:!text-[10px] !text-[#546fff]" />
                 </button> -->
                 <button @click="editProjectModal = true">
-                  <font-awesome-icon :icon="['far', 'edit']" class="text-xl !text-[#009033]" />
+                  <font-awesome-icon :icon="['far', 'edit']" class="text-xl max-tny:!text-[16px]  !text-[#009033]" />
                 </button>
 
                 <button @click="deleteModal = true">
-                  <font-awesome-icon :icon="['fas', 'trash']" class="text-xl !text-[#FF3231]" />
+                  <font-awesome-icon :icon="['fas', 'trash']" class="text-xl max-tny:!text-[16px]  !text-[#FF3231]" />
                 </button>
               </div>
           
           
             </div>
-            <p class="fsl !break-words">
+            <p class="fsl !break-words vsm:!text-[15px] !leading-6">
             {{ project.description }}
             </p>
           </div>
@@ -113,7 +113,7 @@
               </div>
 
               <span @click="toggleCollaboratorDropDown(user)" v-if="admin" class="remove"> ... </span>
-              <div v-if="collaboratorDropdown && collaboratorDropdownUser.id == user.id" class="shadow bg-white rounded-lg absolute w-[120px] -right-2 top-6 z-20 overflow-hidden">
+              <div v-if="collaboratorDropdown && collaboratorDropdownUser.id == user.id" class="shadow bg-white rounded-lg absolute w-[120px] -right-2 top-6 z-10 overflow-hidden">
                 <li @click=" collaboratorDropdown = false; removeCollaboratorModal = true" class="border-b p-1 pl-3 text-sm cursor-pointer hover:bg-red-500 hover:text-white">Remove</li>
                 <li class="border-b p-1 pl-3 text-sm cursor-pointer hover:bg-[#546fff] hover:text-white">Assign task</li>
               </div>
@@ -303,11 +303,11 @@
           <div class="details">
             <div class="cont">
               <label>Project Name</label>
-              <input v-model="project.name" type="text" placeholder="e.g Build a website"/>
+              <input v-model="editProject.name" type="text" placeholder="e.g Build a website"/>
             </div>
             <div class="cont">
               <label>Project Description</label>
-              <textarea class="!min-h-[100px]" v-model="project.description" type="text" placeholder="e.g Building a website" ></textarea>
+              <textarea class="!min-h-[100px]" v-model="editProject.description" type="text" placeholder="e.g Building a website" ></textarea>
             </div>
             <div class="cont">
               <h3 class="max-vsm:!text-sm">Image</h3>
@@ -347,7 +347,7 @@
             </div>
             <div class="cont">
               <label>Status</label>
-              <select v-model="project.status" class="border rounded cursor-pointer px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-300">
+              <select v-model="editProject.status" class="border rounded cursor-pointer px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-300">
                 <option class="cursor-pointer" value="upcoming">Upcoming</option>
                 <option class="cursor-pointer" value="in-progress">In Progress</option>
                 <option class="cursor-pointer" value="completed">Completed</option>
@@ -362,25 +362,41 @@
           </div>
         </form>
       </div>
-      <div class="task-popup" v-if="collaboratorModal">
-        <form class="task-popup-box max-tny:!p-[15px]" @submit.prevent="handleAddCollaborators">
+      <div class="task-popup " v-if="collaboratorModal">
+        <form class="task-popup-box max-tny:!p-[15px] !w-[26rem]" @submit.prevent="handleAddCollaborators">
           <div class="title">
-            <h3>Add Collaborator</h3>
+            <h3>Invite Collaborator</h3>
             <font-awesome-icon icon="x" @click="closeCollaboratorModal"></font-awesome-icon>
           </div>
           <div class="details">
-            <div class="flex w-full border rounded-lg items-center">
-              <font-awesome-icon class="text-gray-400 p-2.5" icon="search"></font-awesome-icon>
-              <input v-model="searchedUser" type="text" class="border-none w-full h-full placeholder:text-sm" placeholder="Search User...">
+            <div class="flex gap-2">
+              <div class="flex w-full border rounded-lg items-center">
+                <font-awesome-icon class="text-gray-400 p-2.5" icon="search"></font-awesome-icon>
+                <input @keydown.enter.prevent="getSelectedUsers" v-model="searchedUser" type="text" class="border-none w-full h-full placeholder:text-sm" placeholder="e.g Johndoe@gmail.com">
+              </div>
+              <button :disabled="!searchedUser" type="button" @click="getSelectedUsers()" class=" !px-3 !mt-0 !p-0 !rounded-md">
+                <font-awesome-icon class="" icon="plus"></font-awesome-icon>
+              </button>
             </div>
-            <div v-if="filteredData.length > 0"  class="flex flex-col gap-2 h-[300px] overflow-auto">
-              <template v-for="user in filteredData" :key="user.id">
+            <div v-if="getUserLoading" class="flex items-center justify-center w-full h-[300px] relative">
+              <div className="container flex items-center absolute justify-center h-full min-w-full bg-white z-10">
+                <div
+                  className="inline-block h-14 w-14 animate-spin rounded-full border-8 border-solid border-current border-e-transparent align-[-0.125em] text-[#BAC8FF]"
+                  role="status"
+                >
+                  <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                    Loading...
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div v-if="!getUserLoading && addedUsers.length > 0"  class="flex flex-col gap-2 h-[300px] overflow-y-auto">
+              <template v-for="user in addedUsers" :key="user.id">
                 <li
                   v-if="user.id !== userId"
-                  @click="selectedCollaborator = user"
                   :class="{
-                    'bg-[#546fff] text-white': selectedCollaborator.id === user.id,
-                    'hover:bg-[#546fff] hover:text-white rounded-lg w-full cursor-pointer p-2': true
+                    // 'bg-[#546fff] text-white': selectedCollaborator.id === user.id,
+                    ' flex justify-between items-center gap-1 rounded-lg w-full cursor-pointer p-2': true
                   }"
                 >
                   <div class="flex gap-1">
@@ -390,13 +406,17 @@
                       <h5 class="job !-mt-1">{{ user.email }}</h5>
                     </div>
                   </div>
+
+                  <div @click="removeFromAddList(user)" class="">
+                    <font-awesome-icon :icon="['fas', 'trash']" class="!text-[#FF3231]" />
+                  </div>
                 </li>
                </template>
             </div>
-            <div v-else class="h-[300px] p-1 text-[15px] text-gray-500 flex text-center justify-center">
-              No user found
+            <div v-if="!getUserLoading && addedUsers.length <= 0" class="h-[300px] p-1 text-[15px] text-gray-500 flex text-center justify-center">
+              Invite list is empty
             </div>
-            <button :disabled="!selectedCollaborator || !selectedCollaborator.id" type="submit">{{collaboratorModalLoading ? 'Submiting...' :'Submit'}}</button>
+            <button :disabled="addedUsersEmail.length == 0" type="submit">{{collaboratorModalLoading ? 'Inviting...' :'Send Invite'}}</button>
           </div>
         </form>
       </div>    
@@ -457,11 +477,12 @@
   import { deleteProjectService, getProjectService, updateProject } from "@/services/projects.service";
   import { formatDuration } from '@/utils/formatDuration.js'
   import Spinner from "@/components/Spinner.vue";
-  import { createTask, deleteTaskService, markTaskCompleted, markTaskPending, updateTask } from "@/services/tasks.service";
+  import { createTask, deleteTaskService, markTaskCompleted, markTaskPending, updateTask, updateTaskStatus } from "@/services/tasks.service";
   import popUp from "@/components/popUp.vue";
   import Header from "@/components/Header.vue"
   import { fetchAllUsersService } from "@/services/user.auth.service";
   import { addCollaborator, deleteCollaborator } from "@/services/collaborators.service";
+import { getUserDetails } from "@/services/user.service";
 
   const route = useRoute()
   const router = useRouter()
@@ -489,24 +510,20 @@
   const editProjectModalLoading = ref(false)
   const editTaskModal = ref(false)
   const editTaskModalLoading = ref(false)
-  const allUsers = ref([])
+  const addedUsers = ref([])
   const selectedCollaborator = ref({})
   const collaboratorModal = ref(false)
   const collaboratorModalLoading = ref(false)
   const searchedUser = ref('')
+  const addedUsersEmail = ref([])
   const collaboratorDropdown = ref(false)
   const collaboratorDropdownUser = ref([])
   const removeCollaboratorModal = ref(false)
   const removeCollaboratorModalLoading = ref(false)
+  const getUserLoading = ref(false)
 
   const fileInputRef = ref(null)
   const previewUrl = ref(null)
-
-  const filteredData = computed(() =>
-    allUsers.value.filter((user) =>
-      user.username.toLowerCase().includes(searchedUser.value.toLowerCase())
-    )
-  );
 
   const triggerFileInput = () => {
     fileInputRef.value?.click()
@@ -546,6 +563,19 @@
     users: [],
   })
 
+  const editProject = ref({
+    id: '',
+    name: '',
+    description: '',
+    image: null,
+    start_date: null,
+    end_date: null,
+    status: '',
+    admin: {
+      id: ''
+    }
+  })
+
   const headerProps = {
     title: "Project Details",
     titleText: "Stay aligned with your team on key project details.",
@@ -569,19 +599,19 @@
 
   const formattedStartDate = computed({
     get() {
-      return project.value.start_date?.split('T')[0] || ''
+      return editProject.value.start_date?.split('T')[0] || ''
     },
     set(value) {
-      project.value.start_date = `${value}T00:00:00.000000Z`
+      editProject.value.start_date = `${value}T00:00:00.000000Z`
     }
   })
 
   const formattedEndDate = computed({
     get() {
-      return project.value.end_date?.split('T')[0] || ''
+      return editProject.value.end_date?.split('T')[0] || ''
     },
     set(value) {
-      project.value.end_date = `${value}T00:00:00.000000Z`
+      editProject.value.end_date = `${value}T00:00:00.000000Z`
     }
   })
 
@@ -589,13 +619,13 @@
     const file = event.target.files[0]
     if (file) {
       previewUrl.value = URL.createObjectURL(file)
-      project.value.image = file;
+      editProject.value.image = file;
 
     }
   }
 
   const closeCollaboratorModal = () =>{
-    selectedCollaborator.value = {}
+    // selectedCollaborator.value = {}
     collaboratorModal.value = false
   }
 
@@ -629,7 +659,7 @@
 
       const response = await fetchAllUsersService()
 
-      allUsers.value = response.data
+      // addedUsers.value = response.data
 
       loading.value = false
       error.value = null
@@ -645,13 +675,22 @@
       loading.value = true
       const response = await getProjectService(id)
       project.value = response?.data
+
+      editProject.value.id = response?.data.id
+      editProject.value.name = response?.data.name
+      editProject.value.description = response?.data.description
+      editProject.value.status = response?.data.status
+      editProject.value.start_date = response?.data.start_date
+      editProject.value.end_date = response?.data.end_date
+      editProject.value.admin.id = response?.data.admin.id
+
       
       date = formatDuration(project.value)
       admin = response?.data?.admin?.id == userId
       console.log(response.data);
       
       loading.value = false
-      previewUrl.value = response?.data.image
+      // previewUrl.value = response?.data.image
       error.value = null
     } catch (error) {
       error.value = error
@@ -663,8 +702,8 @@
   const handleUpdateProject = async () => {
     editProjectModalLoading.value = true
     try {
-      console.log(project.value)
-      const data = await updateProject(project.value, id);
+      console.log(editProject.value)
+      const data = await updateProject(editProject.value, id);
       handleGetProjectDetails()
       content.value = "Project updated!";
       success.value = true;
@@ -775,7 +814,8 @@
     changeStatusLoading.value = true
 
     try {
-      const response = await markTaskCompleted(changeStatusTask.value.id)
+      // const response = await markTaskCompleted(changeStatusTask.value.id)
+      const response = await updateTaskStatus(changeStatusTask.value.id, 'completed')
 
       content.value = "Status updated succefully!";
       success.value = true;
@@ -799,7 +839,9 @@
     changeStatusLoading.value = true
 
     try {
-      const response = await markTaskPending(changeStatusTask.value.id)
+      // const response = await markTaskPending(changeStatusTask.value.id)
+      const response = await updateTaskStatus(changeStatusTask.value.id, 'pending')
+
 
       content.value = "Status updated succefully!";
       success.value = true;
@@ -823,14 +865,14 @@
     collaboratorModalLoading.value = true
     try {
       
-      const response = await addCollaborator(id, selectedCollaborator.value.id)
+      const response = await addCollaborator(id, addedUsersEmail.value)
 
+      handleGetProjectDetails();
 
-      content.value = "User added succefully!";
+      content.value = "Invite sent succefully!";
       success.value = true;
       isActive.value = true;
       popUpActive.value = false;
-      handleGetProjectDetails();
       
     } catch (error) {
       content.value =
@@ -845,13 +887,73 @@
     }
   }
 
+  const getSelectedUsers = async ()=>{
+    if (addedUsersEmail.value.includes(searchedUser.value)) {
+      content.value =
+      "Already added user to the list";
+      success.value = false;
+      isActive.value = true;
+    
+      return
+    }
+
+      getUserLoading.value = true
+
+    try {
+    console.log('mf');
+    
+      const response = await getUserDetails(searchedUser.value)
+      
+      if (response.data.id == userId) {
+        content.value =
+        "You can’t invite your own account.";
+        success.value = false;
+        isActive.value = true;
+      
+        return
+      }
+
+      const tempAddedUsers = [...addedUsers.value, response.data]
+      addedUsers.value = tempAddedUsers
+
+      const tempAddedUsersEmail = [...addedUsersEmail.value , response.data.email]
+      addedUsersEmail.value = tempAddedUsersEmail
+
+      console.log('addedUsersEmail:',addedUsersEmail.value);
+      
+      error.value = null
+      
+    } catch (error) {
+      error.value = error.message
+      content.value =
+        "Failed to fetch user. Please try again.";
+      success.value = false;
+      isActive.value = true;
+      // throw new Error(error || 'Failed to fetch users')
+
+    }finally{
+      getUserLoading.value = false
+
+    }
+    
+  }
+
+  const removeFromAddList = (user) =>{
+    const tempAddedUsers = addedUsers.value.filter(u => u !== user)
+    addedUsers.value = tempAddedUsers
+
+    const tempAddedUsersEmail = addedUsersEmail.value.filter(email => email !== user.email)
+    addedUsersEmail.value = tempAddedUsersEmail
+
+    console.log('addedUsersEmail',addedUsersEmail.value);
+    console.log('addedUsers',addedUsers.value);
+    
+  }
+
   const handleRemoveCollaborators = async () =>{
     removeCollaboratorModalLoading.value = true
     try {
-      console.log(id, selectedCollaborator.value.id);
-      
       const response = await deleteCollaborator(id, collaboratorDropdownUser.value.id)
-
 
       content.value = "User removed succefully!";
       success.value = true;
@@ -1136,7 +1238,7 @@
   height: 100vh;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 20;
   background-color: rgba(0, 0, 0, 0.595);
   backdrop-filter: blur(10px);
   padding: 10px;

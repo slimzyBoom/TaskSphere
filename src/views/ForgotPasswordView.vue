@@ -47,7 +47,7 @@ const handlesubmit = async () => {
       return;
     }
     email.value = "";
-    router.push({ name: "reset-password" });
+    // router.push({ name: "reset-password" });  
   } catch (error) {
     console.error(error.message);
     content.value =

@@ -65,21 +65,26 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import popUp from "@/components/popUp.vue";
 import { updateUserProfileService } from "@/services/user.auth.service";
 import { useUserStore } from "@/stores/user";
+import { getUser } from "@/services/user.service";
 const userStore = useUserStore();
 const success = ref(false);
 const isActive = ref(false);
 const content = ref("");
+const userId = localStorage.getItem('userId')
 
 const profile = reactive({
   name: "",
   email: "",
   phone: "",
   image: null,
+
 });
+
+const user = ref({})
 
 const previewImage = ref(null);
 
@@ -91,39 +96,63 @@ const handleFileUpload = (event) => {
   }
 };
 
+const fetchUser = async () =>{
+  try {
+      const response = await getUser(userId)
+
+      user.value = response.data
+
+      profile.name = response.data.username
+      profile.email = response.data.email
+      profile.phone = response.data.phone
+      // profile.image = response.data.image
+
+      console.log(profile);
+    
+  } catch (error) {
+      console.error(error);
+  }
+}
+
 const updateProfile = async () => {
+    console.log('went on');
+
   const formData = new FormData();
   formData.append("_method", "PUT");
-  if (profile.name) formData.append("name", profile.name);
-  else formData.append("name", userStore.user.username);
+  if (profile.name) formData.append("username", profile.name);
+  else formData.append("username", user.username);
   if (profile.phone) formData.append("phone", profile.phone);
   if (profile.image) formData.append("image", profile.image);
   if (profile.email) formData.append("email", profile.email);
-  else formData.append("email", userStore.user.email);
+  else formData.append("email", user.email);
   try {
-    const data = await updateUserProfileService(userStore.userId, formData);
+    const data = await updateUserProfileService(userId, formData);
+    console.log('went on');
+    
     if (data) {
-      // Update user store with new data
       userStore.setUser(data);
 
-      // Reset profile data
       profile.name = "";
       profile.email = "";
       profile.phone = "";
       profile.image = null;
       previewImage.value = null;
 
-      // Update popup
       content.value = "Profile updated successfully";
       isActive.value = true;
       success.value = true;
     }
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
     content.value =
       error.message || "An unexpected error occurred. Please try again.";
     isActive.value = true;
     success.value = false;
   }
 };
+
+
+onMounted(()=>{
+  fetchUser()
+})
 </script>

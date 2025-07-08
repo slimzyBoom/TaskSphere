@@ -1,8 +1,19 @@
 import { api } from "@/libs/api";
 
-export  const addCollaborator = async(project_id, userId)=>{
+export  const addCollaborator = async(project_id, emails)=>{
     try {
-        const response = await api.post(`/projects/${project_id}/collaborators/${userId}`)
+
+        console.log([...emails]);
+        
+        const formData = new FormData()
+
+
+        // 2. Append each email
+        emails.forEach(email => {
+            formData.append('emails[]', email); // 👈 appends as array
+        });
+
+        const response = await api.post(`/projects/${project_id}/collaborators/invite`, formData)
 
         console.log(response);
         return response.data

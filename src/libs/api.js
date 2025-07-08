@@ -7,7 +7,7 @@ import isTokenValid from '@/utils/checkToken';
 const api = axios.create({
   baseURL: url, 
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/vnd.api+json'
   },
   timeout: 10000
 })
