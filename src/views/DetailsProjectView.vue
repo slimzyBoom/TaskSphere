@@ -481,7 +481,7 @@
   import popUp from "@/components/popUp.vue";
   import Header from "@/components/Header.vue"
   import { fetchAllUsersService } from "@/services/user.auth.service";
-  import { addCollaborator, deleteCollaborator } from "@/services/collaborators.service";
+  import { inviteCollaborator, deleteCollaborator } from "@/services/collaborators.service";
 import { getUserDetails } from "@/services/user.service";
 
   const route = useRoute()
@@ -865,7 +865,7 @@ import { getUserDetails } from "@/services/user.service";
     collaboratorModalLoading.value = true
     try {
       
-      const response = await addCollaborator(id, addedUsersEmail.value)
+      const response = await inviteCollaborator(id, addedUsersEmail.value)
 
       handleGetProjectDetails();
 
