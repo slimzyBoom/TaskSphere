@@ -38,16 +38,16 @@
                     Cancel
                 </button>
                 <button
-                    @click="handleRemoveCollaborators"
+                    @click="acceptInvite"
                     :class="`px-4 py-2 text-white rounded-lg transition-colors text-sm ${
-                                removeCollaboratorModalLoading
+                                acceptingInvite
                                 ? 'bg-red-300 cursor-not-allowed'
                                 : 'bg-red-600 hover:bg-red-700'
                             }`"            
-                    :disabled="removeCollaboratorModalLoading"
+                    :disabled="acceptingInvite"
                 >
             
-                    <span v-if="removeCollaboratorModalLoading" class="flex items-center justify-center ">
+                    <span v-if="acceptingInvite" class="flex items-center justify-center ">
                         <svg class="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -62,6 +62,12 @@
     </div>
 
     <RightSideBar></RightSideBar>
+    <popUp
+      v-if="isActive && content"
+      :content="content"
+      :success="success"
+      @close="isActive = false"
+    />
   </div>
 </template>
 
@@ -78,6 +84,7 @@ import { getUpcomingProjects, getDeadlineProjects } from "@/services/dashboard.s
 import Spinner from "@/components/Spinner.vue";
 import { useRoute } from "vue-router";
 import { getProjectService } from "@/services/projects.service";
+import { addCollaborator } from "@/services/collaborators.service";
 
 const userStore = useUserStore();
 const route = useRoute();
@@ -98,10 +105,15 @@ const formatDateMessage = (date, label = '') => {
   return distance
 }
 
+
 const loading = ref(true)
 const error = ref(null)
+const isActive = ref(false);
+const content = ref("");
+const success = ref(false);
 const modalIndicator = ref(false)
 const inviteLink  = ref('')
+const inviteUrl  = ref('')
 const expires = ref('')
 const signature = ref('')
 const inviteProjectName = ref('')
@@ -109,6 +121,7 @@ const ongoingProjects = ref([])
 const nearingDeadlineProjects = ref([])
 const upcomingProjects = ref([])
 const completedProjects = ref([])
+const acceptingInvite = ref(false)
 
 const userName = userStore.user?.username || "User";
 const headerProps = {
@@ -196,10 +209,12 @@ const checkInviteLink = async() =>{
   
   const queryParams = new URLSearchParams(queryString);
   const projectId = inviteLink.value.split("projects/")[1].split("/")[0]
+  inviteUrl.value = inviteLink.value.split("?")[0].split("v1")[1]
   expires.value = queryParams.get('expires');
   signature.value = queryParams.get('signature');
 
   console.log('inviteLink:', inviteLink.value);
+  console.log('projectId:', inviteUrl.value);
   
 
   try {
@@ -214,7 +229,26 @@ const checkInviteLink = async() =>{
   console.log('invite Link:', inviteLink.value);
   console.log('projectId:', projectId);
   
+}
 
+const acceptInvite = async()=>{
+  try {
+    acceptingInvite.value = true
+    const response = await addCollaborator(inviteUrl.value)
+    content.value = "Welcome to the Team!";
+    success.value = true;
+    isActive.value = true;
+    
+  } catch (err) {
+    error.value = "Failed to accept invite. Please try again."
+    console.log(error.value);
+    content.value = err.message || error.value;
+    success.value = false;
+    isActive.value = true;
+    
+  }finally{
+    acceptingInvite.value  = false
+  }
 }
 
 onMounted(()=>{
